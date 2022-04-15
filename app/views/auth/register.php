@@ -2,6 +2,8 @@
   <div class="background"></div>
 </div>
 
+<?php Flasher::flashRegister(); ?>
+
 <form id="accesspanel" action="<?= BASEURL;?>/auth/daftar" method="post">
   <h1 id="litheader">Minrose</h1>
   <div class="inset">

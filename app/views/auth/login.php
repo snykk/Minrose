@@ -2,6 +2,9 @@
   <div class="background"></div>
 </div>
 
+<?php Flasher::flashRegister(); ?>
+<?php Flasher::flashLogin(); ?>
+
 <form id="accesspanel" action="<?= BASEURL;?>/auth/validasiLogin" method="post">
   <h1 id="litheader">Minrose</h1>
   <div class="inset">
