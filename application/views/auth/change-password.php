@@ -17,7 +17,7 @@
                                 </div>
 
                                 <?php
-                                echo $this->session->flashdata('message'); 
+                                echo $this->session->flashdata('message');
                                 unset($_SESSION['message']);
                                 ?>
 
@@ -39,9 +39,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
-
     </div>
-
-</div> 
+</div>

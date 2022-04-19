@@ -12,7 +12,8 @@ class Auth extends CI_Controller
     public function index()
     {
         if ($this->session->userdata('email')) {
-            redirect('user');
+            // redirect('user');
+            redirect("home");
         }
 
         $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
@@ -46,11 +47,12 @@ class Auth extends CI_Controller
                     'role_id' => $user['role_id']
                 ];
                 $this->session->set_userdata($data);
-                if ($user['role_id'] == 1) {
-                    redirect('admin');
-                } else {
-                    redirect('user');
-                }
+                redirect("home");
+                // if ($user['role_id'] == 1) {
+                //     redirect('admin');
+                // } else {
+                //     redirect('user');
+                // }
             } else {
                 $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Wrong password!</div>');
                 redirect('auth');
@@ -96,10 +98,10 @@ class Auth extends CI_Controller
                 'username' => htmlspecialchars($this->input->post('username', true)),
                 'email' => htmlspecialchars($email),
                 'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
-                'jenis_kelamin' => htmlspecialchars($this->input->post('jenis_kelamin',true)),
-                'no_hp' => htmlspecialchars($this->input->post('no_hp',true)),
+                'jenis_kelamin' => htmlspecialchars($this->input->post('jenis_kelamin', true)),
+                'no_hp' => htmlspecialchars($this->input->post('no_hp', true)),
                 'role_id' => 2,
-                'alamat' => htmlspecialchars($this->input->post('alamat',true)),
+                'alamat' => htmlspecialchars($this->input->post('alamat', true)),
                 'image' => 'default.jpg',
                 'data_dibuat' => time()
             ];

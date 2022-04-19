@@ -12,7 +12,7 @@ class User extends CI_Controller
     public function index()
     {
         $data['title'] = 'Home';
-        
+
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         $this->load->view('templates/header', $data);
@@ -42,7 +42,7 @@ class User extends CI_Controller
     //     $this->form_validation->set_rules('username', 'Username', 'required|trim|is_unique[user.username]', ['is_unique' => 'username ini telah terdaftar silahkan gunakan username lain!']);
     //     $this->form_validation->set_rules('no_hp', 'No. HP', 'required|trim|is_unique[user.no_hp]', ['is_unique' => 'no hp ini telah terdaftar silahkan gunakan username lain!']);
     //     $this->form_validation->set_rules('alamat', 'Alamant', 'required|trim');
-        
+
 
     //     if ($this->form_validation->run() == false) {
     //         $this->load->view('templates/header', $data);

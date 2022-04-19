@@ -1,41 +1,41 @@
 <div class="container-fluid">
     <div class="main-body">
-    <!-- Hierarki -->
-    <nav aria-label="breadcrumb" class="main-breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">Home</li>
-            <li class="breadcrumb-item">Profile</li>
-            <li class="breadcrumb-item active" aria-current="page">Ubah Profile</li>
-        </ol>
-    </nav>
-    <!-- Tutup hierarki -->
+        <!-- Hierarki -->
+        <nav aria-label="breadcrumb" class="main-breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">Home</li>
+                <li class="breadcrumb-item">Profile</li>
+                <li class="breadcrumb-item active" aria-current="page">Ubah Profile</li>
+            </ol>
+        </nav>
+        <!-- Tutup hierarki -->
 
-    <hr class="mt-0 mb-4">
-    <div class="row">
-        <div class="col-xl-4">
-            <!-- Profile picture card-->
-            
-            <div class="card mb-4 mb-xl-0">
-                <div class="card-header">Gambar Profile</div>
-                <div class="card-body text-center">
-                    <!-- Profile picture image-->
-                    <img class="img-account-profile mb-2" src="<?= base_url('assets/img/profile/') .  $user['image']; ?>" width="150" alt="">
-                    <!-- Profile picture help block-->
-                    <div class="small font-italic text-muted mb-4">[Jpg, Gif, Png] tidak lebih dari 2 MB</div>
-                    <!-- Profile picture upload button-->
-                    <?= form_open_multipart('home/edit_profile'); ?>
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="image" name="image">
-                        <!-- <label class="custom-file-label" for="image">Choose file</label> -->
+        <hr class="mt-0 mb-4">
+        <div class="row">
+            <div class="col-xl-4">
+                <!-- Profile picture card-->
+
+                <div class="card mb-4 mb-xl-0">
+                    <div class="card-header">Gambar Profile</div>
+                    <div class="card-body text-center">
+                        <!-- Profile picture image-->
+                        <img class="img-account-profile mb-2" src="<?= base_url('assets/img/profile/') .  $user['image']; ?>" width="150" alt="">
+                        <!-- Profile picture help block-->
+                        <div class="small font-italic text-muted mb-4">[Jpg, Gif, Png] tidak lebih dari 2 MB</div>
+                        <!-- Profile picture upload button-->
+                        <?= form_open_multipart('profile/edit_profile'); ?>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="image" name="image">
+                            <!-- <label class="custom-file-label" for="image">Choose file</label> -->
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-xl-8">
-            <!-- Account details card-->
-            <div class="card mb-4">
-                <div class="card-header">Detail Akun</div>
-                <div class="card-body">
+            <div class="col-xl-8">
+                <!-- Account details card-->
+                <div class="card mb-4">
+                    <div class="card-header">Detail Akun</div>
+                    <div class="card-body">
                         <!-- Form Group (username)-->
                         <div class="mb-3">
                             <label class="small mb-1" for="email">Email</label>
@@ -70,13 +70,13 @@
                                 <?= form_error('alamat', '<small class="text-danger pl-3">', '</small>'); ?>
                             </div>
                         </div>
-                        
+
                         <!-- Save changes button-->
                         <button class="btn btn-dark" type="submit">Simpang perubahan</button>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
 </div>

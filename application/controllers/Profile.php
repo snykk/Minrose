@@ -9,7 +9,8 @@ class Profile extends CI_Controller
         $this->load->library('form_validation');
     }
 
-    public function user_profile(){
+    public function user_profile()
+    {
         $data['title'] = 'My Profile';
         $data['css'] = 'profile';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
@@ -33,28 +34,28 @@ class Profile extends CI_Controller
         $data['css'] = 'profile';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
-        if($this->input->post('username') != $data["user"]["username"]) {
+        if ($this->input->post('username') != $data["user"]["username"]) {
             $is_unique_username =  '|is_unique[users.username]';
-         } else {
+        } else {
             $is_unique_username =  '';
-         } 
-        if($this->input->post('username') != $data["user"]["username"]) {
+        }
+        if ($this->input->post('username') != $data["user"]["username"]) {
             $is_unique_no_hp =  '|is_unique[user.no_hp]';
-         } else {
+        } else {
             $is_unique_no_hp =  '';
-         } 
+        }
 
 
         $this->form_validation->set_rules('nama_lengkap', 'nama_lengkap', 'required|trim');
         $this->form_validation->set_rules('username', 'Username', 'required|trim' . $is_unique_username, ['is_unique' => 'username ini telah terdaftar silahkan gunakan username lain!']);
         $this->form_validation->set_rules('no_hp', 'No. HP', 'required|trim' . $is_unique_no_hp, ['is_unique' => 'no hp ini telah terdaftar silahkan gunakan username lain!']);
         $this->form_validation->set_rules('alamat', 'Alamat', 'required|trim');
-        
+
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/header', $data);
             $this->load->view('templates/topbar', $data);
-            
+
             if ($data["user"]["role_id"] == 1) {
                 $this->load->view('templates/sidebar_admin', $data);
             } else {
@@ -99,7 +100,7 @@ class Profile extends CI_Controller
             $this->db->set($data);
             $this->db->where('email', $email);
             $this->db->update('user');
-            
+
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Profil anda berhasil diubah!</div>');
             redirect('home');
         }
@@ -152,5 +153,4 @@ class Profile extends CI_Controller
             }
         }
     }
-
 }

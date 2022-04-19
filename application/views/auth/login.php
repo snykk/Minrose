@@ -16,13 +16,13 @@
                                 </div>
 
                                 <?php
-                                echo $this->session->flashdata('message'); 
+                                echo $this->session->flashdata('message');
                                 unset($_SESSION['message']);
                                 ?>
 
                                 <form class="user" method="post" action="<?= base_url('auth'); ?>">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email Address..." value="<?= set_value('email'); ?>">
+                                        <input type="text" class="form-control" id="email" name="email" placeholder="Masukkan Alamat Email..." value="<?= set_value('email'); ?>">
                                         <?= form_error('email', '<small class="text-danger pl-3">', '</small>'); ?>
                                     </div>
                                     <div class="form-group">
@@ -50,4 +50,4 @@
 
     </div>
 
-</div> 
+</div>
