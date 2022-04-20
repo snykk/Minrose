@@ -35,7 +35,7 @@ class Profile extends CI_Controller
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         if ($this->input->post('username') != $data["user"]["username"]) {
-            $is_unique_username =  '|is_unique[users.username]';
+            $is_unique_username =  '|is_unique[user.username]';
         } else {
             $is_unique_username =  '';
         }

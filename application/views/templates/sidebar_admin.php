@@ -9,7 +9,7 @@
             Dashboard
           </a>
 
-          <hr class="sidebar-divider">
+          <!-- <hr class="sidebar-divider"> -->
 
           <div class="sb-sidenav-menu-heading">Interface</div>
           <a class="nav-link" href="<?= base_url("Produk/index"); ?>">

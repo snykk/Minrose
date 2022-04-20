@@ -74,11 +74,8 @@
                 </div>
                 <div class="card-body">
                     <table id="datatablesSimple">
-                        <?php
-                        $query = $this->db->query("SELECT nama_lengkap, username, email, jenis_kelamin, no_hp, alamat, data_dibuat FROM user WHERE role_id=2");
-                        foreach ($query->result() as $row) :
-                        ?>
-                            <thead>
+                        <thead>
+                            <tr>
                                 <th>Nama Lengkap</th>
                                 <th>Username</th>
                                 <th>Email</th>
@@ -86,17 +83,24 @@
                                 <th>Nomor HP</th>
                                 <th>Alamat</th>
                                 <th>Data Dibuat</th>
-                            </thead>
-                            <tbody>
-                                <td><?= $row->nama_lengkap; ?></td>
-                                <td><?= $row->username; ?></td>
-                                <td><?= $row->email; ?></td>
-                                <td><?= $row->jenis_kelamin; ?></td>
-                                <td><?= $row->no_hp; ?></td>
-                                <td><?= $row->alamat; ?></td>
-                                <td><?= date('d F Y', $row->data_dibuat); ?></td>
-                            </tbody>
-                        <?php endforeach; ?>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $query = $this->db->query("SELECT nama_lengkap, username, email, jenis_kelamin, no_hp, alamat, data_dibuat FROM user WHERE role_id=2");
+                            foreach ($query->result() as $row) :
+                            ?>
+                                <tr>
+                                    <td><?= $row->nama_lengkap; ?></td>
+                                    <td><?= $row->username; ?></td>
+                                    <td><?= $row->email; ?></td>
+                                    <td><?= $row->jenis_kelamin; ?></td>
+                                    <td><?= $row->no_hp; ?></td>
+                                    <td><?= $row->alamat; ?></td>
+                                    <td><?= date('d F Y', $row->data_dibuat); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
                     </table>
                 </div>
             </div>
