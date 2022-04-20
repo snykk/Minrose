@@ -48,8 +48,9 @@
                         Hallo
                       </h2>
                       <br>
-                      <!-- <p class="item-intro text-muted">Pembelajaran Terstruktur.</p> -->
-                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore possimus, repellat hic laboriosam tempora blanditiis.</p>
+                      <p class="orientasi text-center">
+                      <!-- content orientasi -->
+                      </p>
                       <img id="modal-image" src="<?= base_url("assets/img/produk/"); ?>" width="70%" class="img-fluid d-block mx-auto" alt="" />
                       <div>
                         <h3>
@@ -62,9 +63,15 @@
                               </p>
                           </div>
                           <div class="pembagi"></div>
+                          <div class="harga">
+                            <!-- content harga -->
+                          </div>
+                          <div class="stok mb-4">
+                            <!-- content stok -->
+                          </div>
                         </div>
                       </div>
-                      <button class="btn btn-primary btn-xl" data-bs-dismiss="modal" type="button" > KEMBALI
+                      <button class="btn btn-primary btn-xl j" data-bs-dismiss="modal" type="button" > KEMBALI
                       </button>
                     </div>
                   </div>

@@ -1,6 +1,7 @@
 /* FontAwesome for working BootSnippet :> */
 
 @import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
+@import url("https://fonts.googleapis.com/css2?family=My+Soul&display=swap");
 #team {
   background: #eee !important;
 }
@@ -20,13 +21,13 @@
 }
 
 section {
-  padding: 60px 0;
+  padding: 30px 0;
 }
 
 section .section-title {
   text-align: center;
   color: #007b5e;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
   text-transform: uppercase;
 }
 
@@ -140,7 +141,9 @@ section .section-title {
   padding-top: 6rem;
   padding-bottom: 6rem;
   /* text-align: center; */
-  font-family: "Roboto Slab", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  /* font-family: "Roboto Slab", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; */
+  /* font-family: "My Soul", cursive; */
+  font-family: "Merriweather", serif;
 }
 .program-modal .modal-content h2,
 .program-modal .modal-content .h2 {
@@ -150,9 +153,6 @@ section .section-title {
 }
 .program-modal .modal-content p.item-intro {
   font-style: italic;
-  margin-bottom: 2rem;
-}
-.program-modal .modal-content p {
   margin-bottom: 2rem;
 }
 .program-modal .modal-content ul.list-inline {
@@ -177,5 +177,66 @@ section .section-title {
 .pembagi {
   height: 3px;
   background: #921515;
-  margin: 3px 0;
+  margin-bottom: 1rem;
+}
+
+/* style tombol button */
+
+.button-kemren {
+  text-decoration: none !important;
+  border: 3px solid white;
+  width: 10rem;
+  color: transparent !important;
+  padding: 10px 20px;
+  font-size: 20px;
+  font-family: sans-serif;
+  letter-spacing: 3px;
+  transition: all 0.5s;
+  position: relative;
+}
+.button-kemren:before {
+  content: "Tambahkan";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background: #007b5e;
+  top: 0;
+  left: 100%;
+  font-family: sans-serif;
+  letter-spacing: 5px;
+  transition: all 1s;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  transform: scale(0) rotatey(0);
+  opacity: 0;
+}
+.button-kemren:hover:before {
+  transform: scale(1) rotatey(360deg);
+  left: 0;
+  opacity: 1;
+}
+.button-kemren:after {
+  content: "Tambahkan";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background: #007b5e;
+  top: 0;
+  left: 0;
+  font-family: sans-serif;
+  letter-spacing: 5px;
+  transition: all 1s;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  transform: scale(1) rotatey(0);
+  opacity: 1;
+}
+.button-kemren:hover:after {
+  transform: scale(0) rotatey(360deg);
+  left: -100%;
+  opacity: 0;
 }

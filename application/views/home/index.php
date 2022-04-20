@@ -86,10 +86,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
-                            $query = $this->db->query("SELECT nama_lengkap, username, email, jenis_kelamin, no_hp, alamat, data_dibuat FROM user WHERE role_id=2");
-                            foreach ($query->result() as $row) :
-                            ?>
+                            <?php foreach ($user_member->result() as $row) :?>
                                 <tr>
                                     <td><?= $row->nama_lengkap; ?></td>
                                     <td><?= $row->username; ?></td>
