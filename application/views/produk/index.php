@@ -35,9 +35,11 @@
             <!-- ./Team member -->
             <?php endforeach; ?>
         </div>
-        <div class="d-flex align-items-end flex-column">
-            <a class="text-right button-kemren mr-lg-5 mr-sm-3">pe</a>
-        </div>
+        <?php if ($user["role_id"] === 1) :?>
+            <div class="d-flex align-items-end flex-column">
+                <a class="text-right button-kemren mr-lg-5 mr-sm-3">pe</a>
+            </div>
+        <?php endif; ?>
     </div>
 </section>
 <!-- Team -->

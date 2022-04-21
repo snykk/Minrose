@@ -59,14 +59,12 @@
               </div>
             </nav>
           </div>
-          <div class="sb-sidenav-menu-heading">Addons</div>
-          <a class="nav-link" href="charts.html">
-            <div class="sb-nav-link-icon"><i class="fas fa-fw fa-chart-area"></i></div>
-            Charts
-          </a>
-          <a class="nav-link" href="tables.html">
-            <div class="sb-nav-link-icon"><i class="fas fa-fw fa-table"></i></div>
-            Tables
+
+          <hr class="sidebar-divider">
+
+          <a class="nav-link" data-bs-toggle="modal" data-bs-target="#logoutModal">
+            <div class="sb-nav-link-icon"><i class="fas fa-fw fa-sign-out-alt"></i></div>
+            Logout
           </a>
         </div>
       </div>
