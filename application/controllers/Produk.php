@@ -43,4 +43,57 @@ class Produk extends CI_Controller
         header("Content-Type: application/json");
         echo json_encode($data);
     }
+
+    public function addProduk()
+    {
+        $email = $this->session->userdata('email');
+        if ($this->db->get_where('user', ['email' => $email])->row_array()["role_id"] == 2) {
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Anda tidak memiliki previlege untuk menjalankan akses ini</div>');
+            redirect('produk/index');
+        }
+
+        $this->form_validation->set_rules('nama_produk', 'Nama Produk', 'required|trim');
+        $this->form_validation->set_rules('orientasi', 'Orientasi', 'required|trim');
+        $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'required|trim');
+        $this->form_validation->set_rules('harga', 'Harga', 'required|trim');
+        $this->form_validation->set_rules('stok', 'Stok', 'required|trim');
+        $this->form_validation->set_rules('diskon', 'Diskon', 'required|trim');
+
+        if ($this->form_validation->run() == true) {
+
+            // cek jika ada gambar yang akan diupload
+            $upload_image = $_FILES['image']['name'];
+
+            if ($upload_image) {
+                $config['allowed_types'] = 'gif|jpg|png';
+                $config['max_size']      = '2048';
+                $config['upload_path'] = "./assets/img/produk/";
+
+                $this->load->library('upload', $config);
+
+                if ($this->upload->do_upload('image')) {
+                    $image = $this->upload->data('file_name');
+                } else {
+                    echo $this->upload->display_errors();
+                }
+            }
+
+            $data = [
+                'nama' => $this->input->post('nama_produk',true),
+                'orientasi' => $this->input->post('orientasi',true),
+                'deskripsi' => $this->input->post('deskripsi',true),
+                'harga' => (INT)$this->input->post('harga',true),
+                'stok' => (INT)$this->input->post('stok',true),
+                'diskon' => (FLOAT)$this->input->post('diskon',true),
+                'image' => $image,
+                'data_dibuat' => time(),
+                'data_diedit' => time()
+            ];
+
+            $this->db->insert('produk', $data);
+
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data produk berhasil ditambahkan</div>');
+            redirect('produk/index');
+        }
+    }
 }

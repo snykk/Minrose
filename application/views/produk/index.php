@@ -1,6 +1,12 @@
 <!-- Team -->
 <section id="team" class="pb-5">
     <div class="container">
+
+        <?php
+        echo $this->session->flashdata('message');
+        unset($_SESSION['message']);
+        ?>
+
         <h5 class="section-title h1">PRODUK KAMI</h5>
         <div class="row justify-content-center">
             <?php foreach ($produk->result() as $row) :?>
@@ -35,9 +41,9 @@
             <!-- ./Team member -->
             <?php endforeach; ?>
         </div>
-        <?php if ($user["role_id"] === 1) :?>
+        <?php if ($user["role_id"] == 1) :?>
             <div class="d-flex align-items-end flex-column">
-                <a class="text-right button-kemren mr-lg-5 mr-sm-3">pe</a>
+                <div data-bs-toggle="modal" data-bs-target="#ModalTambahProduk"  class="text-right button-kemren mr-lg-5 mr-sm-3">pe</div>
             </div>
         <?php endif; ?>
     </div>
