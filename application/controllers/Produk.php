@@ -21,7 +21,7 @@ class Produk extends CI_Controller
         $this->load->view('templates/header', $data);
         $this->load->view('templates/topbar', $data);
 
-        if ($data["user"]["role_id"] == 1) {
+        if ($this->session->userdata('role_id') == 1) {
             $this->load->view('templates/sidebar_admin', $data);
         } else {
             $this->load->view('templates/sidebar_user', $data);
@@ -46,8 +46,7 @@ class Produk extends CI_Controller
 
     public function addProduk()
     {
-        $email = $this->session->userdata('email');
-        if ($this->db->get_where('user', ['email' => $email])->row_array()["role_id"] == 2) {
+        if ($this->session->userdata('role_id') == 2) {
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Anda tidak memiliki previlege untuk menjalankan akses ini</div>');
             redirect('produk/index');
         }

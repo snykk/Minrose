@@ -18,7 +18,7 @@ class Profile extends CI_Controller
         $this->load->view('templates/header', $data);
         $this->load->view('templates/topbar', $data);
 
-        if ($data["user"]["role_id"] == 1) {
+        if ($this->session->userdata('role_id') == 1) {
             $this->load->view('templates/sidebar_admin', $data);
         } else {
             $this->load->view('templates/sidebar_user', $data);
@@ -56,7 +56,7 @@ class Profile extends CI_Controller
             $this->load->view('templates/header', $data);
             $this->load->view('templates/topbar', $data);
 
-            if ($data["user"]["role_id"] == 1) {
+            if ($this->session->userdata('role_id') == 1) {
                 $this->load->view('templates/sidebar_admin', $data);
             } else {
                 $this->load->view('templates/sidebar_user', $data);
@@ -119,7 +119,7 @@ class Profile extends CI_Controller
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/header', $data);
 
-            if ($data["user"]["role_id"] == 1) {
+            if ($this->session->userdata('role_id') == 1) {
                 $this->load->view('templates/sidebar_admin', $data);
             } else {
                 $this->load->view('templates/sidebar_user', $data);

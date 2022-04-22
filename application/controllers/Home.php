@@ -18,7 +18,7 @@ class Home extends CI_Controller
         $this->load->view('templates/header', $data);
         $this->load->view('templates/topbar', $data);
 
-        if ($data["user"]["role_id"] == 1) {
+        if ($this->session->userdata('role_id') == 1) {
             $this->load->view('templates/sidebar_admin', $data);
         } else {
             $this->load->view('templates/sidebar_user', $data);
