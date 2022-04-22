@@ -67,7 +67,7 @@ class Auth extends CI_Controller
     public function registration()
     {
         if ($this->session->userdata('email')) {
-            redirect('user');
+            redirect('home');
         }
 
         $this->form_validation->set_rules('nama_lengkap', 'Nama Lengkap', 'required|trim');

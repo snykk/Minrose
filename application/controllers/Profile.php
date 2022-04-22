@@ -65,7 +65,6 @@ class Profile extends CI_Controller
             $this->load->view('profile/edit_profile', $data);
             $this->load->view('templates/footer');
         } else {
-            $name = $this->input->post('nama_lengkap');
             $email = $this->input->post('email');
 
             // cek jika ada gambar yang akan diupload
@@ -86,7 +85,7 @@ class Profile extends CI_Controller
                     $new_image = $this->upload->data('file_name');
                     $this->db->set('image', $new_image);
                 } else {
-                    echo $this->upload->dispay_errors();
+                    echo $this->upload->display_errors();
                 }
             }
 

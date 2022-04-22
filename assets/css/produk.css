@@ -187,9 +187,7 @@ section .section-title {
   border: 3px solid white;
   width: 10rem;
   color: transparent !important;
-  padding: 10px 20px;
-  font-size: 20px;
-  font-family: sans-serif;
+  padding: 5px 25px;
   letter-spacing: 3px;
   transition: all 0.5s;
   position: relative;
@@ -203,7 +201,7 @@ section .section-title {
   background: #007b5e;
   top: 0;
   left: 100%;
-  font-family: sans-serif;
+  font-family: "Merriweather", serif;
   letter-spacing: 5px;
   transition: all 1s;
   height: 100%;
@@ -226,7 +224,7 @@ section .section-title {
   background: #007b5e;
   top: 0;
   left: 0;
-  font-family: sans-serif;
+  font-family: "Merriweather", serif;
   letter-spacing: 5px;
   transition: all 1s;
   height: 100%;

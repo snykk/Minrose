@@ -26,7 +26,6 @@
                         <?= form_open_multipart('profile/edit_profile'); ?>
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="image" name="image">
-                            <!-- <label class="custom-file-label" for="image">Choose file</label> -->
                         </div>
                     </div>
                 </div>
@@ -72,7 +71,7 @@
                         </div>
 
                         <!-- Save changes button-->
-                        <button class="btn btn-dark" type="submit">Simpang perubahan</button>
+                        <button class="btn btn-dark" type="submit">Simpan perubahan</button>
                         </form>
                     </div>
                 </div>
