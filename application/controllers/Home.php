@@ -25,6 +25,8 @@ class Home extends CI_Controller
         }
 
         $this->load->view('home/index', $data);
+        $this->load->view('templates/sidebar_footer');
+        $this->load->view('templates/modal_logout');
         $this->load->view('templates/footer');
     }
 }

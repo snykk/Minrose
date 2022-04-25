@@ -31,6 +31,7 @@
                                     <p class="card-text">Upsss cieee pasti penasaran yaaa? 😄 klik "detail Produk" di bawah</p>
                                     <button data-id="<?= $row->id; ?>" class="btn btn-primary btn-sm detail" data-bs-toggle="modal" data-bs-target="#ModalDetail">Detail</button>
                                     <?php if ($user['role_id'] == 1) :?>
+                                        <button data-id="<?= $row->id; ?>" class="btn btn-primary btn-sm detail" data-bs-toggle="modal" data-bs-target="#ModalDetail">Ubah</button>
                                     <?php endif;?>
                                 </div>
                             </div>

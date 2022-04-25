@@ -25,6 +25,7 @@ class Profile extends CI_Controller
         }
 
         $this->load->view('profile/user_profile', $data);
+        $this->load->view('templates/sidebar_footer');
         $this->load->view('templates/footer');
     }
 
@@ -63,6 +64,7 @@ class Profile extends CI_Controller
             }
 
             $this->load->view('profile/edit_profile', $data);
+            $this->load->view('templates/sidebar_footer');
             $this->load->view('templates/footer');
         } else {
             $email = $this->input->post('email');
@@ -127,6 +129,7 @@ class Profile extends CI_Controller
 
             $this->load->view('templates/topbar', $data);
             $this->load->view('profile/ganti_password', $data);
+            $this->load->view('templates/sidebar_footer');
             $this->load->view('templates/footer');
         } else {
             $current_password = $this->input->post('current_password');

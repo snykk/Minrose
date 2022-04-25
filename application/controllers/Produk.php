@@ -28,7 +28,11 @@ class Produk extends CI_Controller
         }
 
         $this->load->view('produk/index', $data);
-        $this->load->view('templates/footer', $data);
+        $this->load->view('templates/sidebar_footer');
+        $this->load->view('templates/modal_logout');
+        $this->load->view('produk/modal_detail_produk');
+        $this->load->view('produk/modal_tambah_produk');
+        $this->load->view('templates/footer');
     }
 
     public function getDataProduk() {
