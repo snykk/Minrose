@@ -1,10 +1,12 @@
+<?php if ($this->session->userdata('role_id') == 1) { ?>
+
 <main>
-    <div class="container-fluid px-4">
+    <div class="container-fluid px-4 mt-4">
         <?php
         echo $this->session->flashdata('message');
         unset($_SESSION["message"]);
         ?>
-        <h1 class="mt-4">Dashboard</h1>
+        <h1>Dashboard</h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active">Dashboard</li>
         </ol>
@@ -51,56 +53,26 @@
                 <div class="card mb-4">
                     <div class="card-header">
                         <i class="fas fa-chart-area me-1"></i>
-                        Area Chart Example
+                        Penjualan
                     </div>
-                    <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
+                    <div class="card-body"><canvas id="Chart-Penjualan" width="100%" height="40"></canvas></div>
                 </div>
             </div>
             <div class="col-xl-6">
                 <div class="card mb-4">
                     <div class="card-header">
                         <i class="fas fa-chart-bar me-1"></i>
-                        Bar Chart Example
+                        Keuntungan
                     </div>
-                    <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
+                    <div class="card-body"><canvas id="Chart-Keuntungan" width="100%" height="40"></canvas></div>
                 </div>
             </div>
         </div>
-        <?php if ($user["role_id"] == 1) : ?>
-            <div class="card mb-4">
-                <div class="card-header">
-                    <i class="fas fa-table me-1"></i>
-                    Data User
-                </div>
-                <div class="card-body">
-                    <table id="datatablesSimple">
-                        <thead>
-                            <tr>
-                                <th>Nama Lengkap</th>
-                                <th>Username</th>
-                                <th>Email</th>
-                                <th>Jenis Kelamin</th>
-                                <th>Nomor HP</th>
-                                <th>Alamat</th>
-                                <th>Data Dibuat</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($user_member->result() as $row) :?>
-                                <tr>
-                                    <td><?= $row->nama_lengkap; ?></td>
-                                    <td><?= $row->username; ?></td>
-                                    <td><?= $row->email; ?></td>
-                                    <td><?= $row->jenis_kelamin; ?></td>
-                                    <td><?= $row->no_hp; ?></td>
-                                    <td><?= $row->alamat; ?></td>
-                                    <td><?= date('d F Y', $row->data_dibuat); ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        <?php endif; ?>
     </div>
 </main>
+
+<?php } else { ?> 
+
+<h1>Hallo ini halaman non admin</h1>
+
+<?php } ?>

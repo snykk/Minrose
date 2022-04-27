@@ -5,11 +5,14 @@
         <div class="nav">
           <div class="sb-sidenav-menu-heading">ADMINISTRATOR</div>
           <a class="nav-link" href="<?= base_url("home/index"); ?>">
-            <div class="sb-nav-link-icon"><i class="fas fa-fw fa-tachometer-alt"></i></div>
+            <div class="sb-nav-link-icon"><i class="fas fa-fw fa-chart-line"></i></div>
             Dashboard
           </a>
 
-          <!-- <hr class="sidebar-divider"> -->
+          <a class="nav-link" href="<?= base_url("home/customers"); ?>">
+            <div class="sb-nav-link-icon"><i class="fas fa-fw fa-solid fa-users"></i></div>
+            Customers
+          </a>
 
           <div class="sb-sidenav-menu-heading">Interface</div>
           <a class="nav-link" href="<?= base_url("Produk/index"); ?>">
@@ -71,7 +74,7 @@
 
           <hr class="sidebar-divider">
 
-          <a class="nav-link" data-bs-toggle="modal" data-bs-target="#logoutModal">
+          <a class="nav-link" data-bs-toggle="modal" style="cursor: pointer;" data-bs-target="#logoutModal">
             <div class="sb-nav-link-icon"><i class="fas fa-fw fa-sign-out-alt"></i></div>
             Logout
           </a>

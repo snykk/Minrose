@@ -17,7 +17,7 @@
 
           <hr class="sidebar-divider">
 
-          <a class="nav-link" data-bs-toggle="modal" data-bs-target="#logoutModal">
+          <a class="nav-link" data-bs-toggle="modal" style="cursor: pointer;" data-bs-target="#logoutModal">
             <div class="sb-nav-link-icon"><i class="fas fa-fw fa-sign-out-alt"></i></div>
             Logout
           </a>

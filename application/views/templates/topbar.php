@@ -14,14 +14,12 @@
       <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img width="40px" class="img-profile rounded-circle" src="<?= base_url('assets/img/profile/') . $user['image']; ?>"></a>
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
         <li><a class="dropdown-item" href="<?= base_url("profile/user_profile"); ?>"><i class="fas fa-user-alt fa-sm fa-fw text-gray-400" style="margin-right: 10px;"></i>Profile Saya</a></li>
-        <li><a class="dropdown-item" href="<?= base_url("profile/edit_profile"); ?>"><i class="fas fa-gears fa-sm fa-fw text-gray-400" style="margin-right: 10px;"></i>Ubah Profile</a></li>
         <li><a class="dropdown-item" href="<?= base_url("profile/ganti_password"); ?>"><i class="fas fa-key fa-sm fa-fw text-gray-400" style="margin-right: 10px;"></i>Ganti Password</a></li>
         <li>
           <hr class="dropdown-divider" />
         </li>
-        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#logoutModal"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400" style="margin-right: 10px;"></i>Logout</a></li>
+        <li><a class="dropdown-item" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#logoutModal"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400" style="margin-right: 10px;"></i>Logout</a></li>
       </ul>
     </li>
   </ul>
-
 </nav>
