@@ -20,7 +20,7 @@ $("button.detail").click(function (event) {
 });
 
 $("button.ubah").click(function (event) {
-  console.log("buttton ubah click");
+  console.log("buttton ubah clickk");
   // event.preventDefault();
   $.ajax({
     url: "/Project-PPL/produk/getDataProduk",
@@ -28,14 +28,17 @@ $("button.ubah").click(function (event) {
     method: "post",
     dataType: "json",
     success: function (response) {
-      console.log(response);
+      console.log(response[0]);
+      $("#produk_id").val(response[0].id);
       $("#ubah_nama_produk").val(response[0].nama);
       $("#ubah_orientasi").val(response[0].orientasi);
       $("#ubah_deskripsi").val(response[0].deskripsi);
       $("#ubah_harga").val(response[0].harga);
       $("#ubah_stok").val(response[0].stok);
       $("#ubah_diskon").val(response[0].diskon);
-      $("#ubah_image").val(response[0].image);
+      // $("#ubah_image").val(response[0].image);
     },
   });
 });
+
+// $("#ModalUbahProduk").modal({ backdrop: "static", keyboard: false });

@@ -32,12 +32,13 @@ class Produk extends CI_Controller
         $this->load->view('templates/modal_logout');
         $this->load->view('produk/modal_detail_produk');
         $this->load->view('produk/modal_tambah_produk');
-        $this->load->view('templates/footer');
+        $this->load->view('produk/modal_ubah_produk');
+        $this->load->view('templates/footer', $data);
     }
 
     public function getDataProduk() {
-        $film_id = (INT)$_POST["id"];
-        $result = $this->db->query("SELECT * FROM produk WHERE id={$film_id}");
+        $produk_id = (INT)$_POST["id"];
+        $result = $this->db->query("SELECT * FROM produk WHERE id={$produk_id}");
             
         $data = [];
         foreach ($result->result() as $row) {
@@ -94,6 +95,73 @@ class Produk extends CI_Controller
             ];
 
             $this->db->insert('produk', $data);
+
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data produk berhasil ditambahkan</div>');
+            redirect('produk/index');
+        }
+    }
+
+    public function editProduk()
+    {
+        if ($this->session->userdata('role_id') == 2) {
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Anda tidak memiliki previlege untuk menjalankan akses ini</div>');
+            redirect('produk/index');
+        }
+
+        $this->form_validation->set_rules('ubah_nama_produk', 'Nama Produk', 'required|trim');
+        $this->form_validation->set_rules('ubah_orientasi', 'Orientasi', 'required|trim');
+        $this->form_validation->set_rules('ubah_deskripsi', 'Deskripsi', 'required|trim');
+        $this->form_validation->set_rules('ubah_harga', 'Harga', 'required|trim');
+        $this->form_validation->set_rules('ubah_stok', 'Stok', 'required|trim');
+        $this->form_validation->set_rules('ubah_diskon', 'Diskon', 'required|trim');
+
+
+        if ($this->form_validation->run() == true) {
+
+            // mengambil id produk
+            $id = $this->input->post('produk_id',true);
+
+            // cek jika ada gambar yang akan diupload
+            $upload_image = $_FILES['ubah_image']['name'];
+
+            if ($upload_image) {
+
+                $config['allowed_types'] = 'gif|jpg|png|jpeg';
+                $config['max_size']      = '2048';
+                $config['upload_path'] = "./assets/img/produk/";
+
+                $this->load->library('upload', $config);
+
+                if ($this->upload->do_upload('ubah_image')) {
+
+                    // mengambil image lama menggunakan id produk
+                    $old_image = $this->db->query("SELECT image FROM produk WHERE id={$id}")->row();
+
+                    $new_image = $this->upload->data('file_name');
+
+                    if ($new_image != $old_image) {
+                        unlink(FCPATH . 'assets/img/produk/' . $old_image->image);
+                        $this->db->set('image', $new_image);
+                    }
+                } else {
+                    echo $this->upload->display_errors();
+                }
+            }
+
+            $data = [
+                'nama' => $this->input->post('ubah_nama_produk',true),
+                'orientasi' => $this->input->post('ubah_orientasi',true),
+                'deskripsi' => $this->input->post('ubah_deskripsi',true),
+                'harga' => (INT)$this->input->post('ubah_harga',true),
+                'stok' => (INT)$this->input->post('ubah_stok',true),
+                'diskon' => (FLOAT)$this->input->post('ubah_diskon',true),
+                'data_diedit' => time()
+            ];
+
+            $this->db->set($data);
+            $this->db->where('id', $id);
+            $this->db->update('produk');
+
 
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data produk berhasil ditambahkan</div>');
             redirect('produk/index');

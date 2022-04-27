@@ -30,7 +30,7 @@ class Home extends CI_Controller
     }
 
     public function customers() {
-        $data['title'] = 'Data User';
+        $data['title'] = 'Customers';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         $data["user_member"] = $this->db->query("SELECT nama_lengkap, username, email, jenis_kelamin, no_hp, alamat, data_dibuat FROM user WHERE role_id=2");
