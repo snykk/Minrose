@@ -14,13 +14,14 @@ $("button.detail").click(function (event) {
       $(".orientasi").html(response[0].orientasi);
       $(".deskripsi").html(response[0].deskripsi);
       $(".harga").html("Harga: " + "<strong>Rp. " + response[0].harga + "</strong>");
+      $(".data-dibuat").html("<small> Data dibuat pada <?php echo date('d F Y'," + response[0].data_dibuat + "); ?></small>");
       $(".stok").html("Tersedia: " + "<em>" + response[0].stok + " stok" + "</em>");
     },
   });
 });
 
 $("button.ubah").click(function (event) {
-  console.log("buttton ubah clickk");
+  console.log("buttton ubah click");
   // event.preventDefault();
   $.ajax({
     url: "/Project-PPL/produk/getDataProduk",
@@ -40,5 +41,3 @@ $("button.ubah").click(function (event) {
     },
   });
 });
-
-// $("#ModalUbahProduk").modal({ backdrop: "static", keyboard: false });

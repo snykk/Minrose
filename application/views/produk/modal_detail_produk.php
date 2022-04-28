@@ -30,12 +30,12 @@
                           <div class="harga">
                             <!-- content harga -->
                           </div>
-                          <div class="stok mb-4">
+                          <div class="stok">
                             <!-- content stok -->
                           </div>
                         </div>
                       </div>
-                      <button class="btn btn-primary btn-xl j" data-bs-dismiss="modal" type="button" > KEMBALI
+                      <button class="btn btn-primary btn-xl j mt-4" data-bs-dismiss="modal" type="button" > KEMBALI
                       </button>
                     </div>
                   </div>

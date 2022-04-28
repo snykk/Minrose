@@ -31,7 +31,7 @@
                                     <p class="card-text">Upsss cieee pasti penasaran yaaa? 😄 klik "detail Produk" di bawah</p>
                                     <button data-id="<?= $row->id; ?>" class="btn btn-primary btn-sm detail" data-bs-toggle="modal" data-bs-target="#ModalDetail">Detail</button>
                                     <?php if ($user['role_id'] == 1) :?>
-                                        <button data-id="<?= $row->id; ?>" class="btn btn-primary btn-sm ubah" data-backdrop="static" data-keyboard="false" data-bs-toggle="modal" data-bs-target="#ModalUbahProduk">Ubah</button>
+                                        <a href="<?= base_url("produk/ubah_produk?id=" . $row->id)?>"><button data-id="<//?= $row->id; ?>" class="btn btn-primary btn-sm ubah" >Ubah</button></a>
                                     <?php endif;?>
                                 </div>
                             </div>
@@ -44,7 +44,7 @@
         </div>
         <?php if ($user["role_id"] == 1) :?>
             <div class="d-flex align-items-end flex-column">
-                <div data-bs-toggle="modal" data-bs-target="#ModalTambahProduk"  class="text-right button-kemren mr-lg-5 mr-sm-3">pe</div>
+                <a style="text-decoration: none;" href="<?= base_url("produk/tambah_produk"); ?>"><div class="text-right button-kemren mr-lg-5 mr-sm-3">pe</div></a>
             </div>
         <?php endif; ?>
     </div>

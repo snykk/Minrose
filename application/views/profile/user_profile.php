@@ -81,7 +81,7 @@
               <hr>
               <div class="row">
                 <div class="col-sm-12">
-                  <a class="btn btn-dark " href="<?= basename("home/edit_profile")?>">Ubah Profile</a>
+                  <a class="btn btn-dark " href="<?= base_url("profile/edit_profile")?>">Ubah Profile</a>
                 </div>
               </div>
             </div>

@@ -26,6 +26,7 @@ class Profile extends CI_Controller
 
         $this->load->view('profile/user_profile', $data);
         $this->load->view('templates/sidebar_footer');
+        $this->load->view('templates/modal_logout');
         $this->load->view('templates/footer');
     }
 
@@ -40,16 +41,16 @@ class Profile extends CI_Controller
         } else {
             $is_unique_username =  '';
         }
-        if ($this->input->post('username') != $data["user"]["username"]) {
+        if ($this->input->post('no_hp') != $data["user"]["no_hp"]) {
             $is_unique_no_hp =  '|is_unique[user.no_hp]';
         } else {
             $is_unique_no_hp =  '';
         }
 
 
-        $this->form_validation->set_rules('nama_lengkap', 'nama_lengkap', 'required|trim');
+        $this->form_validation->set_rules('nama_lengkap', 'Nama Lengkap', 'required|trim');
         $this->form_validation->set_rules('username', 'Username', 'required|trim' . $is_unique_username, ['is_unique' => 'username ini telah terdaftar silahkan gunakan username lain!']);
-        $this->form_validation->set_rules('no_hp', 'No. HP', 'required|trim' . $is_unique_no_hp, ['is_unique' => 'no hp ini telah terdaftar silahkan gunakan username lain!']);
+        $this->form_validation->set_rules('no_hp', 'No. HP', 'required|trim' . $is_unique_no_hp, ['is_unique' => 'no hp ini telah terdaftar silahkan gunakan nomor lain!']);
         $this->form_validation->set_rules('alamat', 'Alamat', 'required|trim');
 
 
@@ -65,6 +66,7 @@ class Profile extends CI_Controller
 
             $this->load->view('profile/edit_profile', $data);
             $this->load->view('templates/sidebar_footer');
+            $this->load->view('templates/modal_logout');
             $this->load->view('templates/footer');
         } else {
             $email = $this->input->post('email');
@@ -130,6 +132,7 @@ class Profile extends CI_Controller
             $this->load->view('templates/topbar', $data);
             $this->load->view('profile/ganti_password', $data);
             $this->load->view('templates/sidebar_footer');
+            $this->load->view('templates/modal_logout');
             $this->load->view('templates/footer');
         } else {
             $current_password = $this->input->post('current_password');
