@@ -110,11 +110,6 @@
             <div class="about-content" data-aos="fade-left" data-aos-delay="100">
               <h2>Tentang Rosela</h2>
               <p>Minrose merupakan minuman yang diproduksi sejak tahun 2019, berbahan dasar bunga rosella (Hibiscus sabdariffa). Berdasarkan hasil penelitian. Bunga Rosella ini banyak mengandung manfaat. Dalam 57 gram bunga rosella terdapat 123 mg kalsium, 0,84 mg zat besi, 6,8 mg vitamin C, 29 mg magnesium, 6,45 g karbohidrat, 21 mg fosfor, 119 mg potasium, 0,016 mg vitamin B2, dan sedikit Vitamin A. Tentunya baik untuk menjaga imunitas tubuh, menurunkan kadar lemak (kolesterol) dalam darah dan tekanan darah tinggi.</p>
-              <!-- <ul>
-                <li><i class="bi bi-check-circle"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
-                <li><i class="bi bi-check-circle"></i> Duis aute irure dolor in reprehenderit in voluptate velit.</li>
-                <li><i class="bi bi-check-circle"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate trideta storacalaperda mastiro dolore eu fugiat nulla pariatur.</li>
-              </ul> -->
             </div>
           </div>
         </div>
