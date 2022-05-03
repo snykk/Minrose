@@ -71,7 +71,10 @@
     </div>
 </main>
 
-<?php } else { ?> 
+<?php } else { 
+echo $this->session->flashdata('message');
+unset($_SESSION["message"]);
+?>
 
 <section id="hero">
 

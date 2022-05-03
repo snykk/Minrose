@@ -31,8 +31,6 @@ class Produk extends CI_Controller
         $this->load->view('templates/sidebar_footer');
         $this->load->view('templates/modal_logout');
         $this->load->view('produk/modal_detail_produk');
-        $this->load->view('produk/modal_tambah_produk');
-        $this->load->view('produk/modal_ubah_produk');
         $this->load->view('templates/footer', $data);
     }
 
@@ -49,6 +47,12 @@ class Produk extends CI_Controller
     }
 
     public function tambah_produk() {
+
+        // action akan dilempar ke status 403 jika diakses oleh role yang tidak berwenang
+        if ($this->session->userdata('role_id') == 2) {
+            redirect('auth/blocked');
+        }
+
         $data['title'] = 'Tambah Produk';
         $data['css'] = 'produk';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
@@ -116,6 +120,12 @@ class Produk extends CI_Controller
     }
 
     public function ubah_produk() {
+
+        // action akan dilempar ke status 403 jika diakses oleh role yang tidak berwenang
+        if ($this->session->userdata('role_id') == 2) {
+            redirect('auth/blocked');
+        }
+
         $data['title'] = 'Ubah Produk';
         $data['css'] = 'produk';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
