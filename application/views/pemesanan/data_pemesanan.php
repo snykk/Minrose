@@ -1,4 +1,11 @@
 <div class="container">
+    
+    <!-- flasher -->
+    <?php
+        echo $this->session->flashdata('message');
+        unset($_SESSION["message"]);
+    ?>
+
     <div class="panel panel-default panel-order">
         <div class="panel-heading d-flex justify-content-between align-items-center">
             <h1 class="main-title"><?= $title; ?></h1>
