@@ -72,6 +72,17 @@ class Pemesanan extends CI_Controller
         $data['css'] = 'pemesanan';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
+        // prepare data pemesanan
+        $this->db->select('produk.image as image, status.bg as bg_status, status_pemesanan, produk.nama as nama_produk, metode_pembayaran, jumlah_produk, total_harga, catatan_pemesanan, metode_pembayaran, username');
+        $this->db->from('pemesanan');
+        $this->db->join('produk', 'pemesanan.id_produk=produk.id');
+        $this->db->join('user', 'pemesanan.id_user=user.id');
+        $this->db->join('metode', 'pemesanan.id_metode=metode.id');
+        $this->db->join('bank', 'pemesanan.id_bank=bank.id','left');
+        $this->db->join('catatan', 'pemesanan.id_catatan=catatan.id');
+        $this->db->join('status', 'pemesanan.id_status=status.id');
+        $data["pemesanan"] = $this->db->get();
+
         $this->load->view('templates/header', $data);
         $this->load->view('templates/topbar', $data);
 

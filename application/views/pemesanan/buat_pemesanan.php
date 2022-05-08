@@ -192,7 +192,7 @@
           <div class="accordion-item mb-3 border">
             <h2 class="h5 px-4 py-3 accordion-header d-flex justify-content-between align-items-center">
               <div class="form-check w-100 collapsed" >
-                <input class="form-check-input" type="radio" name="id_metode" id="cod" data-bs-toggle="collapse" data-bs-target="#collapsePP" aria-expanded="false" value="cod" <?= set_radio('id_metode', "2"); ?>>
+                <input class="form-check-input" type="radio" name="id_metode" id="cod" data-bs-toggle="collapse" data-bs-target="#collapsePP" aria-expanded="false" value="2" <?= set_radio('id_metode', "2"); ?>>
                 <label class="form-check-label pt-1" for="cod" data-bs-toggle="collapse" data-bs-target="#collapsePP" aria-expanded="false">
                   Cash on Delivery
                 </label>

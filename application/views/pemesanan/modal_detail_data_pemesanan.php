@@ -56,6 +56,20 @@
                       </div>
                     </td>
                   </tr>
+                  <tr>
+                    <td>
+                      <div class="d-flex flex-column">
+                        <span class="heading d-block">nama bank</span>
+                        <span class="subheadings">mandiri</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-flex flex-column">
+                        <span class="heading d-block">no. rekening</span>
+                        <span class="subheadings" style="color:red;">092 7840 1923 7422</span>
+                      </div>
+                    </td>
+                  </tr>
 
                   <tr>
                     <td>
