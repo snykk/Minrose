@@ -23,7 +23,7 @@
                 <img src="<?= base_url('assets/img/profile/') .  $user['image']; ?>" width="150">
                 <div class="mt-3">
                   <h4><?= $user["username"]; ?></h4>
-                  <p class="text-secondary mb-1">Full Stack Developer</p>
+                  <!-- <p class="text-secondary mb-1">Full Stack Developer</p> -->
                   <p class="text-muted font-size-sm">Member sejak <?= date('d F Y', $user['data_dibuat']); ?></p>
                 </div>
               </div>

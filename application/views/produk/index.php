@@ -31,7 +31,10 @@
                                     <p class="card-text">Upsss cieee pasti penasaran yaaa? 😄 klik "detail Produk" di bawah</p>
                                     <button data-id="<?= $row->id; ?>" class="btn btn-primary btn-sm detail" data-bs-toggle="modal" data-bs-target="#ModalDetail">Detail</button>
                                     <?php if ($user['role_id'] == 1) :?>
-                                        <a href="<?= base_url("produk/ubah_produk?id=" . $row->id)?>"><button data-id="<//?= $row->id; ?>" class="btn btn-primary btn-sm ubah" >Ubah</button></a>
+                                        <a href="<?= base_url("produk/ubah_produk?id=" . $row->id)?>"><button  class="btn btn-primary btn-sm ubah" >Ubah</button></a>
+                                    <?php endif;?>
+                                    <?php if ($user['role_id'] == 2) :?>
+                                        <a href="<?= base_url("pemesanan/buat_pemesanan?id=" . $row->id)?>"><button class="btn btn-primary btn-sm ubah" >Beli</button></a>
                                     <?php endif;?>
                                 </div>
                             </div>

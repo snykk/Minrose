@@ -9,6 +9,9 @@
   <meta name="description" content="header page" />
   <title><?= $title; ?></title>
   <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" />
+  <!-- new datatables -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" />
   <link href="<?= base_url('assets/') ?>css/style.css" rel="stylesheet" />
   <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
   <?php
@@ -18,6 +21,9 @@
   }
   if (isset($scss)) {
     echo '<link href="' . base_url('assets/scss/') . $scss . '.scss" rel="stylesheet" />';
+  }
+  if (isset($less)) {
+    echo '<link href="' . base_url('assets/less/') . $less . '.less" rel="stylesheet" />';
   }
 
   ?>

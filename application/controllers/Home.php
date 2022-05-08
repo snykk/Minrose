@@ -31,6 +31,7 @@ class Home extends CI_Controller
 
     public function customers() {
         $data['title'] = 'Customers';
+        $data["cdn_datatable"] = "https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js";
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         $data["user_member"] = $this->db->query("SELECT nama_lengkap, username, email, jenis_kelamin, no_hp, alamat, data_dibuat FROM user WHERE role_id=2");
@@ -47,6 +48,6 @@ class Home extends CI_Controller
         $this->load->view('home/customers', $data);
         $this->load->view('templates/sidebar_footer');
         $this->load->view('templates/modal_logout');
-        $this->load->view('templates/footer');
+        $this->load->view('templates/footer', $data);
     }
 }

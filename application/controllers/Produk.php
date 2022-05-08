@@ -192,10 +192,10 @@ class Produk extends CI_Controller
 
                     $new_image = $this->upload->data('file_name');
 
-                    if ($new_image != $old_image) {
+                    if ($new_image != $old_image->image && $old_image->image != "default.png") {
                         unlink(FCPATH . 'assets/img/produk/' . $old_image->image);
-                        $this->db->set('image', $new_image);
                     }
+                    $this->db->set('image', $new_image);
                 } else {
                     echo $this->upload->display_errors();
                 }

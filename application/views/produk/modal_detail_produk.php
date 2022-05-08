@@ -1,5 +1,5 @@
         <!-- Modal Detail Produk -->
-        <div class="program-modal modal fade" id="ModalDetail" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="program-modal modal fade" id="ModalDetail" tabindex="-1" role="dialog" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="close-modal" data-bs-dismiss="modal"><img src="<?= base_url('assets/icons/close-icon.svg') ?>" alt="Close modal" /></div>
@@ -9,7 +9,6 @@
                     <div class="modal-body">
                       <!-- Project details-->
                       <h2 class="text-uppercase">
-                        Hallo
                       </h2>
                       <br>
                       <p class="orientasi text-center">

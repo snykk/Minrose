@@ -75,12 +75,14 @@ class Auth extends CI_Controller
             'is_unique' => 'This email has already registered!'
         ]);
 
-        $this->form_validation->set_rules('password', 'Password', 'required|trim|min_length[3]|matches[verif-password]', [
-            'matches' => 'Password dont match!',
-            'min_length' => 'Password too short!'
+        $this->form_validation->set_rules('password', 'Password', 'required|trim|min_length[4]|matches[verif-password]', [
+            'matches' => 'Password tidak sama',
+            'min_length' => 'Password terlalu pendek'
         ]);
 
-        $this->form_validation->set_rules('verif-password', 'Password', 'required|trim|matches[password]');
+        $this->form_validation->set_rules('verif-password', 'Password', 'required|trim|matches[password]',[
+            'matches' =>'Password tidak sama',
+        ]);
         $this->form_validation->set_rules('no_hp', 'No. HP', 'required|trim|is_unique[user.no_hp]', ['is_unique' => 'no hp ini telah terdaftar silahkan gunakan username lain!']);
         $this->form_validation->set_rules('alamat', 'Alamant', 'required|trim');
 

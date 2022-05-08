@@ -1,5 +1,12 @@
 <div class="container-fluid">
     <div class="main-body">
+
+        <!-- flasher -->
+        <?php
+        echo $this->session->flashdata('message');
+        unset($_SESSION["message"]);
+        ?>
+
         <!-- Hierarki -->
         <nav aria-label="breadcrumb" class="main-breadcrumb">
             <ol class="breadcrumb">

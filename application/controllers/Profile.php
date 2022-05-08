@@ -47,6 +47,12 @@ class Profile extends CI_Controller
             $is_unique_no_hp =  '';
         }
 
+        // proses akan diredirect jika tidak ada perubahan
+        if ($this->input->post('email') == $data["user"]["email"] && $this->input->post('username') == $data["user"]["username"] && $this->input->post('nama_lengkap') == $data["user"]["nama_lengkap"] && $this->input->post('jenis_kelamin') == $data["user"]["jenis_kelamin"] && $this->input->post('no_hp') == $data["user"]["no_hp"] && $this->input->post('alamat') == $data["user"]["alamat"] && !($_FILES['image']['name'])) {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Perubahan dibatalkan, tidak ada data yang diubah</div>');
+            redirect('profile/edit_profile');
+        }
+
 
         $this->form_validation->set_rules('nama_lengkap', 'Nama Lengkap', 'required|trim');
         $this->form_validation->set_rules('username', 'Username', 'required|trim' . $is_unique_username, ['is_unique' => 'username ini telah terdaftar silahkan gunakan username lain!']);
