@@ -81,6 +81,7 @@ class Pemesanan extends CI_Controller
         $this->db->join('bank', 'pemesanan.id_bank=bank.id','left');
         $this->db->join('catatan', 'pemesanan.id_catatan=catatan.id');
         $this->db->join('status', 'pemesanan.id_status=status.id');
+        $this->db->where('email', $this->session->userdata('email'));
         $data["pemesanan"] = $this->db->get();
 
         $this->load->view('templates/header', $data);
