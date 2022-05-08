@@ -34,17 +34,18 @@
                             </div>
                             <div class="ml-2">Jenis Kelamin</div>
                             <div class="form-check ml-3">
-                                <input class="form-check-input" type="radio" name="jenis_kelamin" id="laki_laki" value="L" required>
+                                <input class="form-check-input" type="radio" name="jenis_kelamin" id="laki_laki" value="L" <?=  set_radio('jenis_kelamin', 'L', TRUE); ?>>
                                 <label class="form-check-label" for="laki_laki">
                                     Laki Laki
                                 </label>
                                 </div>
                             <div class="form-check ml-3">
-                                <input class="form-check-input" type="radio" name="jenis_kelamin" id="perempuan" value="P" required>
+                                <input class="form-check-input" type="radio" name="jenis_kelamin" id="perempuan" value="P" <?=  set_radio('jenis_kelamin', 'P'); ?>>
                                 <label class="form-check-label" for="perempuan">
                                     Perempuan
                                 </label>
                             </div>
+                            <?= form_error('jenis_kelamin', '<small class="text-danger pl-3">', '</small>'); ?>
                             <div class="form-group mt-3">
                                 <input type="text" class="form-control" id="no_hp" name="no_hp" placeholder="No. HP" value="<?= set_value('no_hp'); ?>">
                                 <?= form_error('no_hp', '<small class="text-danger pl-3">', '</small>'); ?>
