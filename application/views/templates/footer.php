@@ -6,7 +6,7 @@
         <script src="<?= base_url("assets/") ?>js/scripts.js"></script>
         <script src="<?= base_url("assets/") ?>js/chart_penjualan.js"></script>
         <script src="<?= base_url("assets/") ?>js/chart_keuntungan.js"></script>
-        <script src="<?= base_url("assets/") ?>js/tabel_userr.js"></script>
+        <script src="<?= base_url("assets/") ?>js/tabel_userrr.js"></script>
 
         <?php if (isset($js)) : ?>
           <script src="<?= base_url("assets/") ?>js/<?= $js; ?>.js"></script>

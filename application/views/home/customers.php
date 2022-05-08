@@ -1,6 +1,8 @@
 <main>
     <div class="container-fluid px-4 mt-4">
-        <input type="hidden" name="nama_pembeli" id="nama_pembeli" value="<?php if (isset($_GET["nama_lengkap"])) echo $_GET["nama_lengkap"]; else echo ""; ?>">
+        <!-- inisial value -->
+        <input type="hidden" name="username" id="username" value="<?php if (isset($_GET["username"])) echo $_GET["username"]; else echo ""; ?>">
+
         <div class="card mb-4">
             <div class="card-header">
                 <i class="fas fa-fw fa-solid fa-users me-1"></i>

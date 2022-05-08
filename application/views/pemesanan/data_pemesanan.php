@@ -7,6 +7,23 @@
     ?>
 
     <div class="panel panel-default panel-order">
+        <?php if ($pemesanan->num_rows() == 0) {?>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6">
+                        <div class="text-center mt-4">
+                            <h1 class="display-1">?</h1>
+                            <p class="lead">No Data</p>
+                            <p>Tidak ada data pemesanan untuk saat ini</p>
+                            <a href="<?= base_url("produk")?>" class="link-info">
+                                <i class="fas fa-arrow-left me-1"></i>
+                                Beli Sekarang
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php } else {?>
         <div class="panel-heading d-flex justify-content-between align-items-center">
             <h1 class="main-title"><?= $title; ?></h1>
             <div class="btn-group pull-right">
@@ -43,7 +60,7 @@
                         </div>
                         
                         <?php if ($this->session->userdata('role_id') == 1) {
-                            $dest = "home/customers?nama_lengkap=iya ini pen ngubah aja";
+                            $dest = "home/customers?username=" . $row["username"];
                         } else {
                             $dest = "profile/user_profile";
                         } ?>
@@ -54,5 +71,6 @@
             <?php endforeach; ?>
         </div> 
         <div class="panel-footer mb-3 mt-1">Note: yuhu ini note tambahan buat user gitu gatau mau diisi apa</div>
+        <?php }?>
     </div>
 </div>
