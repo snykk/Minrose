@@ -100,7 +100,8 @@
                   <div>Total Harga: Rp.</div>
                   <div style="margin-left:5px" id="total_harga_detail"></div>
                 </div>
-                <a data-bs-dismiss="modal" data-bs-toggle="modal" href="#ModalUbahDataPemesanan" title="detail pemesanan" title="ubah data pemesanan"><button class="btn btn-outline-dark">ubah</button></a>
+                <!-- <a data-bs-dismiss="modal" data-bs-toggle="modal" href="#ModalUbahDataPemesanan" title="detail pemesanan" title="ubah data pemesanan"><button class="btn btn-outline-dark">ubah</button></a> -->
+                <a id="link_ubah" href="<?= base_url("pemesanan/ubah_pemesanan") ?>" title="detail pemesanan" title="ubah data pemesanan"><button class="btn btn-outline-dark">ubah</button></a>
               </div>
             </div>
           </div>

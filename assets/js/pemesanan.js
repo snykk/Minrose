@@ -1,3 +1,4 @@
+// counter order summary
 function myCounter() {
   var num = document.getElementById("jumlah_produk");
   var harga = document.getElementById("harga_produk");
@@ -11,9 +12,9 @@ function myCounter() {
   $("#input_total").val(total);
 }
 
-// detail data pemesanan
+// modal detail data pemesanan
 $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
-  console.log("buttton detail clickkk");
+  console.log("buttton detail click");
   // event.preventDefault();
   $.ajax({
     url: "/Project-PPL/pemesanan/getDataPemesanan",
@@ -38,6 +39,9 @@ $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
       $("#total_harga_detail").html(response[0].total_harga);
       $("#bukti_transfer_detail").attr("src", "/Project-PPL/assets/img/bukti/" + response[0].bukti_transfer);
       $("#image_detail").attr("src", "/Project-PPL/assets/img/produk/" + response[0].image_produk);
+      $("#link_ubah").each(function () {
+        this.href += "?id=" + response[0].id_pemesanan;
+      });
       if (response[0].metode_pembayaran == "COD") {
         // menghilangkan element sesuai metode pembayaran
         $("#modal_section_detail_bukti").css("display", "none");

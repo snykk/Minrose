@@ -13,7 +13,7 @@ class Pemesanan extends CI_Controller
     public function buat_pemesanan() {
         $data['title'] = 'Buat Pemesanan';
         $data['css'] = 'pemesanan';
-        $data['js'] = 'pemesanannn';
+        $data['js'] = 'pemesanan';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         if (isset($_GET["id"])){
@@ -70,7 +70,7 @@ class Pemesanan extends CI_Controller
     public function data_pemesanan() {
         $data['title'] = 'Data Pemesanan';
         $data['css'] = 'pemesanan';
-        $data['js'] = 'pemesanannn'; 
+        $data['js'] = 'pemesanan'; 
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         // prepare data pemesanan
@@ -100,7 +100,7 @@ class Pemesanan extends CI_Controller
         $this->load->view('pemesanan/data_pemesanan', $data);
         $this->load->view('templates/sidebar_footer');
         $this->load->view('pemesanan/modal_upload_bukti');
-        $this->load->view('pemesanan/modal_detail_data_pemesanan');
+        $this->load->view('pemesanan/modal_detail_data_pemesanan', $data);
         $this->load->view('pemesanan/modal_ubah_data_pemesanan');
         $this->load->view('templates/modal_logout');
         $this->load->view('templates/footer');
@@ -155,5 +155,47 @@ class Pemesanan extends CI_Controller
 
         header("Content-Type: application/json");
         echo json_encode($data);
+    }
+
+    public function ubah_pemesanan() {
+        $data['title'] = 'Ubah Pemesanan';
+        $data['css'] = 'pemesanan';
+        $data['js'] = 'pemesanan';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $this->db->select('pemesanan.id as id_pemesanan, produk.image as image_produk, status_pemesanan, produk.nama as nama_produk, metode_pembayaran, jumlah_produk, total_harga, catatan_pemesanan, metode_pembayaran, username, total_harga, pemesanan.data_dibuat as pesanan_dibuat, pemesanan.data_diubah as pesanan_diubah, pemesanan.alamat as alamat_pemesanan, nama_bank, no_rekening, bukti_transfer, status.style as style_status, stok');
+        $this->db->from('pemesanan');
+        $this->db->join('produk', 'pemesanan.id_produk=produk.id');
+        $this->db->join('user', 'pemesanan.id_user=user.id');
+        $this->db->join('metode', 'pemesanan.id_metode=metode.id');
+        $this->db->join('bank', 'pemesanan.id_bank=bank.id','left');
+        $this->db->join('catatan', 'pemesanan.id_catatan=catatan.id');
+        $this->db->join('status', 'pemesanan.id_status=status.id');
+
+        if (isset($_GET["id"])){
+            $this->db->where('pemesanan.id', $_GET["id"]);
+        } else {
+            $this->db->where('pemesanan.id', $this->input->post("id"));
+        }
+        
+        $data["pemesanan"] = $this->db->get()->result_array();
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/topbar', $data);
+    
+            if ($this->session->userdata('role_id') == 1) {
+                $this->load->view('templates/sidebar_admin', $data);
+            } else {
+                $this->load->view('templates/sidebar_user', $data);
+            }
+            $this->load->view('pemesanan/ubah_pemesanan');
+            $this->load->view('templates/sidebar_footer');
+            $this->load->view('templates/modal_logout');
+            $this->load->view('templates/footer');
+        } else {
+            echo "good";
+        }
+
     }
 }
