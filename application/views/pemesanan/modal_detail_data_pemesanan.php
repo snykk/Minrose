@@ -94,7 +94,7 @@
             <div class="p-2 text-center">
               <div class="Produk">
                 <h1 style="font-size: 18px;">Produk</h1>
-                <img id="image_detail" src="<?= base_url("assets/img/produk/minrose-cup.jpeg")?>" width="150px">
+                <img id="image_detail" width="150px">
                 <span class="d-block my-2" style="font-size: 14px;" id="nama_produk_detail">minrose cup</span>
                 <div class="d-flex justify-content-center align-items-cetner mb-3">
                   <div>Total Harga: Rp.</div>

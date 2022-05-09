@@ -17,16 +17,13 @@ function myCounter() {
 
 // modal detail data pemesanan
 $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
-  console.log("buttton detail click");
-  // event.preventDefault();
+  console.log("buttton detail clickkk");
   $.ajax({
     url: "/Project-PPL/pemesanan/getDataPemesanan",
     data: { id: $(this).attr("data-id"), data_dipesan: $(this).attr("data-dipesan") },
     method: "post",
     dataType: "json",
     success: function (response) {
-      console.log(response);
-      // $("#modal-image").attr("src", "/Project-PPL/assets/img/produk/" + response[0].image);
       $("#username_detail").html("@" + response[0].username);
       $("#tanggal_dipesan_detail").html(response[1]);
       $("#jumlah_produk_detail").html(response[0].jumlah_produk);
@@ -54,6 +51,21 @@ $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
         $("#modal_section_detail_bukti").css("display", "unset");
         $("#row_bank").css("display", "table-row");
       }
+    },
+  });
+});
+
+// modal action upload bukti
+$("a.iniUploadBukti").click(function (event) {
+  console.log("buttton action clickkk");
+  console.log($(this).attr("data-id"));
+  $.ajax({
+    url: "/Project-PPL/pemesanan/getBuktiTransfer",
+    data: { id: $(this).attr("data-id") },
+    method: "post",
+    dataType: "json",
+    success: function (response) {
+      $("#image_ubah").attr("src", "/Project-PPL/assets/img/bukti/" + response[0].bukti_transfer);
     },
   });
 });

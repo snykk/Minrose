@@ -271,6 +271,16 @@ class Pemesanan extends CI_Controller
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data produk berhasil diubah</div>');
             redirect('pemesanan/data_pemesanan');
         }
+    }
 
+    public function getBuktiTransfer() {
+        // $pemesanan = $this->db->get_where('pemesanan', ['id' => $_POST["id"]])->result();
+        $this->db->select("bukti_transfer");
+        $this->db->from("pemesanan");
+        $this->db->where("id",  $_POST["id"]);
+        $pemesanan = $this->db->get()->result();
+        
+        header("Content-Type: application/json");
+        echo json_encode($pemesanan);
     }
 }

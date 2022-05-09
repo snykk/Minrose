@@ -55,7 +55,7 @@
                             <small>Catatan: <?= $row["catatan_pemesanan"]?></small><br>
 
                             <?php if ( $row["metode_pembayaran"] === "Transfer Bank" && $this->session->userdata('role_id') == 2) : ?>
-                                <small>Action </small><a data-placement="top" class="btn btn-danger btn-xs fa fa-fw fa-camera label-bukti" style="font-size: 0.75rem;padding:0.3rem; color:white" data-bs-toggle="modal" data-bs-target="#ModalUploadBukti" title="Kirim bukti"></a>
+                                <small>Action </small><a data-bs-placement="top" class="iniUploadBukti"  data-bs-toggle="modal" data-id="<?= $row["id_pemesanan"]?>" data-bs-target="#ModalUploadBukti" title="Kirim bukti"><div class="btn btn-danger btn-xs fa fa-fw fa-camera label-bukti" style="font-size: 0.75rem;padding:0.3rem; color:white"></div></a>
                             <?php endif; ?>
                         </div>
                         
