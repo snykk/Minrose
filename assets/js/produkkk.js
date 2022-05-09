@@ -1,4 +1,3 @@
-var image_modal = document.getElementById("modal-image");
 $("button.detail").click(function (event) {
   console.log("buttton detail click");
   // event.preventDefault();

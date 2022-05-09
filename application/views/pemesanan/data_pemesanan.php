@@ -44,12 +44,12 @@
             <div class="row">
                 <div class="col-md-1">
                     <img src="<?= base_url("assets/img/produk/") . $row["image"]?>" class="media-object img-thumbnail" />
-                    <div class="detail-pemesanan"><a data-bs-toggle="modal" data-bs-target="#ModalDetailDataPemesanan" title="detail pemesanan" style="cursor: pointer;">detail</a></div>
+                    <div class="detail-pemesanan"><a class="detail_data_pemesanan" data-bs-toggle="modal" data-bs-target="#ModalDetailDataPemesanan" title="detail pemesanan" style="cursor: pointer;" data-id="<?= $row["id_pemesanan"]; ?>" data-dipesan="<?= date('d-m-Y', $user['data_dibuat']); ?>" >detail</a></div>
                 </div>
                 <div class="col-md-11">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="pull-right"><label class="badge <?= $row["bg_status"]; ?>"><?= $row["status_pemesanan"]?></label></div>
+                            <div class="pull-right"><label class="badge bg-<?= $row["style_status"]; ?>"><?= $row["status_pemesanan"]?></label></div>
                             <span><strong><?= $row["nama_produk"]?></strong></span> <span class="badge bg-primary"><?= $row["metode_pembayaran"]?></span><br />
                             Kuantitas : <?= $row["jumlah_produk"]?>, Total harga: Rp. <?= $row["total_harga"]?> <br />
                             <small>Catatan: <?= $row["catatan_pemesanan"]?></small><br>
