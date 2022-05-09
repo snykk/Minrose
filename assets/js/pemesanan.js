@@ -65,6 +65,8 @@ $("a.iniUploadBukti").click(function (event) {
     method: "post",
     dataType: "json",
     success: function (response) {
+      console.log(response);
+      $("#id_pemesanan_upload").val(response[0].id);
       $("#image_ubah").attr("src", "/Project-PPL/assets/img/bukti/" + response[0].bukti_transfer);
     },
   });

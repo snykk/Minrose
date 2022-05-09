@@ -275,12 +275,47 @@ class Pemesanan extends CI_Controller
 
     public function getBuktiTransfer() {
         // $pemesanan = $this->db->get_where('pemesanan', ['id' => $_POST["id"]])->result();
-        $this->db->select("bukti_transfer");
+        $this->db->select("id, bukti_transfer");
         $this->db->from("pemesanan");
         $this->db->where("id",  $_POST["id"]);
         $pemesanan = $this->db->get()->result();
-        
+
         header("Content-Type: application/json");
         echo json_encode($pemesanan);
+    }
+
+    public function setBuktiTransfer() {
+        $id = $this->input->post('id',true);
+
+        $upload_image = $_FILES['image']['name'];
+        if ($upload_image) {
+            $config['allowed_types'] = 'gif|jpg|png|jpeg';
+            $config['max_size']      = '2048';
+            $config['upload_path'] = "./assets/img/bukti/";
+
+            $this->load->library('upload', $config);
+
+            if ($this->upload->do_upload('image')) {
+
+                // mengambil image lama menggunakan id pemesanan
+                $old_image = $this->db->query("SELECT bukti_transfer FROM pemesanan WHERE id={$id}")->row();
+
+                $new_image = $this->upload->data('file_name');
+
+                if ($new_image != $old_image->bukti_transfer && $old_image->bukti_transfer != "default.png") {
+                    unlink(FCPATH . 'assets/img/bukti/' . $old_image->bukti_transfer);
+                }
+
+                $this->db->set('bukti_transfer', $new_image);
+                $this->db->where('id', $id);
+                $this->db->update('pemesanan');
+
+                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Bukti transfer berhasil diupload</div>');
+                redirect('pemesanan/data_pemesanan');
+
+            } else {
+                echo $this->upload->display_errors();
+            }
+        }
     }
 }
