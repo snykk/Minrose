@@ -11,6 +11,12 @@ class Pemesanan extends CI_Controller
 
 
     public function buat_pemesanan() {
+
+        // action akan dilempar ke status 403 jika diakses oleh role yang tidak berwenang
+        if ($this->session->userdata('role_id') == 1) {
+            redirect('auth/blocked');
+        }
+
         $data['title'] = 'Buat Pemesanan';
         $data['css'] = 'pemesanan';
         $data['js'] = 'pemesanan';

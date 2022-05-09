@@ -101,7 +101,10 @@
                   <div style="margin-left:5px" id="total_harga_detail"></div>
                 </div>
                 <!-- <a data-bs-dismiss="modal" data-bs-toggle="modal" href="#ModalUbahDataPemesanan" title="detail pemesanan" title="ubah data pemesanan"><button class="btn btn-outline-dark">ubah</button></a> -->
+
+                <?php if ($this->session->userdata('role_id') == 2) :?>
                 <a id="link_ubah" href="<?= base_url("pemesanan/ubah_pemesanan") ?>" title="detail pemesanan" title="ubah data pemesanan"><button class="btn btn-outline-dark">ubah</button></a>
+                <?php endif; ?>
               </div>
             </div>
           </div>

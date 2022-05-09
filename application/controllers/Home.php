@@ -30,6 +30,12 @@ class Home extends CI_Controller
     }
 
     public function customers() {
+
+        // action akan dilempar ke status 403 jika diakses oleh role yang tidak berwenang
+        if ($this->session->userdata('role_id') == 2) {
+            redirect('auth/blocked');
+        }
+        
         $data['title'] = 'Customers';
         $data["cdn_datatable"] = "https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js";
         $data["js"] = "tabel_userrr";
