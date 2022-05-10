@@ -108,7 +108,7 @@ class Pemesanan extends CI_Controller
         $this->load->view('pemesanan/modal_upload_bukti');
         $this->load->view('pemesanan/modal_detail_data_pemesanan', $data);
         $this->load->view('pemesanan/modal_ubah_data_pemesanan');
-        $this->load->view('pemesanan/modal_pemesanan_ditolak');
+        $this->load->view('pemesanan/modal_pemesanan');
         $this->load->view('pemesanan/modal_upload_bukti_ditolak.php');
         $this->load->view('templates/modal_logout');
         $this->load->view('templates/footer');
@@ -332,6 +332,7 @@ class Pemesanan extends CI_Controller
         $this->db->where("id", $_GET["id"]);
         $this->db->update('pemesanan');
 
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data status pemesanan berhasil diubah</div>');
         redirect("pemesanan/data_pemesanan");
     }
 
@@ -346,6 +347,7 @@ class Pemesanan extends CI_Controller
         $this->db->where("id", $_GET["id"]);
         $this->db->update('pemesanan');
 
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data status pemesanan berhasil diubah</div>');
         redirect("pemesanan/data_pemesanan");
     }
 
@@ -358,10 +360,35 @@ class Pemesanan extends CI_Controller
 
         $id = $_GET["id"];
 
-        $this->db->set("id_status", 4);
+        // menyiapkan db data
+        $this->db->select("produk.stok as stok_produk, id_produk, jumlah_produk");
+        $this->db->from("pemesanan");
+        $this->db->join("produk", "pemesanan.id_produk=produk.id");
+        $this->db->where("pemesanan.id", $id);
+        $pemesanan = $this->db->get()->result_array();
+
+        // cek apakah produk tersedia
+        if ($pemesanan[0]["stok_produk"] - $pemesanan[0]["jumlah_produk"] < 0) {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">[Stok tidak tersedia] gagal mengubah status pemesanan</div>');
+            redirect("pemesanan/data_pemesanan");
+        }
+
+        // ubah status di tabel pemesanan
+        $set_pemesanan = [
+            "id_status" => 4,
+            "id_catatan" => 3,
+        ];
+
+        $this->db->set($set_pemesanan);
         $this->db->where("id", $id);
         $this->db->update('pemesanan');
 
+        // ubah stok di tabel produk
+        $this->db->set("stok", $pemesanan[0]["stok_produk"] - $pemesanan[0]["jumlah_produk"]);
+        $this->db->where("id", $pemesanan[0]["id_produk"]);
+        $this->db->update('produk');
+
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data status pemesanan berhasil diubah</div>');
         redirect("pemesanan/data_pemesanan");
     }
 }

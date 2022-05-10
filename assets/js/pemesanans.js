@@ -1,11 +1,8 @@
 // counter order summary [buat ]
-console.log("halo");
 function myCounter() {
   var num = document.getElementById("jumlah_produk");
   var harga = document.getElementById("harga_produk");
   var ongkir = document.getElementById("ongkir");
-
-  console.log(num.value);
 
   var sub_total = parseInt(harga.getAttribute("data-trueHarga")) * num.value;
   var total = sub_total + parseInt(ongkir.getAttribute("data-valueOngkir")) + parseInt(kupon.getAttribute("data-valueKupon"));
@@ -17,7 +14,6 @@ function myCounter() {
 
 // modal detail data pemesanan
 $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
-  console.log("buttton detail click aja");
   $.ajax({
     url: "/Project-PPL/pemesanan/getDataPemesanan",
     data: { id: $(this).attr("data-id"), data_dipesan: $(this).attr("data-dipesan") },
@@ -46,10 +42,16 @@ $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
           $(this).removeAttr("data-bs-dismiss");
           $(this).removeAttr("data-bs-toggle");
           this.href = "/Project-PPL/pemesanan/ubah_pemesanan?id=" + response[0].id_pemesanan;
+        } else if (response[0].id_status == 1) {
+          $(this).attr("data-bs-dismiss", "modal");
+          $(this).attr("data-bs-toggle", "modal");
+          this.href = "#ModalAlertPemesanan";
+          $("#kontent_modal_pemesanan").html('Aksi <strong class="link-danger">dibatalkan</strong> tidak bisa mengubah data pemesanan yang telah disetujui admin');
         } else if (response[0].id_status == 3) {
           $(this).attr("data-bs-dismiss", "modal");
           $(this).attr("data-bs-toggle", "modal");
-          this.href = "#modalDitolak";
+          this.href = "#ModalAlertPemesanan";
+          $("#kontent_modal_pemesanan").html('Aksi <strong class="link-danger">dibatalkan</strong> tidak bisa mengubah data pemesanan yang telah ditolak admin');
         }
       });
 
@@ -63,6 +65,8 @@ $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
       $("#link_setujui").each(function () {
         this.href += "?id=" + response[0].id_pemesanan;
       });
+
+      // restrict fitur upload bukti untuk metode pembayaran COD
       if (response[0].metode_pembayaran == "COD") {
         // menghilangkan element sesuai metode pembayaran
         $("#modal_section_detail_bukti").css("display", "none");
@@ -78,15 +82,12 @@ $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
 
 // modal action upload bukti
 $("a.iniUploadBukti").click(function (event) {
-  console.log("buttton action clickkk");
-  console.log($(this).attr("data-id"));
   $.ajax({
     url: "/Project-PPL/pemesanan/getBuktiTransfer",
     data: { id: $(this).attr("data-id") },
     method: "post",
     dataType: "json",
     success: function (response) {
-      console.log(response);
       $("#id_pemesanan_upload").val(response[0].id);
       $("#image_ubah").attr("src", "/Project-PPL/assets/img/bukti/" + response[0].bukti_transfer);
     },
