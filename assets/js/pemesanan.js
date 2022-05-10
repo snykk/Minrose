@@ -1,3 +1,4 @@
+console.log("test");
 // counter order summary [buat ]
 function myCounter() {
   var num = document.getElementById("jumlah_produk");
@@ -52,6 +53,11 @@ $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
           $(this).attr("data-bs-toggle", "modal");
           this.href = "#ModalAlertPemesanan";
           $("#kontent_modal_pemesanan").html('Aksi <strong class="link-danger">dibatalkan</strong> tidak bisa mengubah data pemesanan yang telah ditolak admin');
+        } else if (response[0].id_status == 4) {
+          $(this).attr("data-bs-dismiss", "modal");
+          $(this).attr("data-bs-toggle", "modal");
+          this.href = "#ModalAlertPemesanan";
+          $("#kontent_modal_pemesanan").html('Aksi <strong class="link-danger">dibatalkan</strong> tidak bisa mengubah data riwayat pemesanan');
         }
       });
 

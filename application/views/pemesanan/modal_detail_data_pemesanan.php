@@ -106,7 +106,7 @@
                 <a id="link_ubah" title="ubah data pemesanan"><button class="btn btn-outline-dark mb-3">ubah</button></a>
                 <?php endif; ?>
                 
-                <?php if ($this->session->userdata('role_id') == 1) :?>
+                <?php if ($this->session->userdata('role_id') == 1 && !$this->session->userdata('restrict_confirm_admin')) :?>
                 <a id="link_tolak" href="<?= base_url("pemesanan/ditolak") ?>" title="tolak data pemesanan"><button class="btn btn-outline-danger mb-3">ditolak</button></a>
                 <a id="link_selesai" href="<?= base_url("pemesanan/selesai") ?>" title="akhiri data pemesanan"><button class="btn btn-outline-info mb-3">selesai</button></a>
                 <a id="link_setujui" href="<?= base_url("pemesanan/disetujui") ?>" title="setujui data pemesanan"><button class="btn btn-outline-success mb-3">setujui</button></a>

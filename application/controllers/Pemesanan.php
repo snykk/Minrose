@@ -19,7 +19,7 @@ class Pemesanan extends CI_Controller
 
         $data['title'] = 'Buat Pemesanan';
         $data['css'] = 'pemesanan';
-        $data['js'] = 'pemesanans';
+        $data['js'] = 'pemesanan';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         if (isset($_GET["id"])){
@@ -63,6 +63,7 @@ class Pemesanan extends CI_Controller
                 'bukti_transfer' => ($id_metode == 1) ? "default.png" : null,
                 'data_dibuat' => time(),
                 'data_diubah' => time(),
+                'is_done' => 0,
             ];
 
             $this->db->insert('pemesanan', $data);
@@ -76,7 +77,7 @@ class Pemesanan extends CI_Controller
     public function data_pemesanan() {
         $data['title'] = 'Data Pemesanan';
         $data['css'] = 'pemesanan';
-        $data['js'] = 'pemesanans'; 
+        $data['js'] = 'pemesanan'; 
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         // prepare data pemesanan
@@ -88,6 +89,8 @@ class Pemesanan extends CI_Controller
         $this->db->join('bank', 'pemesanan.id_bank=bank.id','left');
         $this->db->join('catatan', 'pemesanan.id_catatan=catatan.id');
         $this->db->join('status', 'pemesanan.id_status=status.id');
+        $this->db->where("is_done =", 0);
+        $this->db->order_by("pemesanan.data_dibuat", "asc");
 
         if ($this->session->userdata('role_id') == 2) {
             $this->db->where('email', $this->session->userdata('email'));
@@ -117,7 +120,29 @@ class Pemesanan extends CI_Controller
     public function riwayat_pemesanan() {
         $data['title'] = 'Riwayat Pemesanan';
         $data['css'] = 'pemesanan';
+        $data['js'] = 'pemesanan'; 
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        // prepare data pemesanan
+        $this->db->select('pemesanan.id as id_pemesanan, produk.image as image, status.style as style_status, status_pemesanan, produk.nama as nama_produk, metode_pembayaran, jumlah_produk, total_harga, catatan_pemesanan, metode_pembayaran, username, status.id as id_status');
+        $this->db->from('pemesanan');
+        $this->db->join('produk', 'pemesanan.id_produk=produk.id');
+        $this->db->join('user', 'pemesanan.id_user=user.id');
+        $this->db->join('metode', 'pemesanan.id_metode=metode.id');
+        $this->db->join('bank', 'pemesanan.id_bank=bank.id','left');
+        $this->db->join('catatan', 'pemesanan.id_catatan=catatan.id');
+        $this->db->join('status', 'pemesanan.id_status=status.id');
+        $this->db->where("is_done =", 1);
+        $this->db->order_by("data_diubah", "asc");
+
+        if ($this->session->userdata('role_id') == 2) {
+            $this->db->where('email', $this->session->userdata('email'));
+        }
+        
+        $data["pemesanan"] = $this->db->get();
+
+        // membuat session untuk membatasi akses admin dari fitur konfirmasi pemesanan
+        $this->session->set_userdata("restrict_confirm_admin", "1");
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/topbar', $data);
@@ -127,13 +152,17 @@ class Pemesanan extends CI_Controller
         } else {
             $this->load->view('templates/sidebar_user', $data);
         }
-        $this->load->view('pemesanan/riwayat_pemesanan', $data);
+        $this->load->view('pemesanan/data_pemesanan', $data);
         $this->load->view('templates/sidebar_footer');
-        $this->load->view('pemesanan/modal_upload_bukti');
-        $this->load->view('pemesanan/modal_detail_data_pemesanan');
+        $this->load->view('pemesanan/modal_detail_data_pemesanan', $data);
         $this->load->view('pemesanan/modal_ubah_data_pemesanan');
+        $this->load->view('pemesanan/modal_pemesanan');
+        $this->load->view('pemesanan/modal_upload_bukti_ditolak.php');
         $this->load->view('templates/modal_logout');
         $this->load->view('templates/footer');
+
+        // menghapus session ketika selesai dari view riwayat pemesanan
+        $this->session->unset_userdata('restrict_confirm_admin');
     }
 
     public function getDataPemesanan() {
@@ -169,7 +198,7 @@ class Pemesanan extends CI_Controller
         // set link files data
         $data['title'] = 'Ubah Pemesanan';
         $data['css'] = 'pemesanan';
-        $data['js'] = 'pemesanans';
+        $data['js'] = 'pemesanan';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         // set database data
@@ -377,6 +406,7 @@ class Pemesanan extends CI_Controller
         $set_pemesanan = [
             "id_status" => 4,
             "id_catatan" => 3,
+            "is_done" => 1,
         ];
 
         $this->db->set($set_pemesanan);
@@ -389,6 +419,6 @@ class Pemesanan extends CI_Controller
         $this->db->update('produk');
 
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data status pemesanan berhasil diubah</div>');
-        redirect("pemesanan/data_pemesanan");
+        redirect("pemesanan/riwayat_pemesanan");
     }
 }
