@@ -80,7 +80,7 @@ class Pemesanan extends CI_Controller
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         // prepare data pemesanan
-        $this->db->select('pemesanan.id as id_pemesanan, produk.image as image, status.style as style_status, status_pemesanan, produk.nama as nama_produk, metode_pembayaran, jumlah_produk, total_harga, catatan_pemesanan, metode_pembayaran, username');
+        $this->db->select('pemesanan.id as id_pemesanan, produk.image as image, status.style as style_status, status_pemesanan, produk.nama as nama_produk, metode_pembayaran, jumlah_produk, total_harga, catatan_pemesanan, metode_pembayaran, username, status.id as id_status');
         $this->db->from('pemesanan');
         $this->db->join('produk', 'pemesanan.id_produk=produk.id');
         $this->db->join('user', 'pemesanan.id_user=user.id');
@@ -109,6 +109,7 @@ class Pemesanan extends CI_Controller
         $this->load->view('pemesanan/modal_detail_data_pemesanan', $data);
         $this->load->view('pemesanan/modal_ubah_data_pemesanan');
         $this->load->view('pemesanan/modal_pemesanan_ditolak');
+        $this->load->view('pemesanan/modal_upload_bukti_ditolak.php');
         $this->load->view('templates/modal_logout');
         $this->load->view('templates/footer');
     }
