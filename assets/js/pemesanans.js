@@ -39,9 +39,21 @@ $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
       $("#total_harga_detail").html(response[0].total_harga);
       $("#bukti_transfer_detail").attr("src", "/Project-PPL/assets/img/bukti/" + response[0].bukti_transfer);
       $("#image_detail").attr("src", "/Project-PPL/assets/img/produk/" + response[0].image_produk);
+
+      // [user] link ubah
       $("#link_ubah").each(function () {
-        this.href += "?id=" + response[0].id_pemesanan;
+        if (response[0].id_status == 2) {
+          $(this).removeAttr("data-bs-dismiss");
+          $(this).removeAttr("data-bs-toggle");
+          this.href = "/Project-PPL/pemesanan/ubah_pemesanan?id=" + response[0].id_pemesanan;
+        } else if (response[0].id_status == 3) {
+          $(this).attr("data-bs-dismiss", "modal");
+          $(this).attr("data-bs-toggle", "modal");
+          this.href = "#modalDitolak";
+        }
       });
+
+      // [admin] konfirmasi pemesanan
       $("#link_tolak").each(function () {
         this.href += "?id=" + response[0].id_pemesanan;
       });
