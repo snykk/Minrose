@@ -1,5 +1,5 @@
 // counter order summary [buat ]
-console.log("hallo");
+console.log("halo");
 function myCounter() {
   var num = document.getElementById("jumlah_produk");
   var harga = document.getElementById("harga_produk");
@@ -17,7 +17,7 @@ function myCounter() {
 
 // modal detail data pemesanan
 $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
-  console.log("buttton detail clickkk");
+  console.log("buttton detail click aja");
   $.ajax({
     url: "/Project-PPL/pemesanan/getDataPemesanan",
     data: { id: $(this).attr("data-id"), data_dipesan: $(this).attr("data-dipesan") },
@@ -40,6 +40,15 @@ $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
       $("#bukti_transfer_detail").attr("src", "/Project-PPL/assets/img/bukti/" + response[0].bukti_transfer);
       $("#image_detail").attr("src", "/Project-PPL/assets/img/produk/" + response[0].image_produk);
       $("#link_ubah").each(function () {
+        this.href += "?id=" + response[0].id_pemesanan;
+      });
+      $("#link_tolak").each(function () {
+        this.href += "?id=" + response[0].id_pemesanan;
+      });
+      $("#link_selesai").each(function () {
+        this.href += "?id=" + response[0].id_pemesanan;
+      });
+      $("#link_setujui").each(function () {
         this.href += "?id=" + response[0].id_pemesanan;
       });
       if (response[0].metode_pembayaran == "COD") {

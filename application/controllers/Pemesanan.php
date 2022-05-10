@@ -318,4 +318,48 @@ class Pemesanan extends CI_Controller
             }
         }
     }
+
+    public function disetujui() {
+
+        // action akan dilempar ke status 403 jika diakses oleh role yang tidak berwenang
+        if ($this->session->userdata('role_id') == 2) {
+            redirect('auth/blocked');
+        }
+
+        $this->db->set("id_status", 1);
+        $this->db->where("id", $_GET["id"]);
+        $this->db->update('pemesanan');
+
+        redirect("pemesanan/data_pemesanan");
+    }
+
+    public function ditolak() {
+
+        // action akan dilempar ke status 403 jika diakses oleh role yang tidak berwenang
+        if ($this->session->userdata('role_id') == 2) {
+            redirect('auth/blocked');
+        }
+
+        $this->db->set("id_status", 3);
+        $this->db->where("id", $_GET["id"]);
+        $this->db->update('pemesanan');
+
+        redirect("pemesanan/data_pemesanan");
+    }
+
+    public function selesai() {
+
+        // action akan dilempar ke status 403 jika diakses oleh role yang tidak berwenang
+        if ($this->session->userdata('role_id') == 2) {
+            redirect('auth/blocked');
+        }
+
+        $id = $_GET["id"];
+
+        $this->db->set("id_status", 4);
+        $this->db->where("id", $id);
+        $this->db->update('pemesanan');
+
+        redirect("pemesanan/data_pemesanan");
+    }
 }

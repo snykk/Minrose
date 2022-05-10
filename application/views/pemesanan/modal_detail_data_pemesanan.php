@@ -103,8 +103,15 @@
                 <!-- <a data-bs-dismiss="modal" data-bs-toggle="modal" href="#ModalUbahDataPemesanan" title="detail pemesanan" title="ubah data pemesanan"><button class="btn btn-outline-dark">ubah</button></a> -->
 
                 <?php if ($this->session->userdata('role_id') == 2) :?>
-                <a id="link_ubah" href="<?= base_url("pemesanan/ubah_pemesanan") ?>" title="detail pemesanan" title="ubah data pemesanan"><button class="btn btn-outline-dark mb-3">ubah</button></a>
+                <a id="link_ubah" href="<?= base_url("pemesanan/ubah_pemesanan") ?>" title="ubah data pemesanan"><button class="btn btn-outline-dark mb-3">ubah</button></a>
                 <?php endif; ?>
+                
+                <?php if ($this->session->userdata('role_id') == 1) :?>
+                <a id="link_tolak" href="<?= base_url("pemesanan/ditolak") ?>" title="tolak data pemesanan"><button class="btn btn-outline-danger mb-3">ditolak</button></a>
+                <a id="link_selesai" href="<?= base_url("pemesanan/selesai") ?>" title="akhiri data pemesanan"><button class="btn btn-outline-info mb-3">selesai</button></a>
+                <a id="link_setujui" href="<?= base_url("pemesanan/disetujui") ?>" title="setujui data pemesanan"><button class="btn btn-outline-success mb-3">setujui</button></a>
+                <?php endif; ?>
+
               </div>
             </div>
           </div>
