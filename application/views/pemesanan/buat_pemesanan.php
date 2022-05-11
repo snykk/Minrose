@@ -29,9 +29,11 @@
               </div>
             </div>
           </div>
-          <div class="form-group mb-3 col-2">
+          <div class="form-group col-2">
             <label for="jumlah_produk">Jumlah Produk</label>
-            <input id="jumlah_produk" name="jumlah_produk" value="<?= set_value('jumlah_produk', "0"); ?>" type="number" min="0" max="<?= $produk["stok"];?>" class="form-control" onchange="myCounter()">
+            <input id="jumlah_produk" name="jumlah_produk" value="<?= set_value('jumlah_produk', "0"); ?>" type="number" min="0" class="form-control" onchange="myCounter()">
+          </div>
+          <div class="mb-3 col-12">
             <?= form_error('jumlah_produk', '<small class="text-danger pl-3">', '</small>'); ?>
           </div>
           <div class="form-group mb-3">

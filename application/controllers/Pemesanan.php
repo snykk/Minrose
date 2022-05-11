@@ -27,11 +27,19 @@ class Pemesanan extends CI_Controller
         }else {
             $data["produk"] =  $this->db->get_where('produk', ['id' => $this->input->post("id_produk")])->row_array();
         }
+        
+        $stok = $data["produk"]['stok'];
 
         $this->form_validation->set_rules('jumlah_produk', 'Jumlah produk','required|trim', ["required"=>"Jumlah produk tidak boleh kosong"]);
         $this->form_validation->set_rules('alamat', 'Alamat','required|trim', ["required"=>"Alamat tidak boleh kosong"]);
         $this->form_validation->set_rules('id_metode', 'Metode transaksi','required|trim', ["required"=>"Pilih salah satu metode transaksi"]);
         $this->form_validation->set_rules('id_bank', 'Bank','required|trim', ["required"=>"Pilih salah satu bank"]);
+        $this->form_validation->set_rules('jumlah_produk', 'Alamat','trim|greater_than_equal_to[1]|less_than_equal_to'. "[$stok]", 
+        ["required"=>"Alamat tujuan tidak boleh kosong",
+        "greater_than_equal_to"=>"Jumlah produk tidak boleh 0",
+        "less_than_equal_to"=>"Produk yang tersedia untuk saat ini hanya $stok unit" 
+        ],
+        );
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/header', $data);
