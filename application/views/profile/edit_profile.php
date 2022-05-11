@@ -1,12 +1,6 @@
 <div class="container-fluid">
     <div class="main-body">
 
-        <!-- flasher -->
-        <?php
-        echo $this->session->flashdata('message');
-        unset($_SESSION["message"]);
-        ?>
-
         <!-- Hierarki -->
         <nav aria-label="breadcrumb" class="main-breadcrumb">
             <ol class="breadcrumb">
@@ -15,9 +9,18 @@
                 <li class="breadcrumb-item active" aria-current="page">Ubah Profile</li>
             </ol>
         </nav>
+
         <!-- Tutup hierarki -->
 
+        <!-- flasher -->
+
         <hr class="mt-0 mb-4">
+        
+        <?php
+        echo $this->session->flashdata('message');
+        unset($_SESSION["message"]);
+        ?>
+        
         <div class="row">
             <div class="col-xl-4">
                 <!-- Profile picture card-->

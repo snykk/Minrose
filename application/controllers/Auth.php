@@ -53,11 +53,27 @@ class Auth extends CI_Controller
                 //     redirect('user');
                 // }
             } else {
-                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Wrong password!</div>');
+                $this->session->set_flashdata(
+                    'message', 
+                    '<div class="alert alert-danger d-flex align-items-center" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                        <div style="margin-left:1rem">
+                        Password <strong>salah!</strong>
+                        </div>
+                    </div>'
+                );
                 redirect('auth');
             }
         } else {
-            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Email is not registered!</div>');
+            $this->session->set_flashdata(
+                'message', 
+                '<div class="alert alert-danger d-flex align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                    <div style="margin-left:1rem">
+                    Email <strong>belum</strong> teregistrasi!
+                    </div>
+                </div>'
+            );
             redirect('auth');
         }
     }
@@ -110,7 +126,11 @@ class Auth extends CI_Controller
 
             $this->db->insert('user', $data);
 
-            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Selamat registrasi akun anda berhasil</div>');
+            $this->session->set_flashdata('message', 
+            '<div class="alert alert-success d-flex align-items-center" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                <div style="margin-left:1rem"> Selamat registrasi akun anda <strong>berhasil</strong> </div>
+            </div>');
             redirect('auth');
         }
     }
@@ -121,7 +141,11 @@ class Auth extends CI_Controller
         $this->session->unset_userdata('email');
         $this->session->unset_userdata('role_id');
 
-        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">You have been logged out!</div>');
+        $this->session->set_flashdata('message', 
+            '<div class="alert alert-success d-flex align-items-center" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                <div style="margin-left:1rem"> Session berakhir, anda <strong>berhasil</strong> logout! </div>
+            </div>');
         redirect('auth');
     }
 
@@ -129,62 +153,5 @@ class Auth extends CI_Controller
     public function blocked()
     {
         $this->load->view('auth/blocked');
-    }
-
-
-
-    public function resetPassword()
-    {
-        $email = $this->input->get('email');
-        $token = $this->input->get('token');
-
-        $user = $this->db->get_where('user', ['email' => $email])->row_array();
-
-        if ($user) {
-            $user_token = $this->db->get_where('user_token', ['token' => $token])->row_array();
-
-            if ($user_token) {
-                $this->session->set_userdata('reset_email', $email);
-                $this->changePassword();
-            } else {
-                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Reset password failed! Wrong token.</div>');
-                redirect('auth');
-            }
-        } else {
-            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Reset password failed! Wrong email.</div>');
-            redirect('auth');
-        }
-    }
-
-
-    public function changePassword()
-    {
-        if (!$this->session->userdata('reset_email')) {
-            redirect('auth');
-        }
-
-        $this->form_validation->set_rules('password1', 'Password', 'trim|required|min_length[3]|matches[password2]');
-        $this->form_validation->set_rules('password2', 'Repeat Password', 'trim|required|min_length[3]|matches[password1]');
-
-        if ($this->form_validation->run() == false) {
-            $data['title'] = 'Change Password';
-            $this->load->view('templates/auth_header', $data);
-            $this->load->view('auth/change-password');
-            $this->load->view('templates/auth_footer');
-        } else {
-            $password = password_hash($this->input->post('password1'), PASSWORD_DEFAULT);
-            $email = $this->session->userdata('reset_email');
-
-            $this->db->set('password', $password);
-            $this->db->where('email', $email);
-            $this->db->update('user');
-
-            $this->session->unset_userdata('reset_email');
-
-            $this->db->delete('user_token', ['email' => $email]);
-
-            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Password has been changed! Please login.</div>');
-            redirect('auth');
-        }
     }
 }

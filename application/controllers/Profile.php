@@ -49,7 +49,16 @@ class Profile extends CI_Controller
 
         // proses akan diredirect jika tidak ada perubahan
         if ($this->input->post('email') == $data["user"]["email"] && $this->input->post('username') == $data["user"]["username"] && $this->input->post('nama_lengkap') == $data["user"]["nama_lengkap"] && $this->input->post('jenis_kelamin') == $data["user"]["jenis_kelamin"] && $this->input->post('no_hp') == $data["user"]["no_hp"] && $this->input->post('alamat') == $data["user"]["alamat"] && !($_FILES['image']['name'])) {
-            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Perubahan dibatalkan, tidak ada data yang diubah</div>');
+            $this->session->set_flashdata(
+                'message', 
+                '<div class="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                    <div>
+                    Perubahan <strong>dibatalkan</strong>, tidak ada data yang diubah
+                    </div>
+                    <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>'
+            );
             redirect('profile/edit_profile');
         }
 
@@ -110,7 +119,12 @@ class Profile extends CI_Controller
             $this->db->where('email', $email);
             $this->db->update('user');
 
-            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Profil anda berhasil diubah!</div>');
+            $this->session->set_flashdata('message', 
+            '<div class="alert alert-success d-flex justify-content-between align-items-center" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                <div> Profil anda <strong>berhasil</strong> diubah </div>
+                <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>');
             redirect('home');
         }
     }
@@ -144,11 +158,29 @@ class Profile extends CI_Controller
             $current_password = $this->input->post('current_password');
             $new_password = $this->input->post('new_password1');
             if (!password_verify($current_password, $data['user']['password'])) {
-                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Passwod saat ini salah!</div>');
+                $this->session->set_flashdata(
+                    'message', 
+                    '<div class="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                        <div>
+                        Password saat ini salah !!!
+                        </div>
+                        <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>'
+                );
                 redirect('profile/ganti_password');
             } else {
                 if ($current_password == $new_password) {
-                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Password baru tidak boleh sama dengan password saat ini!</div>');
+                    $this->session->set_flashdata(
+                        'message', 
+                        '<div class="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
+                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                            <div>
+                            Password baru tidak boleh sama dengan password saat ini !!!
+                            </div>
+                            <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>'
+                    );
                     redirect('profile/ganti_password');
                 } else {
                     // password sudah ok
@@ -158,7 +190,12 @@ class Profile extends CI_Controller
                     $this->db->where('email', $this->session->userdata('email'));
                     $this->db->update('user');
 
-                    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Password berhasil diubah!</div>');
+                    $this->session->set_flashdata('message', 
+                    '<div class="alert alert-success d-flex justify-content-between align-items-center" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                        <div> Password berhasil diubah! </div>
+                        <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>');
                     redirect('profile/ganti_password');
                 }
             }

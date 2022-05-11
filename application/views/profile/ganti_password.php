@@ -9,7 +9,14 @@
         </ol>
     </nav>
     <!-- Tutup hierarki -->
+
     <hr class="mt-0 mb-4">
+
+    <?php
+    echo $this->session->flashdata('message'); 
+    unset($_SESSION["message"]);
+    ?>
+
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-6 col-md-offset-2">
             <div class="panel panel-info">
@@ -20,10 +27,6 @@
                         </div>
                         <div style="margin-top:20px;" class="col-xs-6 col-sm-6 col-md-6 login-box">
                         
-                            <?php
-                            echo $this->session->flashdata('message'); 
-                            unset($_SESSION["message"]);
-                            ?>
                             <form action="<?= base_url('profile/ganti_password'); ?>" method="post">
                             <div class="form-group">
                                 <label for="current_password">Password Saat ini</label>
