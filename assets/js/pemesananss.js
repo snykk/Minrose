@@ -1,4 +1,3 @@
-console.log("test");
 // counter order summary [buat ]
 function myCounter() {
   var num = document.getElementById("jumlah_produk");
@@ -63,7 +62,8 @@ $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
 
       // [admin] konfirmasi pemesanan
       $("#link_tolak").each(function () {
-        this.href += "?id=" + response[0].id_pemesanan;
+        // this.href += "?id=" + response[0].id_pemesanan;
+        $(this).attr("data-idProduk", response[0].id_pemesanan);
       });
       $("#link_selesai").each(function () {
         this.href += "?id=" + response[0].id_pemesanan;
@@ -97,5 +97,54 @@ $("a.iniUploadBukti").click(function (event) {
       $("#id_pemesanan_upload").val(response[0].id);
       $("#image_ubah").attr("src", "/Project-PPL/assets/img/bukti/" + response[0].bukti_transfer);
     },
+  });
+});
+
+// id tolak diklik
+$("#link_tolak").click(function (e) {
+  $("#id_pemesanan_ditolak").val($(this).attr("data-idProduk"));
+});
+
+// sweetalert 2
+$("#link_selesai").click(function (e) {
+  console.log("clicked");
+  e.preventDefault();
+  const href = $(this).attr("href");
+
+  Swal.fire({
+    title: "Apakah anda yakin?",
+    text: "data pemesanan akan diakhiri",
+    icon: "question",
+    confirmButtonText: "akhiri",
+    cancelButtonColor: "#d33",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    timer: 10000,
+  }).then((result) => {
+    if (result.value) {
+      document.location.href = href;
+    }
+  });
+});
+
+// sweetalert 2
+$("#link_setujui").click(function (e) {
+  console.log("clicked");
+  e.preventDefault();
+  const href = $(this).attr("href");
+
+  Swal.fire({
+    title: "Apakah anda yakin?",
+    text: "setujui pemesanan",
+    icon: "question",
+    confirmButtonText: "setujui",
+    cancelButtonColor: "#d33",
+    showCancelButton: true,
+    confirmButtonColor: "#08a10b",
+    timer: 10000,
+  }).then((result) => {
+    if (result.value) {
+      document.location.href = href;
+    }
   });
 });

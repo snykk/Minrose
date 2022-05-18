@@ -14,6 +14,8 @@
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" />
   <link href="<?= base_url('assets/') ?>css/style.css" rel="stylesheet" />
   <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+  <!-- sweetalert CDN -->
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- source bootstrap icon -->
   <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
