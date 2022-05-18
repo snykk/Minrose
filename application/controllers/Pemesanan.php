@@ -19,7 +19,7 @@ class Pemesanan extends CI_Controller
 
         $data['title'] = 'Buat Pemesanan';
         $data['css'] = 'pemesanan';
-        $data['js'] = 'pemesanan';
+        $data['js'] = 'pemesananss';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         if (isset($_GET["id"])){
@@ -90,11 +90,11 @@ class Pemesanan extends CI_Controller
     public function data_pemesanan() {
         $data['title'] = 'Data Pemesanan';
         $data['css'] = 'pemesanan';
-        $data['js'] = 'pemesanan'; 
+        $data['js'] = 'pemesananss'; 
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         // prepare data pemesanan
-        $this->db->select('pemesanan.id as id_pemesanan, produk.image as image, status.style as style_status, status_pemesanan, produk.nama as nama_produk, metode_pembayaran, jumlah_produk, total_harga, catatan_pemesanan, metode_pembayaran, username, status.id as id_status');
+        $this->db->select('pemesanan.id as id_pemesanan, produk.image as image, status.style as style_status, status_pemesanan, produk.nama as nama_produk, metode_pembayaran, jumlah_produk, total_harga, catatan_pemesanan, metode_pembayaran, username, status.id as id_status, pemesanan.data_dibuat as tanggal_pemesanan, alasan_penolakan');
         $this->db->from('pemesanan');
         $this->db->join('produk', 'pemesanan.id_produk=produk.id');
         $this->db->join('user', 'pemesanan.id_user=user.id');
@@ -126,6 +126,7 @@ class Pemesanan extends CI_Controller
         $this->load->view('pemesanan/modal_ubah_data_pemesanan');
         $this->load->view('pemesanan/modal_pemesanan');
         $this->load->view('pemesanan/modal_upload_bukti_ditolak.php');
+        $this->load->view('pemesanan/modal_penolakan.php');
         $this->load->view('templates/modal_logout');
         $this->load->view('templates/footer');
     }
@@ -133,11 +134,11 @@ class Pemesanan extends CI_Controller
     public function riwayat_pemesanan() {
         $data['title'] = 'Riwayat Pemesanan';
         $data['css'] = 'pemesanan';
-        $data['js'] = 'pemesanan'; 
+        $data['js'] = 'pemesananss'; 
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         // prepare data pemesanan
-        $this->db->select('pemesanan.id as id_pemesanan, produk.image as image, status.style as style_status, status_pemesanan, produk.nama as nama_produk, metode_pembayaran, jumlah_produk, total_harga, catatan_pemesanan, metode_pembayaran, username, status.id as id_status');
+        $this->db->select('pemesanan.id as id_pemesanan, produk.image as image, status.style as style_status, status_pemesanan, produk.nama as nama_produk, metode_pembayaran, jumlah_produk, total_harga, catatan_pemesanan, metode_pembayaran, username, status.id as id_status, pemesanan.data_dibuat as tanggal_pemesanan, alasan_penolakan');
         $this->db->from('pemesanan');
         $this->db->join('produk', 'pemesanan.id_produk=produk.id');
         $this->db->join('user', 'pemesanan.id_user=user.id');
@@ -211,7 +212,7 @@ class Pemesanan extends CI_Controller
         // set link files data
         $data['title'] = 'Ubah Pemesanan';
         $data['css'] = 'pemesanan';
-        $data['js'] = 'pemesanan';
+        $data['js'] = 'pemesananss';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         // set database data
@@ -390,9 +391,76 @@ class Pemesanan extends CI_Controller
             redirect('auth/blocked');
         }
 
-        $this->db->set("id_status", 1);
-        $this->db->where("id", $_GET["id"]);
+        $id = $_GET["id"];
+
+        // menyiapkan db data
+        $this->db->select("bukti_transfer, id_metode, id_status, produk.stok as stok_produk, id_produk, jumlah_produk");
+        $this->db->from("pemesanan");
+        $this->db->join("produk", "pemesanan.id_produk=produk.id");
+        $this->db->where("pemesanan.id", $id);
+        $pemesanan = $this->db->get()->result_array();
+
+        // akan otomatis dicancel jika id status sebelumnya sudah "disejutui"
+        if ($pemesanan[0]["id_status"] == 1) {
+            $this->session->set_flashdata(
+                'message', 
+                '<div class="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                    <div>
+                    Aksi <strong>dibatalkan</strong> status pemesanan sebelumnya sudah disetujui
+                    </div>
+                    <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>'
+            ); 
+            redirect("pemesanan/data_pemesanan");
+        }
+
+
+        // jika pemesanan belum ada bukti transfer otomatis akan dicancel oleh sistem
+        if ($pemesanan[0]["bukti_transfer"] == "default.png") {
+            $this->session->set_flashdata(
+                'message', 
+                '<div class="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                    <div>
+                    Aksi <strong>dibatalkan</strong> tidak ada bukti transfer di database
+                    </div>
+                    <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>'
+            ); 
+            redirect("pemesanan/data_pemesanan");
+        }
+
+        // cek apakah produk tersedia
+        if ($pemesanan[0]["stok_produk"] - $pemesanan[0]["jumlah_produk"] < 0) {
+            $this->session->set_flashdata(
+                'message', 
+                '<div class="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                    <div>
+                    [Stok tidak tersedia] <strong> gagal </strong> mengubah status pemesanan
+                    </div>
+                    <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>'
+            );            
+            redirect("pemesanan/data_pemesanan");
+        }
+        
+        $data = [
+            "id_status" => 1,
+            "alasan_penolakan" => null,
+            "id_catatan" => ($pemesanan[0]["id_metode"] == 1) ? 4 : 1,
+        ];
+
+        // ubah tabel produk
+        $this->db->set($data);
+        $this->db->where("id", $id);
         $this->db->update('pemesanan');
+
+         // ubah stok di tabel produk
+         $this->db->set("stok", $pemesanan[0]["stok_produk"] - $pemesanan[0]["jumlah_produk"]);
+         $this->db->where("id", $pemesanan[0]["id_produk"]);
+         $this->db->update('produk');
 
         $this->session->set_flashdata(
             'message', 
@@ -412,9 +480,47 @@ class Pemesanan extends CI_Controller
             redirect('auth/blocked');
         }
 
-        $this->db->set("id_status", 3);
-        $this->db->where("id", $_GET["id"]);
+        $id_pemesanan =  $this->input->post("id");
+        $alasan_penolakan =  $this->input->post("alasan_penolakan");
+
+        // ambil data
+        $this->db->select("jumlah_produk, produk.stok as stok_produk, id_produk, id_status");
+        $this->db->from("pemesanan");
+        $this->db->join("produk", "pemesanan.id_produk=produk.id");
+        $this->db->where("pemesanan.id", $id_pemesanan);
+        $pemesanan = $this->db->get()->result_array();
+
+        // akan otomatis dicancel jika id status sebelumnya sudah "ditolak"
+        if ($pemesanan[0]["id_status"] == 3) {
+            $this->session->set_flashdata(
+                'message', 
+                '<div class="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                    <div>
+                    Aksi <strong>dibatalkan</strong> status pemesanan sebelumnya sudah disetujui
+                    </div>
+                    <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>'
+            ); 
+            redirect("pemesanan/data_pemesanan");
+        }
+
+        $data = [
+            "id_status" => 3,
+            "alasan_penolakan" =>$alasan_penolakan
+        ];
+
+        $this->db->set($data);
+        $this->db->where("id", $id_pemesanan);
         $this->db->update('pemesanan');
+
+        // mengembalikan stok produk jika terjadi pembatalan pemesanan yang sudah disetujui
+        if ($pemesanan[0]["id_status"] == 1) {
+            // ubah stok di tabel produk
+            $this->db->set("stok", $pemesanan[0]["stok_produk"] + $pemesanan[0]["jumlah_produk"]);
+            $this->db->where("id", $pemesanan[0]["id_produk"]);
+            $this->db->update('produk');
+        }
 
         $this->session->set_flashdata(
             'message', 
@@ -435,44 +541,18 @@ class Pemesanan extends CI_Controller
         }
 
         $id = $_GET["id"];
-
-        // menyiapkan db data
-        $this->db->select("produk.stok as stok_produk, id_produk, jumlah_produk");
-        $this->db->from("pemesanan");
-        $this->db->join("produk", "pemesanan.id_produk=produk.id");
-        $this->db->where("pemesanan.id", $id);
-        $pemesanan = $this->db->get()->result_array();
-
-        // cek apakah produk tersedia
-        if ($pemesanan[0]["stok_produk"] - $pemesanan[0]["jumlah_produk"] < 0) {
-            $this->session->set_flashdata(
-                'message', 
-                '<div class="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                    <div>
-                    [Stok tidak tersedia] <strong> gagal </strong> mengubah status pemesanan
-                    </div>
-                    <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>'
-            );            
-            redirect("pemesanan/data_pemesanan");
-        }
-
+        
         // ubah status di tabel pemesanan
         $set_pemesanan = [
             "id_status" => 4,
             "id_catatan" => 3,
             "is_done" => 1,
+            "alasan_penolakan" => null,
         ];
 
         $this->db->set($set_pemesanan);
         $this->db->where("id", $id);
         $this->db->update('pemesanan');
-
-        // ubah stok di tabel produk
-        $this->db->set("stok", $pemesanan[0]["stok_produk"] - $pemesanan[0]["jumlah_produk"]);
-        $this->db->where("id", $pemesanan[0]["id_produk"]);
-        $this->db->update('produk');
 
         $this->session->set_flashdata(
             'message', 
