@@ -32,7 +32,7 @@ $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
         .addClass("spinner-grow spinner-grow-sm text-" + response[0].style_status);
       $("#bank_detail").html(response[0].nama_bank);
       $("#no_rekening_detail").html(response[0].no_rekening);
-      $("#catatan_transaksi_detail").html((response[0].alasan_penolakan) ? response[0].alasan_penolakan :response[0].catatan_pemesanan);
+      $("#catatan_transaksi_detail").html(response[0].alasan_penolakan ? response[0].alasan_penolakan : response[0].catatan_pemesanan);
       $("#total_harga_detail").html(response[0].total_harga);
       $("#bukti_transfer_detail").attr("src", "/Project-PPL/assets/img/bukti/" + response[0].bukti_transfer);
       $("#image_detail").attr("src", "/Project-PPL/assets/img/produk/" + response[0].image_produk);
@@ -61,6 +61,10 @@ $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
         }
       });
 
+      $("#link_batalkan").each(function () {
+        this.href += "?id=" + response[0].id_pemesanan;
+      });
+
       // [admin] konfirmasi pemesanan
       $("#link_tolak").each(function () {
         // this.href += "?id=" + response[0].id_pemesanan;
@@ -82,6 +86,19 @@ $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
         // untuk memunculkan kembali element yang dihilangkan
         $("#modal_section_detail_bukti").css("display", "unset");
         $("#row_bank").css("display", "table-row");
+      }
+
+      // jika status dari pemesanan "dibatalkan"
+      if (response[0].id_status == 5) {
+        console.log("ini status " + response[0].status_pemesanan);
+        $("#link_ubah").css("display", "none");
+        $("#link_batalkan").css("display", "none");
+        $("#message").css("display", "unset");
+      } else {
+        // untuk memunculkan kembali element yang dihilangkan
+        $("#link_ubah").css("display", "unset");
+        $("#link_batalkan").css("display", "unset");
+        $("#message").css("display", "none");
       }
     },
   });
@@ -116,7 +133,7 @@ $("#link_selesai").click(function (e) {
     title: "Apakah anda yakin?",
     text: "data pemesanan akan diakhiri",
     icon: "question",
-    confirmButtonText: "akhiri",
+    confirmButtonText: "Akhiri",
     cancelButtonColor: "#d33",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
@@ -138,7 +155,29 @@ $("#link_setujui").click(function (e) {
     title: "Apakah anda yakin?",
     text: "setujui pemesanan",
     icon: "question",
-    confirmButtonText: "setujui",
+    confirmButtonText: "Setujui",
+    cancelButtonColor: "#d33",
+    showCancelButton: true,
+    confirmButtonColor: "#08a10b",
+    timer: 10000,
+  }).then((result) => {
+    if (result.value) {
+      document.location.href = href;
+    }
+  });
+});
+
+// sweetalert 2
+$("#link_batalkan").click(function (e) {
+  console.log("clicked");
+  e.preventDefault();
+  const href = $(this).attr("href");
+
+  Swal.fire({
+    title: "Apakah anda yakin?",
+    text: "setelah proses ini, data pemesanan tidak lagi valid dan tidak dapat diubah",
+    icon: "question",
+    confirmButtonText: "Batalkan",
     cancelButtonColor: "#d33",
     showCancelButton: true,
     confirmButtonColor: "#08a10b",

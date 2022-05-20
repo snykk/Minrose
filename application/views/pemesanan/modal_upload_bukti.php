@@ -14,8 +14,9 @@
                     <div class="mt-3">
                         <p class="text-secondary mb-1">upload bukti transfer</p>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" style="margin-left: 100px;" id="image" name="image" value="<?= set_value('image'); ?>">
-                        </div>
+                            <input type="file" class="form-control" id="image" name="image" value="<?= set_value('image'); ?>">
+                            <?= form_error('image', '<small class="text-danger pl-3">', '</small>'); ?>
+                        </div>	
                     </div>
                 </div>
             </div>

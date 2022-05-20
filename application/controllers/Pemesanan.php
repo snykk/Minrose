@@ -77,7 +77,7 @@ class Pemesanan extends CI_Controller
             $this->db->insert('pemesanan', $data);
 
             $this->session->set_flashdata('message', 
-            '<div class="alert alert-success d-flex justify-content-between align-items-center" role="alert">
+            '<div class="alert alert-success d-flex justify-content-between align-items-center mt-3" role="alert">
                 <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
                 <div> Data pemesanan <strong>berhasil</strong> ditambahkan </div>
                 <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -248,7 +248,7 @@ class Pemesanan extends CI_Controller
         if ($data["pemesanan"][0]["jumlah_produk"] == $this->input->post("jumlah_produk")  && $data["pemesanan"][0]["alamat_pemesanan"] == $this->input->post("alamat_pemesanan") && !($_FILES['image']['name'])) {
             $this->session->set_flashdata(
                 'message', 
-                '<div class="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
+                '<div class="alert alert-danger d-flex justify-content-between align-items-center mt-3" role="alert">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                     <div>
                     Perubahan <strong>dibatalkan</strong>, tidak ada data yang diubah
@@ -322,7 +322,7 @@ class Pemesanan extends CI_Controller
             $this->db->update('pemesanan');
 
             $this->session->set_flashdata('message', 
-            '<div class="alert alert-success d-flex justify-content-between align-items-center" role="alert">
+            '<div class="alert alert-success d-flex justify-content-between align-items-center mt-3" role="alert">
                 <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
                 <div> Data pemesanan <strong>berhasil</strong> diubah </div>
                 <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -334,7 +334,6 @@ class Pemesanan extends CI_Controller
     public function ulasan() {
         $data['title'] = 'Ubah Pemesanan';
         $data['css'] = 'pemesanan';
-        // $data['js'] = 'pemesanan';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         $this->load->view('templates/header', $data);
@@ -390,7 +389,7 @@ class Pemesanan extends CI_Controller
 
                 $this->session->set_flashdata(
                     'message', 
-                    '<div class="alert alert-success d-flex justify-content-between align-items-center" role="alert">
+                    '<div class="alert alert-success d-flex justify-content-between align-items-center mt-3" role="alert">
                         <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
                         <div> Bukti transfer <strong>berhasil</strong> diupload </div>
                         <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -401,6 +400,18 @@ class Pemesanan extends CI_Controller
             } else {
                 echo $this->upload->display_errors();
             }
+        } else {
+            $this->session->set_flashdata(
+                'message', 
+                '<div class="alert alert-danger d-flex justify-content-between align-items-center mt-3" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                    <div>
+                    Upload bukti <strong>gagal</strong> tidak ada gambar yang diupload ke sistem
+                    </div>
+                    <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>'
+            ); 
+            redirect("pemesanan/data_pemesanan");
         }
     }
 
@@ -424,7 +435,7 @@ class Pemesanan extends CI_Controller
         if ($pemesanan[0]["id_status"] == 1) {
             $this->session->set_flashdata(
                 'message', 
-                '<div class="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
+                '<div class="alert alert-danger d-flex justify-content-between align-items-center mt-3" role="alert">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                     <div>
                     Aksi <strong>dibatalkan</strong> status pemesanan sebelumnya sudah disetujui
@@ -440,7 +451,7 @@ class Pemesanan extends CI_Controller
         if ($pemesanan[0]["bukti_transfer"] == "default.png") {
             $this->session->set_flashdata(
                 'message', 
-                '<div class="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
+                '<div class="alert alert-danger d-flex justify-content-between align-items-center mt-3" role="alert">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                     <div>
                     Aksi <strong>dibatalkan</strong> tidak ada bukti transfer di database
@@ -455,7 +466,7 @@ class Pemesanan extends CI_Controller
         if ($pemesanan[0]["stok_produk"] - $pemesanan[0]["jumlah_produk"] < 0) {
             $this->session->set_flashdata(
                 'message', 
-                '<div class="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
+                '<div class="alert alert-danger d-flex justify-content-between align-items-center mt-3" role="alert">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                     <div>
                     [Stok tidak tersedia] <strong> gagal </strong> mengubah status pemesanan
@@ -484,7 +495,7 @@ class Pemesanan extends CI_Controller
 
         $this->session->set_flashdata(
             'message', 
-            '<div class="alert alert-success d-flex justify-content-between align-items-center" role="alert">
+            '<div class="alert alert-success d-flex justify-content-between align-items-center mt-3" role="alert">
                 <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
                 <div> Status pemesanan <strong>berhasil</strong> diubah </div>
                 <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -514,7 +525,7 @@ class Pemesanan extends CI_Controller
         if ($pemesanan[0]["id_status"] == 3) {
             $this->session->set_flashdata(
                 'message', 
-                '<div class="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
+                '<div class="alert alert-danger d-flex justify-content-between align-items-center mt-3" role="alert">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                     <div>
                     Aksi <strong>dibatalkan</strong> status pemesanan sebelumnya sudah disetujui
@@ -544,7 +555,7 @@ class Pemesanan extends CI_Controller
 
         $this->session->set_flashdata(
             'message', 
-            '<div class="alert alert-success d-flex justify-content-between align-items-center" role="alert">
+            '<div class="alert alert-success d-flex justify-content-between align-items-center mt-3" role="alert">
                 <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
                 <div> Status pemesanan <strong>berhasil</strong> diubah </div>
                 <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -576,12 +587,43 @@ class Pemesanan extends CI_Controller
 
         $this->session->set_flashdata(
             'message', 
-            '<div class="alert alert-success d-flex justify-content-between align-items-center" role="alert">
+            '<div class="alert alert-success d-flex justify-content-between align-items-center mt-3" role="alert">
                 <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
                 <div> Transaksi pemesanan <strong>berhasil</strong> diakhiri </div>
                 <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>'
         );
         redirect("pemesanan/riwayat_pemesanan");
+    }
+
+    public function dibatalkan() {
+
+        // action akan dilempar ke status 403 jika diakses oleh role yang tidak berwenang
+        if ($this->session->userdata('role_id') == 1) {
+            redirect('auth/blocked');
+        }
+
+        $id_pemesanan = $_GET["id"];
+
+        // ubah status di tabel pemesanan
+        $set_pemesanan = [
+            "id_status" => 5,
+            "id_catatan" => 5,
+            "alasan_penolakan" => null,
+        ];
+
+        $this->db->set($set_pemesanan);
+        $this->db->where("id", $id_pemesanan);
+        $this->db->update('pemesanan');
+
+        $this->session->set_flashdata(
+            'message', 
+            '<div class="alert alert-success d-flex justify-content-between align-items-center mt-3" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                <div> Transaksi pemesanan <strong>berhasil</strong> dibatalkan </div>
+                <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>'
+        );
+        redirect("pemesanan/data_pemesanan");
     }
 }
