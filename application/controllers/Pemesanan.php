@@ -123,7 +123,6 @@ class Pemesanan extends CI_Controller
         $this->load->view('templates/sidebar_footer');
         $this->load->view('pemesanan/modal_upload_bukti');
         $this->load->view('pemesanan/modal_detail_data_pemesanan', $data);
-        $this->load->view('pemesanan/modal_ubah_data_pemesanan');
         $this->load->view('pemesanan/modal_pemesanan');
         $this->load->view('pemesanan/modal_upload_bukti_ditolak.php');
         $this->load->view('pemesanan/modal_penolakan.php');
@@ -169,7 +168,6 @@ class Pemesanan extends CI_Controller
         $this->load->view('pemesanan/data_pemesanan', $data);
         $this->load->view('templates/sidebar_footer');
         $this->load->view('pemesanan/modal_detail_data_pemesanan', $data);
-        $this->load->view('pemesanan/modal_ubah_data_pemesanan');
         $this->load->view('pemesanan/modal_pemesanan');
         $this->load->view('pemesanan/modal_upload_bukti_ditolak.php');
         $this->load->view('templates/modal_logout');
@@ -329,25 +327,6 @@ class Pemesanan extends CI_Controller
             </div>');
             redirect('pemesanan/data_pemesanan');
         }
-    }
-
-    public function ulasan() {
-        $data['title'] = 'Ubah Pemesanan';
-        $data['css'] = 'pemesanan';
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/topbar', $data);
-
-        if ($this->session->userdata('role_id') == 1) {
-            $this->load->view('templates/sidebar_admin', $data);
-        } else {
-            $this->load->view('templates/sidebar_user', $data);
-        }
-        $this->load->view('pemesanan/ulasan');
-        $this->load->view('templates/sidebar_footer');
-        $this->load->view('templates/modal_logout');
-        $this->load->view('templates/footer');
     }
 
     public function getBuktiTransfer() {
