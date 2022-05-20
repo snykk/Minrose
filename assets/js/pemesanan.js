@@ -20,6 +20,7 @@ $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
     method: "post",
     dataType: "json",
     success: function (response) {
+      console.log(response);
       $("#username_detail").html("@" + response[0].username);
       $("#tanggal_dipesan_detail").html(response[1]);
       $("#jumlah_produk_detail").html(response[0].jumlah_produk);
@@ -31,7 +32,7 @@ $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
         .addClass("spinner-grow spinner-grow-sm text-" + response[0].style_status);
       $("#bank_detail").html(response[0].nama_bank);
       $("#no_rekening_detail").html(response[0].no_rekening);
-      $("#catatan_transaksi_detail").html(response[0].catatan_pemesanan);
+      $("#catatan_transaksi_detail").html((response[0].alasan_penolakan) ? response[0].alasan_penolakan :response[0].catatan_pemesanan);
       $("#total_harga_detail").html(response[0].total_harga);
       $("#bukti_transfer_detail").attr("src", "/Project-PPL/assets/img/bukti/" + response[0].bukti_transfer);
       $("#image_detail").attr("src", "/Project-PPL/assets/img/produk/" + response[0].image_produk);

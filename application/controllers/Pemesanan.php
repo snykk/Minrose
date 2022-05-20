@@ -19,7 +19,7 @@ class Pemesanan extends CI_Controller
 
         $data['title'] = 'Buat Pemesanan';
         $data['css'] = 'pemesanan';
-        $data['js'] = 'pemesananss';
+        $data['js'] = 'pemesanan';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         if (isset($_GET["id"])){
@@ -90,7 +90,7 @@ class Pemesanan extends CI_Controller
     public function data_pemesanan() {
         $data['title'] = 'Data Pemesanan';
         $data['css'] = 'pemesanan';
-        $data['js'] = 'pemesananss'; 
+        $data['js'] = 'pemesanan'; 
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         // prepare data pemesanan
@@ -134,7 +134,7 @@ class Pemesanan extends CI_Controller
     public function riwayat_pemesanan() {
         $data['title'] = 'Riwayat Pemesanan';
         $data['css'] = 'pemesanan';
-        $data['js'] = 'pemesananss'; 
+        $data['js'] = 'pemesanan'; 
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         // prepare data pemesanan
@@ -187,7 +187,7 @@ class Pemesanan extends CI_Controller
         // $result = $this->db->query("SELECT * FROM produk WHERE id={$produk_id}");
         // array_push($data, $result->row());
         
-        $this->db->select('pemesanan.id as id_pemesanan, produk.image as image_produk, status_pemesanan, produk.nama as nama_produk, metode_pembayaran, jumlah_produk, total_harga, catatan_pemesanan, metode_pembayaran, username, total_harga, pemesanan.data_dibuat as tanggal_dipesan, pemesanan.alamat as alamat_pemesanan, nama_bank, no_rekening, bukti_transfer, status.style as style_status, status.id as id_status');
+        $this->db->select('pemesanan.id as id_pemesanan, produk.image as image_produk, status_pemesanan, produk.nama as nama_produk, metode_pembayaran, jumlah_produk, total_harga, catatan_pemesanan, metode_pembayaran, username, total_harga, pemesanan.data_dibuat as tanggal_dipesan, pemesanan.alamat as alamat_pemesanan, nama_bank, no_rekening, bukti_transfer, status.style as style_status, status.id as id_status, alasan_penolakan');
         $this->db->from('pemesanan');
         $this->db->join('produk', 'pemesanan.id_produk=produk.id');
         $this->db->join('user', 'pemesanan.id_user=user.id');
@@ -212,7 +212,7 @@ class Pemesanan extends CI_Controller
         // set link files data
         $data['title'] = 'Ubah Pemesanan';
         $data['css'] = 'pemesanan';
-        $data['js'] = 'pemesananss';
+        $data['js'] = 'pemesanan';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         // set database data
@@ -329,6 +329,26 @@ class Pemesanan extends CI_Controller
             </div>');
             redirect('pemesanan/data_pemesanan');
         }
+    }
+
+    public function ulasan() {
+        $data['title'] = 'Ubah Pemesanan';
+        $data['css'] = 'pemesanan';
+        // $data['js'] = 'pemesanan';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/topbar', $data);
+
+        if ($this->session->userdata('role_id') == 1) {
+            $this->load->view('templates/sidebar_admin', $data);
+        } else {
+            $this->load->view('templates/sidebar_user', $data);
+        }
+        $this->load->view('pemesanan/ulasan');
+        $this->load->view('templates/sidebar_footer');
+        $this->load->view('templates/modal_logout');
+        $this->load->view('templates/footer');
     }
 
     public function getBuktiTransfer() {
