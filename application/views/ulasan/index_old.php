@@ -4,7 +4,7 @@
     <ol class="breadcrumb">
       <li class="breadcrumb-item">Home</li>
       <li class="breadcrumb-item">Ulasan</li>
-      <li class="breadcrumb-item active" aria-current="page">Produk</li>
+      <li class="breadcrumb-item active" aria-current="page">Rincian</li>
     </ol>
   </nav>
   <!-- Tutup hierarki -->
@@ -142,7 +142,7 @@
                     </div>
                     <div class="col-md-6">
                       <div class="ranking">
-                        <h6 class="text-display-7">Rincian Peringkat</h6>
+                        <h6 class="text-display-7">Rincian Rating</h6>
                         <ul>
                           <li>
                             Penilaian terhadap layanan<span>4.9<span class="review-star rate-10 show-one"></span></span>

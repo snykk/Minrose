@@ -1,3 +1,4 @@
+console.log("hloo");
 // counter order summary [buat ]
 function myCounter() {
   var num = document.getElementById("jumlah_produk");
@@ -62,6 +63,10 @@ $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
       });
 
       $("#link_batalkan").each(function () {
+        // btn batalkan akan dihilangkan jika id status selain pending
+        if (response[0].id_status != 2) {
+          $("#btn_batalkan_pemesanan").css("display", "none");
+        }
         this.href += "?id=" + response[0].id_pemesanan;
       });
 

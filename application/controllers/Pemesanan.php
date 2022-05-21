@@ -137,7 +137,7 @@ class Pemesanan extends CI_Controller
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         // prepare data pemesanan
-        $this->db->select('pemesanan.id as id_pemesanan, produk.image as image, status.style as style_status, status_pemesanan, produk.nama as nama_produk, metode_pembayaran, jumlah_produk, total_harga, catatan_pemesanan, metode_pembayaran, username, status.id as id_status, pemesanan.data_dibuat as tanggal_pemesanan, alasan_penolakan');
+        $this->db->select('pemesanan.id as id_pemesanan, produk.image as image, status.style as style_status, status_pemesanan, produk.nama as nama_produk, metode_pembayaran, jumlah_produk, total_harga, catatan_pemesanan, metode_pembayaran, username, status.id as id_status, pemesanan.data_dibuat as tanggal_pemesanan, alasan_penolakan, produk.id as id_produk');
         $this->db->from('pemesanan');
         $this->db->join('produk', 'pemesanan.id_produk=produk.id');
         $this->db->join('user', 'pemesanan.id_user=user.id');

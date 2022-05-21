@@ -68,7 +68,15 @@
                                     </div>
                                 </a>
                             <?php endif; ?>
-                        </div>
+                            
+                            <?php if (isset($row["id_produk"]) && $this->session->userdata('role_id') == 2) :?>
+                                <div>
+                                    <a href="<?= base_url("ulasan?id_produk=") . $row["id_produk"]; ?>" class="link-info" style="text-decoration: none">
+                                        Ulas sekarang!
+                                    </a>
+                                </div>
+                            <?php endif; ?>
+                            </div>
                         
                         <?php if ($this->session->userdata('role_id') == 1) {
                             $dest = "home/customers?username=" . $row["username"];

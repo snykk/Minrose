@@ -34,7 +34,7 @@
                                         <a href="<?= base_url("produk/ubah_produk?id=" . $row->id)?>"><button  class="btn btn-primary btn-sm ubah" >Ubah</button></a>
                                     <?php endif;?>
                                     <?php if ($user['role_id'] == 2) :?>
-                                        <a href="<?= base_url("ulasan/produk?id=" . $row->id)?>"><button class="btn btn-primary btn-sm ubah" >Ulasan</button></a>
+                                        <a href="<?= base_url("ulasan?id_produk=" . $row->id)?>"><button class="btn btn-primary btn-sm ubah" >Ulasan</button></a>
                                         <a href="<?= base_url("pemesanan/buat_pemesanan?id=" . $row->id)?>"><button class="btn btn-primary btn-sm ubah" >Beli</button></a>
                                     <?php endif;?>
                                 </div>
