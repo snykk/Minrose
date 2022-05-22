@@ -1,7 +1,5 @@
 <?php
 
-use LDAP\Result;
-
 class Ulasan_model extends CI_model {
 
     public function getProduk() {
@@ -58,7 +56,7 @@ class Ulasan_model extends CI_model {
         return $this->db->get_where("ulasan", ["rating" => $star_value, "id_produk" => $id_produk])->num_rows();
     }
 
-    public function getIsPurchased($id_user) {
+    public function isPurchased($id_user) {
         if (isset($_GET["id_produk"])){
             $id_produk =   $_GET["id_produk"];
         } else {

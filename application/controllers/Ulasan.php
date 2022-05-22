@@ -13,7 +13,6 @@ class Ulasan extends CI_Controller
     public function index () {
         $data['title'] = 'Ulasan';
         $data['css'] = 'ulasan';
-        $data['scss'] = 'rating';
 
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
@@ -21,7 +20,7 @@ class Ulasan extends CI_Controller
         $data["ulasan"] = $this->Ulasan_model->getAllUlasan();
         $data["rateStar"] = $this->Ulasan_model->getRateStar(); 
 
-        $data["isPurchased"] = $this->Ulasan_model->getIsPurchased($data['user']["id"]);
+        $data["isPurchased"] = $this->Ulasan_model->isPurchased($data['user']["id"]);
 
         $data["starCounter"] = [];
         $data["sum"] = 0;
@@ -31,7 +30,6 @@ class Ulasan extends CI_Controller
             $data["sum"] += $value;
         }
 
-        $this->form_validation->set_rules('star-rating', 'Rating','required|trim', ["required"=>"Rating tidak boleh kosong"]);
         $this->form_validation->set_rules('ulasan', 'Ulasan','required|trim', ["required"=>"Ulasan tidak boleh kosong"]);
 
         if ($this->form_validation->run() == false) {
