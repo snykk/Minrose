@@ -564,6 +564,22 @@ class Pemesanan extends CI_Controller
         $this->db->where("id", $id);
         $this->db->update('pemesanan');
 
+        $this->db->select("jumlah_produk, produk.nama as nama_produk, total_harga");
+        $this->db->from("pemesanan");
+        $this->db->join("produk", "pemesanan.id_produk=produk.id");
+        $result = $this->db->get()->row_array();
+
+
+        $data_pemasukan = [
+            "kategori" => "Penjualan produk",
+            "keterangan" => "Hasil dari penjualan produk " . $result["nama_produk"] . " sebanyak " . $result["jumlah_produk"] . " unit",
+            "pemasukan" => $result["total_harga"],
+            "pengeluaran" => null,
+            "data_dibuat" => time(),
+        ];
+
+        $this->db->insert('transaksi', $data_pemasukan);
+
         $this->session->set_flashdata(
             'message', 
             '<div class="alert alert-success d-flex justify-content-between align-items-center mt-3" role="alert">
