@@ -7,6 +7,8 @@ class Auth extends CI_Controller
     {
         parent::__construct();
         $this->load->library('form_validation');
+        $this->load->model("Auth_model");
+        $this->load->model("Global_model");
     }
 
     public function index()
@@ -53,27 +55,15 @@ class Auth extends CI_Controller
                 //     redirect('user');
                 // }
             } else {
-                $this->session->set_flashdata(
-                    'message', 
-                    '<div class="alert alert-danger d-flex align-items-center" role="alert">
-                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                        <div style="margin-left:1rem">
-                        Password <strong>salah!</strong>
-                        </div>
-                    </div>'
-                );
+                $message = "Password <strong>salah!</strong>";
+                $this->Global_model->flasherAuth($message, gagal:true);
+                
                 redirect('auth');
             }
         } else {
-            $this->session->set_flashdata(
-                'message', 
-                '<div class="alert alert-danger d-flex align-items-center" role="alert">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                    <div style="margin-left:1rem">
-                    Email <strong>belum</strong> teregistrasi!
-                    </div>
-                </div>'
-            );
+            $message = "Email <strong>belum</strong> teregistrasi!";
+            $this->Global_model->flasherAuth($message, gagal:true);
+
             redirect('auth');
         }
     }
@@ -100,7 +90,7 @@ class Auth extends CI_Controller
         $this->form_validation->set_rules('verif-password', 'Password', 'required|trim|matches[password]',[
             'matches' =>'Password tidak sama',
         ]);
-        $this->form_validation->set_rules('no_hp', 'No. HP', 'required|trim|is_unique[user.no_hp]', ['is_unique' => 'no hp ini telah terdaftar silahkan gunakan username lain!']);
+        $this->form_validation->set_rules('no_hp', 'No. HP', 'required|trim|is_unique[user.no_hp]', ['is_unique' => 'no hp ini telah terdaftar silahkan gunakan nomor hp lain!']);
         $this->form_validation->set_rules('alamat', 'Alamant', 'required|trim');
 
         if ($this->form_validation->run() == false) {
@@ -110,28 +100,17 @@ class Auth extends CI_Controller
             $this->load->view('auth/registration');
             $this->load->view('templates/auth_footer');
         } else {
-            $email = $this->input->post('email', true);
-            $data = [
-                'nama_lengkap' => htmlspecialchars($this->input->post('nama_lengkap', true)),
-                'username' => htmlspecialchars($this->input->post('username', true)),
-                'email' => htmlspecialchars($email),
-                'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
-                'jenis_kelamin' => htmlspecialchars($this->input->post('jenis_kelamin', true)),
-                'no_hp' => htmlspecialchars($this->input->post('no_hp', true)),
-                'role_id' => 2,
-                'alamat' => htmlspecialchars($this->input->post('alamat', true)),
-                'image' => 'default.jpg',
-                'data_dibuat' => time()
-            ];
+            if ($this->Auth_model->buatAkun()) {
+                $message = "Selamat registrasi akun anda <strong>berhasil</strong>";
+                $this->Global_model->flasherAuth($message, berhasil:true);
 
-            $this->db->insert('user', $data);
+                redirect('auth');
+            } else {
+                $message = "Registrasi akun anda <strong>gagal</strong>";
+                $this->Global_model->flasherAuth($message, gagal:true);
 
-            $this->session->set_flashdata('message', 
-            '<div class="alert alert-success d-flex align-items-center" role="alert">
-                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-                <div style="margin-left:1rem"> Selamat registrasi akun anda <strong>berhasil</strong> </div>
-            </div>');
-            redirect('auth');
+                redirect('registration');
+            }
         }
     }
 
@@ -141,15 +120,13 @@ class Auth extends CI_Controller
         $this->session->unset_userdata('email');
         $this->session->unset_userdata('role_id');
 
-        $this->session->set_flashdata('message', 
-            '<div class="alert alert-success d-flex align-items-center" role="alert">
-                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-                <div style="margin-left:1rem"> Session berakhir, anda <strong>berhasil</strong> logout! </div>
-            </div>');
+        $message = "Session berakhir, anda <strong>berhasil</strong> logout!";
+        $this->Global_model->flasherAuth($message, berhasil:true);
+
         redirect('auth');
     }
 
-
+    
     public function blocked()
     {
         $this->load->view('auth/blocked');

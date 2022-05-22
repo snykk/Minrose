@@ -18,4 +18,22 @@ class Global_model extends CI_model {
             <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>');
     }
+
+    public function flasherAuth($message, $berhasil = false, $gagal = false) {
+        if ($berhasil == true) {
+            $status = "success";
+            $logo = "check-circle-fill";
+        } else if ($gagal == true) {
+            $status = "danger";
+            $logo = "exclamation-triangle-fill";
+        }
+
+        $this->session->set_flashdata(
+            'message', 
+            '<div class="alert alert-' . $status . ' d-flex align-items-center" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#' . $logo .'"/></svg>
+                <div style="margin-left:1rem">' . $message .'</div>
+            </div>'
+        );
+    }
 }

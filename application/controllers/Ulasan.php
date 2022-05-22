@@ -66,7 +66,7 @@ class Ulasan extends CI_Controller
             $message = "<div> Ulasan <strong>berhasil</strong> ditambahkan </div>";
             $this->Global_model->flasher($message, berhasil:true);
             
-            redirect('ulasan?id_produk=' . $this->input->post("id_produk", true));
+            redirect('ulasan?id_produk=' . $id_produk);
         }
     }
 }
