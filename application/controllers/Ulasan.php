@@ -17,16 +17,18 @@ class Ulasan extends CI_Controller
 
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
-        $data["produk"] = $this->Ulasan_model->getProduk();
-        $data["ulasan"] = $this->Ulasan_model->getAllUlasan();
-        $data["rateStar"] = $this->Ulasan_model->getRateStar(); 
+        $id_produk = $this->Ulasan_model->idChooser();
 
-        $data["isPurchased"] = $this->Ulasan_model->isPurchased($data['user']["id"]);
+        $data["produk"] = $this->Ulasan_model->getProduk($id_produk);
+        $data["ulasan"] = $this->Ulasan_model->getAllUlasan($id_produk);
+        $data["rateStar"] = $this->Ulasan_model->getRateStar($id_produk); 
+
+        $data["isPurchased"] = $this->Ulasan_model->isPurchased($data['user']["id"], $id_produk);
 
         $data["starCounter"] = [];
         $data["sum"] = 0;
         for ($i = 1 ; $i <= 5; $i++) {
-            $value = $this->Ulasan_model->getQtyByStarValue($i);
+            $value = $this->Ulasan_model->getQtyByStarValue($i, $id_produk);
             array_push($data["starCounter"],  $value);
             $data["sum"] += $value;
         }
@@ -42,7 +44,13 @@ class Ulasan extends CI_Controller
             } else {
                 $this->load->view('templates/sidebar_user', $data);
             }
-            $this->load->view('ulasan/index', $data);
+
+            if ($id_produk == false) {
+                $this->load->view("ulasan/blank_produk");
+            } else {
+                $this->load->view('ulasan/index', $data);
+            }
+       
             $this->load->view('templates/sidebar_footer');
             $this->load->view('templates/modal_logout');
             $this->load->view('templates/footer');
@@ -52,14 +60,12 @@ class Ulasan extends CI_Controller
     }
 
     private function _buat_ulasan() {
-        if ($this->Ulasan_model->tambahUlasan()) {
+        $id_produk = $this->Ulasan_model->idChooser();
+
+        if ($this->Ulasan_model->tambahUlasan($id_produk)) {
             $message = "<div> Ulasan <strong>berhasil</strong> ditambahkan </div>";
-            $this->session->set_flashdata('message', 
-            '<div class="alert alert-success d-flex justify-content-between align-items-center mt-3" role="alert">
-                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-                <div> Ulasan <strong>berhasil</strong> ditambahkan </div>
-                <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>');
+            $this->Global_model->flasher($message, berhasil:true);
+            
             redirect('ulasan?id_produk=' . $this->input->post("id_produk", true));
         }
     }

@@ -2,38 +2,31 @@
 
 class Ulasan_model extends CI_model {
 
-    public function getProduk() {
-        if (isset($_GET["id_produk"])){
-            return $this->db->get_where('produk', ['id' => $_GET["id_produk"]])->row_array();
+    public function idChooser() {
+        if ( isset($_GET["id_produk"]) ){
+            return $_GET["id_produk"];
+        } else if ( $this->input->post("id_produk") !== null ) {
+            return $this->input->post("id_produk");
         } else {
-            return  $this->db->get_where('produk', ['id' => $this->input->post("id_produk")])->row_array();
+            return false;
         }
     }
 
-    public function getAllUlasan() {
+    public function getProduk($id_produk) {
+        return $this->db->get_where('produk', ['id' => $id_produk])->row_array();
+    }
+
+    public function getAllUlasan($id_produk) {
         $this->db->select("rating, ulasan, ulasan.data_dibuat as upload_ulasan, username, user.image as profile_user");
         $this->db->from("ulasan");
         $this->db->join("user", "ulasan.id_user=user.id");
         $this->db->join("produk", "ulasan.id_produk=produk.id");
-        
-
-        if (isset($_GET["id_produk"])){
-            $this->db->where("id_produk",  $_GET["id_produk"]);
-        } else {
-            $this->db->where("id_produk", $this->input->post("id_produk"));
-        }
+        $this->db->where("id_produk",  $id_produk);
 
         return $this->db->get()->result_array();
     }
 
-    public function getRateStar() {
-
-        if (isset($_GET["id_produk"])){
-           $id_produk =   $_GET["id_produk"];
-        } else {
-           $id_produk =   $this->input->post("id_produk");
-        }
-        
+    public function getRateStar($id_produk) {        
         $this->db->select_sum('rating');
         $this->db->where('id_produk', $id_produk);
         $jumlah = $this->db->get('ulasan')->row_array()["rating"];
@@ -46,23 +39,11 @@ class Ulasan_model extends CI_model {
         return $jumlah/$kuantitas; 
     }
 
-    public function getQtyByStarValue($star_value) {
-        if (isset($_GET["id_produk"])){
-            $id_produk =   $_GET["id_produk"];
-        } else {
-            $id_produk =   $this->input->post("id_produk");
-        }
-
+    public function getQtyByStarValue($star_value, $id_produk) {
         return $this->db->get_where("ulasan", ["rating" => $star_value, "id_produk" => $id_produk])->num_rows();
     }
 
-    public function isPurchased($id_user) {
-        if (isset($_GET["id_produk"])){
-            $id_produk =   $_GET["id_produk"];
-        } else {
-            $id_produk =   $this->input->post("id_produk");
-        }
-
+    public function isPurchased($id_user, $id_produk) {
         $result = $this->db->get_where("pemesanan", ["id_produk" => $id_produk, "id_user" => $id_user, "is_done" => true])->num_rows();
 
         if ($result != 0) {
@@ -72,11 +53,10 @@ class Ulasan_model extends CI_model {
         }
     }
 
-    public function tambahUlasan() {
+    public function tambahUlasan($id_produk) {
         try {
             $rating = $this->input->post("star-rating", true);
             $ulasan = $this->input->post("ulasan", true);
-            $id_produk = $this->input->post("id_produk", true);
 
             $id_user = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row()->id;
 
