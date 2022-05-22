@@ -7,6 +7,8 @@ class Profile extends CI_Controller
     {
         parent::__construct();
         $this->load->library('form_validation');
+        $this->load->model("Profile_model");
+        $this->load->model("Global_model");
     }
 
     public function user_profile()
@@ -48,20 +50,12 @@ class Profile extends CI_Controller
         }
 
         // proses akan diredirect jika tidak ada perubahan
-        if ($this->input->post('email') == $data["user"]["email"] && $this->input->post('username') == $data["user"]["username"] && $this->input->post('nama_lengkap') == $data["user"]["nama_lengkap"] && $this->input->post('jenis_kelamin') == $data["user"]["jenis_kelamin"] && $this->input->post('no_hp') == $data["user"]["no_hp"] && $this->input->post('alamat') == $data["user"]["alamat"] && !($_FILES['image']['name'])) {
-            $this->session->set_flashdata(
-                'message', 
-                '<div class="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                    <div>
-                    Perubahan <strong>dibatalkan</strong>, tidak ada data yang diubah
-                    </div>
-                    <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>'
-            );
+        if ($this->Profile_model->isSameData($data["user"])) {
+            $message = "<div>Perubahan <strong>dibatalkan</strong>, tidak ada data yang diubah</div>";
+            $this->Global_model->flasher($message, gagal:true);
+
             redirect('profile/edit_profile');
         }
-
 
         $this->form_validation->set_rules('nama_lengkap', 'Nama Lengkap', 'required|trim');
         $this->form_validation->set_rules('username', 'Username', 'required|trim' . $is_unique_username, ['is_unique' => 'username ini telah terdaftar silahkan gunakan username lain!']);
@@ -84,48 +78,17 @@ class Profile extends CI_Controller
             $this->load->view('templates/modal_logout');
             $this->load->view('templates/footer');
         } else {
-            $email = $this->input->post('email');
+            if ($this->Profile_model->editProfile($data["user"])) {
+                $message = "<div> Profil anda <strong>berhasil</strong> diubah </div>";
+                $this->Global_model->flasher($message, berhasil:true);
 
-            // cek jika ada gambar yang akan diupload
-            $upload_image = $_FILES['image']['name'];
+                redirect('home');
+            } else {
+                $message = "<div>Server error dimohon untuk coba lagi!</div>";
+                $this->Global_model->flasher($message, gagal:true);
 
-            if ($upload_image) {
-                $config['allowed_types'] = 'gif|jpg|png';
-                $config['max_size']      = '2048';
-                $config['upload_path'] = './assets/img/profile/';
-
-                $this->load->library('upload', $config);
-
-                if ($this->upload->do_upload('image')) {
-                    $old_image = $data['user']['image'];
-                    if ($old_image != 'default.jpg') {
-                        unlink(FCPATH . 'assets/img/profile/' . $old_image);
-                    }
-                    $new_image = $this->upload->data('file_name');
-                    $this->db->set('image', $new_image);
-                } else {
-                    echo $this->upload->display_errors();
-                }
+                redirect('profile/edit_profile');
             }
-
-            $data = [
-                'nama_lengkap' => htmlspecialchars($this->input->post('nama_lengkap', true)),
-                'username' => htmlspecialchars($this->input->post('username', true)),
-                'no_hp' => htmlspecialchars($this->input->post('no_hp', true)),
-                'alamat' => htmlspecialchars($this->input->post('alamat', true)),
-            ];
-
-            $this->db->set($data);
-            $this->db->where('email', $email);
-            $this->db->update('user');
-
-            $this->session->set_flashdata('message', 
-            '<div class="alert alert-success d-flex justify-content-between align-items-center" role="alert">
-                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-                <div> Profil anda <strong>berhasil</strong> diubah </div>
-                <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>');
-            redirect('home');
         }
     }
 
@@ -158,44 +121,25 @@ class Profile extends CI_Controller
             $current_password = $this->input->post('current_password');
             $new_password = $this->input->post('new_password1');
             if (!password_verify($current_password, $data['user']['password'])) {
-                $this->session->set_flashdata(
-                    'message', 
-                    '<div class="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
-                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                        <div>
-                        Password saat ini salah !!!
-                        </div>
-                        <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>'
-                );
+                $message = "<div>Password saat ini salah !!!</div>";
+                $this->Global_model->flasher($message, gagal:true);
+                
+                redirect('profile/ganti_password');
+            } else if ($current_password == $new_password) {
+                $message = "<div>Password baru tidak boleh sama dengan password saat ini !!!</div>";
+                $this->Global_model->flasher($message, gagal:true);
+
                 redirect('profile/ganti_password');
             } else {
-                if ($current_password == $new_password) {
-                    $this->session->set_flashdata(
-                        'message', 
-                        '<div class="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
-                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                            <div>
-                            Password baru tidak boleh sama dengan password saat ini !!!
-                            </div>
-                            <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>'
-                    );
+                if ($this->Profile_model->gantiPassword($new_password)) {
+                    $message = "<div> Password berhasil diubah! </div>";
+                    $this->Global_model->flasher($message, berhasil:true);
+
                     redirect('profile/ganti_password');
                 } else {
-                    // password sudah ok
-                    $password_hash = password_hash($new_password, PASSWORD_DEFAULT);
+                    $message = "<div>Server error dimohon untuk coba lagi!</div>";
+                    $this->Global_model->flasher($message, berhasil:true);
 
-                    $this->db->set('password', $password_hash);
-                    $this->db->where('email', $this->session->userdata('email'));
-                    $this->db->update('user');
-
-                    $this->session->set_flashdata('message', 
-                    '<div class="alert alert-success d-flex justify-content-between align-items-center" role="alert">
-                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-                        <div> Password berhasil diubah! </div>
-                        <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>');
                     redirect('profile/ganti_password');
                 }
             }
