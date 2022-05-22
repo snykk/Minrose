@@ -8,6 +8,7 @@ class Transaksi extends CI_Controller
         parent::__construct();
         $this->load->library('form_validation');
         $this->load->model('Transaksi_model');
+        $this->load->model('Global_model');
     }
 
     public function index() {
@@ -46,6 +47,7 @@ class Transaksi extends CI_Controller
 
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
+        // set rules inputan
         $this->form_validation->set_rules('kategori', 'Kategori','required|trim', ["required"=>"Kategori tidak boleh kosong"]);
         $this->form_validation->set_rules('pengeluaran', 'Pengeluaran','required|trim|numeric',
         [
@@ -53,7 +55,6 @@ class Transaksi extends CI_Controller
             "numeric"=>"data yang diinputkan bukan berupa karakter numeric"
         ]);
         $this->form_validation->set_rules('keterangan', 'Keterangan','required|trim', ["required"=>"Keterangan tidak boleh kosong"]);
-
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/header', $data);
@@ -70,26 +71,16 @@ class Transaksi extends CI_Controller
             $this->load->view('templates/footer');
         } else {
             if ($this->Transaksi_model->tambahPengeluaran()) {
-                $this->session->set_flashdata('message', 
-                '<div class="alert alert-success d-flex justify-content-between align-items-center mt-3" role="alert">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-                    <div> Pengeluaran <strong>berhasil</strong> ditambahkan </div>
-                    <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>');
+
+                $message = "<div> Pengeluaran <strong>berhasil</strong> ditambahkan </div>";
+                $this->Global_model->flasher($message, berhasil : true);
 
                 redirect('transaksi');
 
             } else {
-                $this->session->set_flashdata(
-                'message', 
-                '<div class="alert alert-danger d-flex justify-content-between align-items-center mt-3" role="alert">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                    <div>
-                    Pengeluaran <strong>gagal</strong> ditambahkan
-                    </div>
-                    <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>'
-                );
+
+                $message = "<div>Pengeluaran <strong>gagal</strong> ditambahkan</div>";
+                $this->Global_model->flasher($message, gagal : true);
 
                 redirect('transaksi/tambah_pengeluaran');
             }
@@ -106,7 +97,6 @@ class Transaksi extends CI_Controller
         $data['title'] = 'Ubah Pengeluaran';
         $data["css"] = "transaksi";
         
-
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         if (isset($_GET["id_transaksi"])) {
@@ -120,16 +110,9 @@ class Transaksi extends CI_Controller
         }
 
         if ($this->Transaksi_model->isSameData($data["pengeluaran"])) {
-            $this->session->set_flashdata(
-            'message', 
-            '<div class="alert alert-danger d-flex justify-content-between align-items-center mt-3" role="alert">
-                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                <div>
-                Perubahan <strong>dibatalkan</strong> tidak ada data yang diubah 
-                </div>
-                <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>'
-            );
+
+            $message = "<div>Perubahan <strong>dibatalkan</strong> tidak ada data yang diubah</div>";
+            $this->Global_model->flasher($message, gagal : true);
 
             redirect('transaksi/ubah_pengeluaran?id_transaksi=' . $this->input->post("id_transaksi"));
         }
@@ -139,7 +122,7 @@ class Transaksi extends CI_Controller
         $this->form_validation->set_rules('pengeluaran', 'Pengeluaran','required|trim|numeric',
         [
             "required"=>"Pengeluaran tidak boleh kosong",
-            "numeric"=>"data yang diinputkan bukan berupa karakter numeric"
+            "numeric"=>"Data yang diinputkan bukan berupa karakter numerik"
         ]);
         $this->form_validation->set_rules('keterangan', 'Keterangan','required|trim', ["required"=>"Keterangan tidak boleh kosong"]);
 
@@ -159,26 +142,15 @@ class Transaksi extends CI_Controller
             $this->load->view('templates/footer');
         } else {
             if ($this->Transaksi_model->ubahPengeluaran($this->input->post("id_transaksi"))) {
-                $this->session->set_flashdata('message', 
-                '<div class="alert alert-success d-flex justify-content-between align-items-center mt-3" role="alert">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-                    <div> Pengeluaran <strong>berhasil</strong> diubah </div>
-                    <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>');
+
+                $message = "<div> Data transaksi pengeluaran <strong>berhasil</strong> diubah </div>";
+                $this->Global_model->flasher($message, berhasil : true);
 
                 redirect('transaksi');
-
             } else {
-                $this->session->set_flashdata(
-                'message', 
-                '<div class="alert alert-danger d-flex justify-content-between align-items-center mt-3" role="alert">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                    <div>
-                    Pengeluaran <strong>gagal</strong> diubah
-                    </div>
-                    <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>'
-                );
+
+                $message = "<div>Pengeluaran <strong>gagal</strong> diubah</div>";
+                $this->Global_model->flasher($message, gagal : true);
 
                 redirect('transaksi/ubah_pengeluaran');
             }

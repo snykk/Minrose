@@ -8,6 +8,7 @@ class Ulasan extends CI_Controller
         parent::__construct();
         $this->load->library('form_validation');
         $this->load->model('Ulasan_model');
+        $this->load->model("Global_model");
     }
 
     public function index () {
@@ -52,6 +53,7 @@ class Ulasan extends CI_Controller
 
     private function _buat_ulasan() {
         if ($this->Ulasan_model->tambahUlasan()) {
+            $message = "<div> Ulasan <strong>berhasil</strong> ditambahkan </div>";
             $this->session->set_flashdata('message', 
             '<div class="alert alert-success d-flex justify-content-between align-items-center mt-3" role="alert">
                 <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>

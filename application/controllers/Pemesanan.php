@@ -567,6 +567,7 @@ class Pemesanan extends CI_Controller
         $this->db->select("jumlah_produk, produk.nama as nama_produk, total_harga");
         $this->db->from("pemesanan");
         $this->db->join("produk", "pemesanan.id_produk=produk.id");
+        $this->db->where("pemesanan.id", $id);
         $result = $this->db->get()->row_array();
 
 
