@@ -52,7 +52,7 @@ class Transaksi extends CI_Controller
         $this->form_validation->set_rules('pengeluaran', 'Pengeluaran','required|trim|numeric',
         [
             "required"=>"Pengeluaran tidak boleh kosong",
-            "numeric"=>"data yang diinputkan bukan berupa karakter numeric"
+            "numeric"=>"Data yang diinputkan bukan berupa karakter numeric"
         ]);
         $this->form_validation->set_rules('keterangan', 'Keterangan','required|trim', ["required"=>"Keterangan tidak boleh kosong"]);
 

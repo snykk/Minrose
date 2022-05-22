@@ -8,6 +8,8 @@ class Produk extends CI_Controller
         parent::__construct();
         $this->load->library('form_validation');
         $this->load->helper('url');
+        $this->load->model("Produk_model");
+        $this->load->model("Global_model");
     }
 
     public function index()
@@ -61,9 +63,18 @@ class Produk extends CI_Controller
             'is_unique' => 'Nama produk ini telah ada di daftar produk, silahkan gunakan nama lain!',
             "required" => "Nama produk tidak boleh kosong"
         ]);
-        $this->form_validation->set_rules('stok', 'Stok','required|trim', ["required"=>"Stok tidak boleh kosong"]);
-        $this->form_validation->set_rules('harga', 'Harga', 'required|trim', ["required"=>"Harga tidak boleh kosong"]);
-        $this->form_validation->set_rules('diskon', 'Diskon', 'required|trim', ["required"=>"Diskon tidak boleh kosong"]);
+        $this->form_validation->set_rules('stok', 'Stok','required|trim|numeric', [
+            "required"=>"Stok tidak boleh kosong",
+            "numeric"=>"Data yang diinputkan bukan berupa karakter numeric",
+        ]);
+        $this->form_validation->set_rules('harga', 'Harga', 'required|trim|numeric', [
+            "required"=>"Harga tidak boleh kosong",
+            "numeric"=>"Data yang diinputkan bukan berupa karakter numeric",
+        ]);
+        $this->form_validation->set_rules('diskon', 'Diskon', 'required|trim|numeric', [
+            "required"=>"Diskon tidak boleh kosong",
+            "numeric"=>"Data yang diinputkan bukan berupa karakter numeric",
+        ]);
         $this->form_validation->set_rules('orientasi', 'Orientasi', 'required|trim',["required"=>"Orientasi tidak boleh kosong"]);
         $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'required|trim',["required"=>"Deskripsi tidak boleh kosong"]);
 
@@ -83,44 +94,19 @@ class Produk extends CI_Controller
             $this->load->view('templates/footer', $data);
         } else {
 
-            // cek jika ada gambar yang akan diupload
-            $upload_image = $_FILES['image']['name'];
+            if ($this->Produk_model->tambahProduk()) {
+                $message = "<div> Data produk <strong>berhasil</strong> ditambahkan </div>";
+                $this->Global_model->flasher($message, berhasil:true);
 
-            if ($upload_image) {
-                $config['allowed_types'] = 'gif|jpg|png';
-                $config['max_size']      = '2048';
-                $config['upload_path'] = "./assets/img/produk/";
 
-                $this->load->library('upload', $config);
+                redirect('produk');
+            } else {
+                $message = "<div>Internal server error</div>";
+                $this->Global_model->flasher($message, gagal:true);
 
-                if ($this->upload->do_upload('image')) {
-                    $image = $this->upload->data('file_name');
-                } else {
-                    echo $this->upload->display_errors();
-                }
+
+                redirect('produk');
             }
-
-            $data = [
-                'nama' => $this->input->post('nama',true),
-                'orientasi' => $this->input->post('orientasi',true),
-                'deskripsi' => $this->input->post('deskripsi',true),
-                'harga' => (INT)$this->input->post('harga',true),
-                'stok' => (INT)$this->input->post('stok',true),
-                'diskon' => (FLOAT)$this->input->post('diskon',true),
-                'image' => (isset($image)) ? $image : "default.png",
-                'data_dibuat' => time(),
-                'data_diedit' => time()
-            ];
-
-            $this->db->insert('produk', $data);
-
-            $this->session->set_flashdata('message', 
-            '<div class="alert alert-success d-flex justify-content-between align-items-center" role="alert">
-                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-                <div> Data produk <strong>berhasil</strong> ditambahkan </div>
-                <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>');
-            redirect('produk/index');
         }
     }
 
@@ -151,24 +137,26 @@ class Produk extends CI_Controller
             'is_unique' => 'Nama produk ini telah ada di daftar produk, silahkan gunakan nama lain!',
             "required" => "Nama produk tidak boleh kosong"
         ]);
-        $this->form_validation->set_rules('stok', 'Stok','required|trim', ["required"=>"Stok tidak boleh kosong"]);
-        $this->form_validation->set_rules('harga', 'Harga', 'required|trim', ["required"=>"Harga tidak boleh kosong"]);
-        $this->form_validation->set_rules('diskon', 'Diskon', 'required|trim', ["required"=>"Diskon tidak boleh kosong"]);
+        $this->form_validation->set_rules('stok', 'Stok','required|trim|numeric', [
+            "required"=>"Stok tidak boleh kosong",
+            "numeric"=>"Data yang diinputkan bukan berupa karakter numeric",
+        ]);
+        $this->form_validation->set_rules('harga', 'Harga', 'required|trim|numeric', [
+            "required"=>"Harga tidak boleh kosong",
+            "numeric"=>"Data yang diinputkan bukan berupa karakter numeric",
+        ]);
+        $this->form_validation->set_rules('diskon', 'Diskon', 'required|trim|numeric', [
+            "required"=>"Diskon tidak boleh kosong",
+            "numeric"=>"Data yang diinputkan bukan berupa karakter numeric",
+        ]);
         $this->form_validation->set_rules('orientasi', 'Orientasi', 'required|trim',["required"=>"Orientasi tidak boleh kosong"]);
         $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'required|trim',["required"=>"Deskripsi tidak boleh kosong"]);
 
         // proses akan diredirect jika tidak ada perubahan
-        if ($this->input->post('nama') == $data["produk"]["nama"] && $this->input->post('deskripsi') == $data["produk"]["deskripsi"] && $this->input->post('stok') == $data["produk"]["stok"] && $this->input->post('harga') == $data["produk"]["harga"] && $this->input->post('diskon') == $data["produk"]["diskon"] && $this->input->post('orientasi') == $data["produk"]["orientasi"] && !($_FILES['image']['name'])) {
-            $this->session->set_flashdata(
-                'message', 
-                '<div class="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                    <div>
-                    Perubahan <strong>dibatalkan</strong>, tidak ada data yang diubah
-                    </div>
-                    <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>'
-            );
+        if ( $this->Produk_model->isSameData($data["produk"]) ) {
+            $message = "<div>Perubahan <strong>dibatalkan</strong>, tidak ada data yang diubah</div>";
+            $this->Global_model->flasher($message, gagal:true);
+            
             redirect('produk/ubah_produk?id=' . $data["produk"]["id"]);
         }
 
@@ -186,59 +174,18 @@ class Produk extends CI_Controller
             $this->load->view('templates/modal_logout');
             $this->load->view('templates/footer');
         } else {
-            // mengambil id produk
-            $id = $this->input->post('id',true);
 
-            // cek jika ada gambar yang akan diupload
-            $upload_image = $_FILES['image']['name'];
+            if ($this->Produk_model->ubahProduk()) {
+                $message = "<div>Data produk <strong>berhasil</strong> diubah</div>";
+                $this->Global_model->flasher($message, berhasil:true);
 
-            if ($upload_image) {
-                $config['allowed_types'] = 'gif|jpg|png|jpeg';
-                $config['max_size']      = '2048';
-                $config['upload_path'] = "./assets/img/produk/";
+                redirect('produk/index');
+            } else {
+                $message = "<div>Internal server error</div>";
+                $this->Global_model->flasher($message, gagal:true);
 
-                $this->load->library('upload', $config);
-
-                if ($this->upload->do_upload('image')) {
-
-                    // mengambil image lama menggunakan id produk
-                    $old_image = $this->db->query("SELECT image FROM produk WHERE id={$id}")->row();
-
-                    $new_image = $this->upload->data('file_name');
-
-                    if ($new_image != $old_image->image && $old_image->image != "default.png") {
-                        unlink(FCPATH . 'assets/img/produk/' . $old_image->image);
-                    }
-                    $this->db->set('image', $new_image);
-                } else {
-                    echo $this->upload->display_errors();
-                }
+                redirect('produk/index');
             }
-
-            $data = [
-                'nama' => $this->input->post('nama',true),
-                'orientasi' => $this->input->post('orientasi',true),
-                'deskripsi' => $this->input->post('deskripsi',true),
-                'harga' => (INT)$this->input->post('harga',true),
-                'stok' => (INT)$this->input->post('stok',true),
-                'diskon' => (FLOAT)$this->input->post('diskon',true),
-                'data_diedit' => time()
-            ];
-
-            $this->db->set($data);
-            $this->db->where('id', $id);
-            $this->db->update('produk');
-
-
-            $this->session->set_flashdata(
-                'message', 
-                '<div class="alert alert-success d-flex justify-content-between align-items-center" role="alert">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-                    <div> Data produk <strong>berhasil</strong> diubah </div>
-                    <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>'
-            );
-            redirect('produk/index');
         }
     }
 }
