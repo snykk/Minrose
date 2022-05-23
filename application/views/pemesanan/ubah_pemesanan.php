@@ -48,7 +48,7 @@
                     </div>
                     <div class="text-center text-sm-right">
                       <span style="background: #108d6f; color:white; padding:0.08em 0.4em;border-radius: 0.5em;cursor:pointer"><?= ($this->session->userdata('role_id') == 1) ? "Admin":"User"?></span>
-                      <div class="text-muted"><small>Pesanan dibuat pada <?= date('d F Y', $pemesanan[0]["pesanan_dibuat"]); ?></small></div>
+                      <div class="text-muted"><small>Pesanan dibuat pada <?= date('d F Y', $pemesanan[0]["tanggal_pemesanan"]); ?></small></div>
                     </div>
                   </div>
                 </div>

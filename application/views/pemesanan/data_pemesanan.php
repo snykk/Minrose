@@ -50,7 +50,7 @@
             <?php foreach ($pemesanan->result_array() as $row) :?>
             <div class="row">
                 <div class="col-md-1">
-                    <img src="<?= base_url("assets/img/produk/") . $row["image"]?>" class="media-object img-thumbnail" />
+                    <img src="<?= base_url("assets/img/produk/") . $row["image_produk"]?>" class="media-object img-thumbnail" />
                     <div class="detail-pemesanan"><a class="detail_data_pemesanan" data-bs-toggle="modal" data-bs-target="#ModalDetailDataPemesanan" title="detail pemesanan" style="cursor: pointer;" data-id="<?= $row["id_pemesanan"]; ?>" data-dipesan="<?= date('d-m-Y', $row['tanggal_pemesanan']); ?>" >detail</a></div>
                 </div>
                 <div class="col-md-11">

@@ -29,13 +29,21 @@
                                 <div class="card-body text-center mt-4">
                                     <h4 class="card-title">Minrose Cup</h4>
                                     <p class="card-text">Upsss cieee pasti penasaran yaaa? 😄 klik "detail Produk" di bawah</p>
+
+                                    <!-- detail -->
                                     <button data-id="<?= $row->id; ?>" class="btn btn-primary btn-sm detail" data-bs-toggle="modal" data-bs-target="#ModalDetail">Detail</button>
+
+                                    <!-- ulasan -->
+                                    <a href="<?= base_url("ulasan?id_produk=" . $row->id)?>"><button class="btn btn-primary btn-sm ubah" >Ulasan</button></a>
+
+                                    <!-- [admin] ubah -->
                                     <?php if ($user['role_id'] == 1) :?>
                                         <a href="<?= base_url("produk/ubah_produk?id=" . $row->id)?>"><button  class="btn btn-primary btn-sm ubah" >Ubah</button></a>
                                     <?php endif;?>
+
+                                    <!-- [user] beli -->
                                     <?php if ($user['role_id'] == 2) :?>
-                                        <a href="<?= base_url("ulasan?id_produk=" . $row->id)?>"><button class="btn btn-primary btn-sm ubah" >Ulasan</button></a>
-                                        <a href="<?= base_url("pemesanan/buat_pemesanan?id=" . $row->id)?>"><button class="btn btn-primary btn-sm ubah" >Beli</button></a>
+                                        <a href="<?= base_url("pemesanan/buat_pemesanan?id_produk=" . $row->id)?>"><button class="btn btn-primary btn-sm ubah" >Beli</button></a>
                                     <?php endif;?>
                                 </div>
                             </div>

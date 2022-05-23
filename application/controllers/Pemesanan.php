@@ -7,6 +7,8 @@ class Pemesanan extends CI_Controller
     {
         parent::__construct();
         $this->load->library('form_validation');
+        $this->load->model("Pemesanan_model");
+        $this->load->model("Global_model");
     }
 
 
@@ -22,13 +24,14 @@ class Pemesanan extends CI_Controller
         $data['js'] = 'pemesanan';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
-        if (isset($_GET["id"])){
-            $data["produk"] =  $this->db->get_where('produk', ['id' => $_GET["id"]])->row_array();
-        }else {
-            $data["produk"] =  $this->db->get_where('produk', ['id' => $this->input->post("id_produk")])->row_array();
-        }
+        $id_produk = $this->Pemesanan_model->idChooser();
+
+        $data["produk"] =  $this->db->get_where('produk', ['id' =>$id_produk])->row_array();
         
-        $stok = $data["produk"]['stok'];
+        $stok = 0; //mengantisipasi error di lane 42
+        if ($id_produk != false) {
+            $stok = $data["produk"]['stok'];
+        }
 
         $this->form_validation->set_rules('jumlah_produk', 'Jumlah produk','required|trim', ["required"=>"Jumlah produk tidak boleh kosong"]);
         $this->form_validation->set_rules('alamat', 'Alamat','required|trim', ["required"=>"Alamat tidak boleh kosong"]);
@@ -50,42 +53,32 @@ class Pemesanan extends CI_Controller
             } else {
                 $this->load->view('templates/sidebar_user', $data);
             }
-            $this->load->view('pemesanan/buat_pemesanan', $data);
+
+            if ($id_produk == false) {
+                $this->load->view("pemesanan/blank_produk");
+            } else {
+                $this->load->view('pemesanan/buat_pemesanan', $data);
+            }
+
             $this->load->view('templates/sidebar_footer');
             $this->load->view('templates/modal_logout');
             $this->load->view('templates/footer', $data);
         } else {
-            $id_metode = (INT)$this->input->post('id_metode',true);
+            if ($this->Pemesanan_model->buatPemesanan()) {
+                $message = "<div>Data pemesanan <strong>berhasil</strong> ditambahkan</div>";
+                $this->Global_model->flasher($message, berhasil : true);
 
-            // menyiapkan data pemesanan
-            $data = [
-                'id_produk' => (INT)$this->input->post('id_produk',true),
-                'id_user' => (INT)$this->input->post('id_user',true),
-                'jumlah_produk' => (INT)$this->input->post('jumlah_produk',true),
-                'alamat' => $this->input->post('alamat',true),
-                'total_harga' => (INT)$this->input->post('input_total',true),
-                'id_metode' => $id_metode,
-                'id_bank' => ($id_metode == 1) ? (INT)$this->input->post('id_bank',true) : null,
-                'id_catatan' => ($id_metode == 1) ? 2 : 1,
-                'id_status' => 2,
-                'bukti_transfer' => ($id_metode == 1) ? "default.png" : null,
-                'data_dibuat' => time(),
-                'data_diubah' => time(),
-                'is_done' => 0,
-            ];
+                redirect('pemesanan/data_pemesanan');
+            } else {
+                $message = "<div>Internal server error</div>";
+                $this->Global_model->flasher($message, gagal : true);
 
-            $this->db->insert('pemesanan', $data);
-
-            $this->session->set_flashdata('message', 
-            '<div class="alert alert-success d-flex justify-content-between align-items-center mt-3" role="alert">
-                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-                <div> Data pemesanan <strong>berhasil</strong> ditambahkan </div>
-                <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>');
-            redirect('pemesanan/data_pemesanan');
+                redirect('pemesanan/buat_pemesanan?id_produk=' . $id_produk);
+            }
         }
 
     }
+
 
     public function data_pemesanan() {
         $data['title'] = 'Data Pemesanan';
@@ -93,23 +86,7 @@ class Pemesanan extends CI_Controller
         $data['js'] = 'pemesanan'; 
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
-        // prepare data pemesanan
-        $this->db->select('pemesanan.id as id_pemesanan, produk.image as image, status.style as style_status, status_pemesanan, produk.nama as nama_produk, metode_pembayaran, jumlah_produk, total_harga, catatan_pemesanan, metode_pembayaran, username, status.id as id_status, pemesanan.data_dibuat as tanggal_pemesanan, alasan_penolakan');
-        $this->db->from('pemesanan');
-        $this->db->join('produk', 'pemesanan.id_produk=produk.id');
-        $this->db->join('user', 'pemesanan.id_user=user.id');
-        $this->db->join('metode', 'pemesanan.id_metode=metode.id');
-        $this->db->join('bank', 'pemesanan.id_bank=bank.id','left');
-        $this->db->join('catatan', 'pemesanan.id_catatan=catatan.id');
-        $this->db->join('status', 'pemesanan.id_status=status.id');
-        $this->db->where("is_done =", 0);
-        $this->db->order_by("pemesanan.data_dibuat", "asc");
-
-        if ($this->session->userdata('role_id') == 2) {
-            $this->db->where('email', $this->session->userdata('email'));
-        }
-        
-        $data["pemesanan"] = $this->db->get();
+        $data["pemesanan"] = $this->Pemesanan_model->getDataPemesanan();
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/topbar', $data);
@@ -130,29 +107,14 @@ class Pemesanan extends CI_Controller
         $this->load->view('templates/footer');
     }
 
+
     public function riwayat_pemesanan() {
         $data['title'] = 'Riwayat Pemesanan';
         $data['css'] = 'pemesanan';
         $data['js'] = 'pemesanan'; 
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
-        // prepare data pemesanan
-        $this->db->select('pemesanan.id as id_pemesanan, produk.image as image, status.style as style_status, status_pemesanan, produk.nama as nama_produk, metode_pembayaran, jumlah_produk, total_harga, catatan_pemesanan, metode_pembayaran, username, status.id as id_status, pemesanan.data_dibuat as tanggal_pemesanan, alasan_penolakan, produk.id as id_produk');
-        $this->db->from('pemesanan');
-        $this->db->join('produk', 'pemesanan.id_produk=produk.id');
-        $this->db->join('user', 'pemesanan.id_user=user.id');
-        $this->db->join('metode', 'pemesanan.id_metode=metode.id');
-        $this->db->join('bank', 'pemesanan.id_bank=bank.id','left');
-        $this->db->join('catatan', 'pemesanan.id_catatan=catatan.id');
-        $this->db->join('status', 'pemesanan.id_status=status.id');
-        $this->db->where("is_done =", 1);
-        $this->db->order_by("data_diubah", "asc");
-
-        if ($this->session->userdata('role_id') == 2) {
-            $this->db->where('email', $this->session->userdata('email'));
-        }
-        
-        $data["pemesanan"] = $this->db->get();
+        $data["pemesanan"] = $this->Pemesanan_model->getDataRiwayat();
 
         // membuat session untuk membatasi akses admin dari fitur konfirmasi pemesanan
         $this->session->set_userdata("restrict_confirm_admin", "1");
@@ -177,28 +139,14 @@ class Pemesanan extends CI_Controller
         $this->session->unset_userdata('restrict_confirm_admin');
     }
 
+    
     public function getDataPemesanan() {
-        $pemesanan_id = (INT)$_POST["id"];
         $data_dipesan = $_POST["data_dipesan"];
         
-        
-        // $result = $this->db->query("SELECT * FROM produk WHERE id={$produk_id}");
-        // array_push($data, $result->row());
-        
-        $this->db->select('pemesanan.id as id_pemesanan, produk.image as image_produk, status_pemesanan, produk.nama as nama_produk, metode_pembayaran, jumlah_produk, total_harga, catatan_pemesanan, metode_pembayaran, username, total_harga, pemesanan.data_dibuat as tanggal_dipesan, pemesanan.alamat as alamat_pemesanan, nama_bank, no_rekening, bukti_transfer, status.style as style_status, status.id as id_status, alasan_penolakan');
-        $this->db->from('pemesanan');
-        $this->db->join('produk', 'pemesanan.id_produk=produk.id');
-        $this->db->join('user', 'pemesanan.id_user=user.id');
-        $this->db->join('metode', 'pemesanan.id_metode=metode.id');
-        $this->db->join('bank', 'pemesanan.id_bank=bank.id','left');
-        $this->db->join('catatan', 'pemesanan.id_catatan=catatan.id');
-        $this->db->join('status', 'pemesanan.id_status=status.id');
-        
-        $this->db->where('pemesanan.id', $pemesanan_id);
-        
-        $result = $this->db->get();
+        $result = $this->Pemesanan_model->getDataPemesanan(post : true);
 
         $data = $result->result();
+        
         // array_push($data, $result->result());
         array_push($data, $data_dipesan);
 
@@ -206,30 +154,15 @@ class Pemesanan extends CI_Controller
         echo json_encode($data);
     }
 
+
     public function ubah_pemesanan() {
         // set link files data
         $data['title'] = 'Ubah Pemesanan';
         $data['css'] = 'pemesanan';
         $data['js'] = 'pemesanan';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-
-        // set database data
-        $this->db->select('pemesanan.id as id_pemesanan, produk.image as image_produk, status_pemesanan, produk.nama as nama_produk, metode_pembayaran, jumlah_produk, total_harga, catatan_pemesanan, metode_pembayaran, username, total_harga, pemesanan.data_dibuat as pesanan_dibuat, pemesanan.data_diubah as pesanan_diubah, pemesanan.alamat as alamat_pemesanan, nama_bank, no_rekening, bukti_transfer, status.style as style_status, stok, produk.harga as harga_produk');
-        $this->db->from('pemesanan');
-        $this->db->join('produk', 'pemesanan.id_produk=produk.id');
-        $this->db->join('user', 'pemesanan.id_user=user.id');
-        $this->db->join('metode', 'pemesanan.id_metode=metode.id');
-        $this->db->join('bank', 'pemesanan.id_bank=bank.id','left');
-        $this->db->join('catatan', 'pemesanan.id_catatan=catatan.id');
-        $this->db->join('status', 'pemesanan.id_status=status.id');
-
-        if (isset($_GET["id"])){
-            $this->db->where('pemesanan.id', $_GET["id"]);
-        } else {
-            $this->db->where('pemesanan.id', $this->input->post("id"));
-        }
         
-        $data["pemesanan"] = $this->db->get()->result_array();
+        $data["pemesanan"] = $this->Pemesanan_model->getDataPemesanan(get : true)->result_array();
 
         // set rules
         $stok =  $data["pemesanan"][0]["stok"];
@@ -243,17 +176,10 @@ class Pemesanan extends CI_Controller
         );
 
         // proses akan diredirect jika tidak ada perubahan
-        if ($data["pemesanan"][0]["jumlah_produk"] == $this->input->post("jumlah_produk")  && $data["pemesanan"][0]["alamat_pemesanan"] == $this->input->post("alamat_pemesanan") && !($_FILES['image']['name'])) {
-            $this->session->set_flashdata(
-                'message', 
-                '<div class="alert alert-danger d-flex justify-content-between align-items-center mt-3" role="alert">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                    <div>
-                    Perubahan <strong>dibatalkan</strong>, tidak ada data yang diubah
-                    </div>
-                    <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>'
-            );
+        if ($this->Pemesanan_model->isSameData($data["pemesanan"])) {
+            $message = "<div>Perubahan <strong>dibatalkan</strong>, tidak ada data yang diubah</div>";
+            $this->Global_model->flasher($message, gagal:true);
+
             redirect('pemesanan/ubah_pemesanan?id=' . $this->input->post("id"));
         }
 
@@ -271,63 +197,21 @@ class Pemesanan extends CI_Controller
             $this->load->view('templates/modal_logout');
             $this->load->view('templates/footer');
         } else {
-            // mengambil id pemesanan
-            $id = $this->input->post('id',true);
-            
-            // untuk membedakan antara metode transfer bank dengan cod
-            if ($data["pemesanan"][0]["metode_pembayaran"] == "Transfer Bank") {
-                // cek jika ada gambar yang akan diupload
-                $upload_image = $_FILES['image']['name'];
+            if ( $this->Pemesanan_model->ubahPemesanan($data["pemesanan"]) ) {
+                $message = "<div>Data pemesanan <strong>berhasil</strong> diubah</div>";
+                $this->Global_model->flasher($message, berhasil:true);
+
+
+                redirect('pemesanan/data_pemesanan');
             } else {
-                $upload_image = false;
+                $message = "<div>Internal server error</div>";
+                $this->Global_model->flasher($message, berhasil:true);
+
+                redirect('pemesanan/ubah_pemesanan');
             }
-
-            if ($upload_image) {
-                $config['allowed_types'] = 'gif|jpg|png|jpeg';
-                $config['max_size']      = '2048';
-                $config['upload_path'] = "./assets/img/bukti/";
-
-                $this->load->library('upload', $config);
-
-                if ($this->upload->do_upload('image')) {
-
-                    // mengambil image lama menggunakan id pemesanan
-                    $old_image = $this->db->query("SELECT bukti_transfer FROM pemesanan WHERE id={$id}")->row();
-
-                    $new_image = $this->upload->data('file_name');
-
-                    if ($new_image != $old_image->bukti_transfer && $old_image->bukti_transfer != "default.png") {
-                        unlink(FCPATH . 'assets/img/bukti/' . $old_image->bukti_transfer);
-                    }
-                    $this->db->set('bukti_transfer', $new_image);
-
-                } else {
-                    echo $this->upload->display_errors();
-                }
-            }
-
-            
-            $data = [
-                'jumlah_produk' => (INT)$this->input->post('jumlah_produk',true),
-                'alamat' => $this->input->post('alamat_pemesanan',true),
-                'total_harga' => (INT)$this->input->post('input_total',true),
-                'data_diubah' => time()
-            ];
-
-
-            $this->db->set($data);
-            $this->db->where('id', $id);
-            $this->db->update('pemesanan');
-
-            $this->session->set_flashdata('message', 
-            '<div class="alert alert-success d-flex justify-content-between align-items-center mt-3" role="alert">
-                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-                <div> Data pemesanan <strong>berhasil</strong> diubah </div>
-                <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>');
-            redirect('pemesanan/data_pemesanan');
         }
     }
+
 
     public function getBuktiTransfer() {
         // $pemesanan = $this->db->get_where('pemesanan', ['id' => $_POST["id"]])->result();
@@ -339,6 +223,7 @@ class Pemesanan extends CI_Controller
         header("Content-Type: application/json");
         echo json_encode($pemesanan);
     }
+
 
     public function setBuktiTransfer() {
         $id = $this->input->post('id',true);
@@ -362,37 +247,28 @@ class Pemesanan extends CI_Controller
                     unlink(FCPATH . 'assets/img/bukti/' . $old_image->bukti_transfer);
                 }
 
-                $this->db->set('bukti_transfer', $new_image);
-                $this->db->where('id', $id);
-                $this->db->update('pemesanan');
-
-                $this->session->set_flashdata(
-                    'message', 
-                    '<div class="alert alert-success d-flex justify-content-between align-items-center mt-3" role="alert">
-                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-                        <div> Bukti transfer <strong>berhasil</strong> diupload </div>
-                        <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>'
-                );
-                redirect('pemesanan/data_pemesanan');
-
+                if ($this->Pemesanan_model->setBuktiUpload($id, $new_image)) {
+                    $message = "<div>Bukti transfer <strong>berhasil</strong> diupload</div>";
+                    $this->Global_model->flasher($message, berhasil:true);
+                    
+                    redirect('pemesanan/data_pemesanan');
+                } else {
+                    $message = "Internal server error";
+                    $this->Global_model->flasher($message, gagal:true);
+                    
+                    redirect('pemesanan/data_pemesanan');
+                }
             } else {
                 echo $this->upload->display_errors();
             }
         } else {
-            $this->session->set_flashdata(
-                'message', 
-                '<div class="alert alert-danger d-flex justify-content-between align-items-center mt-3" role="alert">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                    <div>
-                    Upload bukti <strong>gagal</strong> tidak ada gambar yang diupload ke sistem
-                    </div>
-                    <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>'
-            ); 
+            $message = "<div>Upload bukti <strong>gagal</strong> tidak ada gambar yang diupload ke sistem</div>";
+            $this->Global_model->flasher($message, gagal:true);
+
             redirect("pemesanan/data_pemesanan");
         }
     }
+
 
     public function disetujui() {
 
@@ -403,85 +279,46 @@ class Pemesanan extends CI_Controller
 
         $id = $_GET["id"];
 
-        // menyiapkan db data
-        $this->db->select("bukti_transfer, id_metode, id_status, produk.stok as stok_produk, id_produk, jumlah_produk");
-        $this->db->from("pemesanan");
-        $this->db->join("produk", "pemesanan.id_produk=produk.id");
-        $this->db->where("pemesanan.id", $id);
-        $pemesanan = $this->db->get()->result_array();
+        $pemesanan = $this->Pemesanan_model->getPemesananDisetujui($id)->result_array();
 
         // akan otomatis dicancel jika id status sebelumnya sudah "disejutui"
         if ($pemesanan[0]["id_status"] == 1) {
-            $this->session->set_flashdata(
-                'message', 
-                '<div class="alert alert-danger d-flex justify-content-between align-items-center mt-3" role="alert">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                    <div>
-                    Aksi <strong>dibatalkan</strong> status pemesanan sebelumnya sudah disetujui
-                    </div>
-                    <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>'
-            ); 
+            $message = "<div>Aksi <strong>dibatalkan</strong> status pemesanan sebelumnya sudah disetujui</div>";
+            $this->Global_model->flasher($message, gagal:true);
+
             redirect("pemesanan/data_pemesanan");
         }
 
 
         // jika pemesanan belum ada bukti transfer otomatis akan dicancel oleh sistem
         if ($pemesanan[0]["bukti_transfer"] == "default.png") {
-            $this->session->set_flashdata(
-                'message', 
-                '<div class="alert alert-danger d-flex justify-content-between align-items-center mt-3" role="alert">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                    <div>
-                    Aksi <strong>dibatalkan</strong> tidak ada bukti transfer di database
-                    </div>
-                    <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>'
-            ); 
+            $message = "<div>Aksi <strong>dibatalkan</strong> tidak ada bukti transfer di database</div>";
+            $this->Global_model->flasher($message, gagal:true);
+            
             redirect("pemesanan/data_pemesanan");
         }
 
         // cek apakah produk tersedia
         if ($pemesanan[0]["stok_produk"] - $pemesanan[0]["jumlah_produk"] < 0) {
-            $this->session->set_flashdata(
-                'message', 
-                '<div class="alert alert-danger d-flex justify-content-between align-items-center mt-3" role="alert">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                    <div>
-                    [Stok tidak tersedia] <strong> gagal </strong> mengubah status pemesanan
-                    </div>
-                    <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>'
-            );            
+            $message = "<div>[Stok tidak tersedia] <strong> gagal </strong> mengubah status pemesanan</div>";
+            $this->Global_model->flasher($message, gagal:true);
+                       
             redirect("pemesanan/data_pemesanan");
         }
         
-        $data = [
-            "id_status" => 1,
-            "alasan_penolakan" => null,
-            "id_catatan" => ($pemesanan[0]["id_metode"] == 1) ? 4 : 1,
-        ];
+        if ($this->Pemesanan_model->setujuiPemesanan($pemesanan[0], $id) && $this->Pemesanan_model->ubahStok($pemesanan[0])) {
+            $message = "<div>Status pemesanan <strong>berhasil</strong> diubah</div>";
+            $this->Global_model->flasher($message, berhasil:true);
 
-        // ubah tabel produk
-        $this->db->set($data);
-        $this->db->where("id", $id);
-        $this->db->update('pemesanan');
+            redirect("pemesanan/data_pemesanan");
+        } else {
+            $message = "<div>Internal server error</div>";
+            $this->Global_model->flasher($message, berhasil:true);
 
-         // ubah stok di tabel produk
-         $this->db->set("stok", $pemesanan[0]["stok_produk"] - $pemesanan[0]["jumlah_produk"]);
-         $this->db->where("id", $pemesanan[0]["id_produk"]);
-         $this->db->update('produk');
-
-        $this->session->set_flashdata(
-            'message', 
-            '<div class="alert alert-success d-flex justify-content-between align-items-center mt-3" role="alert">
-                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-                <div> Status pemesanan <strong>berhasil</strong> diubah </div>
-                <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>'
-        );
-        redirect("pemesanan/data_pemesanan");
+            redirect("pemesanan/data_pemesanan");
+        }
     }
+    
 
     public function ditolak() {
 
@@ -493,54 +330,27 @@ class Pemesanan extends CI_Controller
         $id_pemesanan =  $this->input->post("id");
         $alasan_penolakan =  $this->input->post("alasan_penolakan");
 
-        // ambil data
-        $this->db->select("jumlah_produk, produk.stok as stok_produk, id_produk, id_status");
-        $this->db->from("pemesanan");
-        $this->db->join("produk", "pemesanan.id_produk=produk.id");
-        $this->db->where("pemesanan.id", $id_pemesanan);
-        $pemesanan = $this->db->get()->result_array();
+        $pemesanan = $this->Pemesanan_model->getPemesananDitolak($id_pemesanan)->result_array();
 
         // akan otomatis dicancel jika id status sebelumnya sudah "ditolak"
         if ($pemesanan[0]["id_status"] == 3) {
-            $this->session->set_flashdata(
-                'message', 
-                '<div class="alert alert-danger d-flex justify-content-between align-items-center mt-3" role="alert">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                    <div>
-                    Aksi <strong>dibatalkan</strong> status pemesanan sebelumnya sudah disetujui
-                    </div>
-                    <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>'
-            ); 
+            $message = "<div>Aksi <strong>dibatalkan</strong> status pemesanan sebelumnya sudah ditolak</div>";
+            $this->Global_model->flasher($message, gagal : true);
+            
             redirect("pemesanan/data_pemesanan");
         }
 
-        $data = [
-            "id_status" => 3,
-            "alasan_penolakan" =>$alasan_penolakan
-        ];
+        if ($this->Pemesanan_model->setAlasanPenolakan($id_pemesanan, $alasan_penolakan)) {
+            if ($pemesanan[0]["id_status"] == 1) {
+                // ubah stok di tabel produk
+                $this->Pemesanan_model->pengembalianStok($pemesanan[0]);
+            }
 
-        $this->db->set($data);
-        $this->db->where("id", $id_pemesanan);
-        $this->db->update('pemesanan');
-
-        // mengembalikan stok produk jika terjadi pembatalan pemesanan yang sudah disetujui
-        if ($pemesanan[0]["id_status"] == 1) {
-            // ubah stok di tabel produk
-            $this->db->set("stok", $pemesanan[0]["stok_produk"] + $pemesanan[0]["jumlah_produk"]);
-            $this->db->where("id", $pemesanan[0]["id_produk"]);
-            $this->db->update('produk');
+            $message = "<div> Status pemesanan <strong>berhasil</strong> diubah </div>";
+            $this->Global_model->flasher($message, berhasil:true);
+            
+            redirect("pemesanan/data_pemesanan");
         }
-
-        $this->session->set_flashdata(
-            'message', 
-            '<div class="alert alert-success d-flex justify-content-between align-items-center mt-3" role="alert">
-                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-                <div> Status pemesanan <strong>berhasil</strong> diubah </div>
-                <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>'
-        );
-        redirect("pemesanan/data_pemesanan");
     }
 
     public function selesai() {
@@ -552,44 +362,12 @@ class Pemesanan extends CI_Controller
 
         $id = $_GET["id"];
         
-        // ubah status di tabel pemesanan
-        $set_pemesanan = [
-            "id_status" => 4,
-            "id_catatan" => 3,
-            "is_done" => 1,
-            "alasan_penolakan" => null,
-        ];
+        if ($this->Pemesanan_model->setPemesananSelesai($id) && $this->Pemesanan_model->addPemesananToTransaksi($id)) {
+            $message = "<div>Pemesanan <strong>berhasil</strong> diakhiri </div> dan data pemesanan <strong>berhasil</strong> ditambahkan di transaksi";
+            $this->Global_model->flasher($message, berhasil:true);
 
-        $this->db->set($set_pemesanan);
-        $this->db->where("id", $id);
-        $this->db->update('pemesanan');
-
-        $this->db->select("jumlah_produk, produk.nama as nama_produk, total_harga");
-        $this->db->from("pemesanan");
-        $this->db->join("produk", "pemesanan.id_produk=produk.id");
-        $this->db->where("pemesanan.id", $id);
-        $result = $this->db->get()->row_array();
-
-
-        $data_pemasukan = [
-            "kategori" => "Penjualan produk",
-            "keterangan" => "Hasil dari penjualan produk " . $result["nama_produk"] . " sebanyak " . $result["jumlah_produk"] . " unit",
-            "pemasukan" => $result["total_harga"],
-            "pengeluaran" => null,
-            "data_dibuat" => time(),
-        ];
-
-        $this->db->insert('transaksi', $data_pemasukan);
-
-        $this->session->set_flashdata(
-            'message', 
-            '<div class="alert alert-success d-flex justify-content-between align-items-center mt-3" role="alert">
-                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-                <div> Transaksi pemesanan <strong>berhasil</strong> diakhiri </div>
-                <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>'
-        );
-        redirect("pemesanan/riwayat_pemesanan");
+            redirect("pemesanan/riwayat_pemesanan");
+        }
     }
 
     public function dibatalkan() {
@@ -601,25 +379,16 @@ class Pemesanan extends CI_Controller
 
         $id_pemesanan = $_GET["id"];
 
-        // ubah status di tabel pemesanan
-        $set_pemesanan = [
-            "id_status" => 5,
-            "id_catatan" => 5,
-            "alasan_penolakan" => null,
-        ];
+        if ($this->Pemesanan_model->batalkanPemesanan($id_pemesanan)) {
+            $message = "<div>Transaksi pemesanan <strong>berhasil</strong> dibatalkan</div>";
+            $this->Global_model->flasher($message, berhasil:true);
 
-        $this->db->set($set_pemesanan);
-        $this->db->where("id", $id_pemesanan);
-        $this->db->update('pemesanan');
+            redirect("pemesanan/data_pemesanan");
+        } else {
+            $message = "<div>Internal server error</div>";
+            $this->Global_model->flasher($message, gagal:true);
 
-        $this->session->set_flashdata(
-            'message', 
-            '<div class="alert alert-success d-flex justify-content-between align-items-center mt-3" role="alert">
-                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-                <div> Transaksi pemesanan <strong>berhasil</strong> dibatalkan </div>
-                <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>'
-        );
-        redirect("pemesanan/data_pemesanan");
+            redirect("pemesanan/data_pemesanan");
+        }
     }
 }
