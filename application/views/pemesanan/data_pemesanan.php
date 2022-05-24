@@ -7,30 +7,6 @@
     ?>
 
     <div class="panel panel-default panel-order">
-        <?php if ($pemesanan->num_rows() == 0) {?>
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-6">
-                        <div class="text-center mt-4">
-                            <h1 class="display-1">?</h1>
-                            <p class="lead">No Data</p>
-                            <p>Tidak ada data pemesanan untuk saat ini</p>
-                            <?php if ($this->session->userdata("role_id") == 2) {?>
-                                <a href="<?= base_url("produk")?>" class="link-info">
-                                    <i class="fas fa-arrow-left me-1"></i>
-                                    Beli Sekarang
-                                </a>
-                            <?php } else { ?>
-                                <a href="<?= base_url("pemesanan/riwayat_pemesanan")?>" class="link-info">
-                                    <i class="fas fa-arrow-left me-1"></i>
-                                    Riwayat Pemesanan
-                                </a>
-                            <?php } ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        <?php } else {?>
         <div class="panel-heading d-flex justify-content-between align-items-center">
             <h1 class="main-title"><?= $title; ?></h1>
             <div class="btn-group pull-right">
@@ -83,13 +59,22 @@
                         } else {
                             $dest = "profile/user_profile";
                         } ?>
-                        <div class="col-md-12">pesanan dibuat pada: <?= date('d/m/Y', $row['tanggal_pemesanan']); ?> oleh <a href="<?= base_url($dest); ?>" style="text-decoration:none;">@<?= $row["username"]?></a></div>
+                        
+                        <?php if ($row["is_done"] == '1 ') {?>
+                            <div class="col-md-12">pesanan diakhiri pada <?= date('d/m/Y', $row['pesanan_diubah']); ?> 
+                                oleh <span class="link-danger" style="cursor: pointer;">@admin</span>
+                            </div>
+                        <?php } else {?>
+                            <div class="col-md-12">pesanan dibuat pada <?= date('d/m/Y', $row['tanggal_pemesanan']); ?> 
+                                oleh <a href="<?= base_url($dest); ?>" style="text-decoration:none;">@<?= $row["username"]?></a>
+                            </div>
+                        <?php }?>
+                        
                     </div>
                 </div>
             </div>
             <?php endforeach; ?>
         </div> 
         <div class="panel-footer mb-3 mt-1">Note: yuhu ini note tambahan buat user gitu gatau mau diisi apa</div>
-        <?php }?>
     </div>
 </div>

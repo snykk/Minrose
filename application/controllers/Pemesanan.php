@@ -96,7 +96,13 @@ class Pemesanan extends CI_Controller
         } else {
             $this->load->view('templates/sidebar_user', $data);
         }
-        $this->load->view('pemesanan/data_pemesanan', $data);
+
+        if ($data["pemesanan"]->num_rows() == 0) {
+            $this->load->view('pemesanan/blank_data', $data);
+        } else {
+            $this->load->view('pemesanan/data_pemesanan', $data);
+        } 
+
         $this->load->view('templates/sidebar_footer');
         $this->load->view('pemesanan/modal_upload_bukti');
         $this->load->view('pemesanan/modal_detail_data_pemesanan', $data);
@@ -127,7 +133,13 @@ class Pemesanan extends CI_Controller
         } else {
             $this->load->view('templates/sidebar_user', $data);
         }
-        $this->load->view('pemesanan/data_pemesanan', $data);
+
+        if ($data["pemesanan"]->num_rows() == 0) {
+            $this->load->view('pemesanan/blank_data', $data);
+        } else {
+            $this->load->view('pemesanan/data_pemesanan', $data);
+        } 
+
         $this->load->view('templates/sidebar_footer');
         $this->load->view('pemesanan/modal_detail_data_pemesanan', $data);
         $this->load->view('pemesanan/modal_pemesanan');
