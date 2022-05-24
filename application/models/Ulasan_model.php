@@ -17,7 +17,7 @@ class Ulasan_model extends CI_model {
     }
 
     public function getAllUlasan($id_produk) {
-        $this->db->select("rating, ulasan, ulasan.data_dibuat as upload_ulasan, username, user.image as profile_user");
+        $this->db->select("ulasan.id as id_ulasan, rating, ulasan, ulasan.data_dibuat as upload_ulasan, email, username, user.image as profile_user");
         $this->db->from("ulasan");
         $this->db->join("user", "ulasan.id_user=user.id");
         $this->db->join("produk", "ulasan.id_produk=produk.id");
@@ -71,6 +71,17 @@ class Ulasan_model extends CI_model {
 
             $this->db->insert('ulasan', $data);
 
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+
+    public function hapusUlasan($id_ulasan) {
+        try {
+            $this->db->delete('ulasan', array('id' => $id_ulasan));
+            
             return true;
         } catch (Exception $e) {
             return false;

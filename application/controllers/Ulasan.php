@@ -14,6 +14,7 @@ class Ulasan extends CI_Controller
     public function index () {
         $data['title'] = 'Ulasan';
         $data['css'] = 'ulasan';
+        $data['js'] = 'ulasan';
 
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
@@ -53,7 +54,7 @@ class Ulasan extends CI_Controller
        
             $this->load->view('templates/sidebar_footer');
             $this->load->view('templates/modal_logout');
-            $this->load->view('templates/footer');
+            $this->load->view('templates/footer', $data);
         } else {
             $this->_buat_ulasan();
         }
@@ -65,6 +66,30 @@ class Ulasan extends CI_Controller
         if ($this->Ulasan_model->tambahUlasan($id_produk)) {
             $message = "<div> Ulasan <strong>berhasil</strong> ditambahkan </div>";
             $this->Global_model->flasher($message, berhasil:true);
+            
+            redirect('ulasan?id_produk=' . $id_produk);
+        }
+    }
+
+
+    public function hapus_ulasan() {
+         // action akan dilempar ke status 403 jika diakses oleh role yang tidak berwenang
+         if ($this->session->userdata('role_id') == 1) {
+            redirect('auth/blocked');
+        }
+
+        $id_produk = $this->Ulasan_model->idChooser();
+
+        $id_ulasan = $_GET["id_ulasan"];
+
+        if ($this->Ulasan_model->hapusUlasan($id_ulasan)) {
+            $message = "<div>Ulasan <strong>berhasil</strong> dihapus</div>";
+            $this->Global_model->flasher($message, berhasil:true);
+            
+            redirect('ulasan?id_produk=' . $id_produk);
+        } else {
+            $message = "<div>Internal server error</div>";
+            $this->Global_model->flasher($message, gagal:true);
             
             redirect('ulasan?id_produk=' . $id_produk);
         }

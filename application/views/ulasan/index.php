@@ -87,22 +87,32 @@
                               <?php foreach ($ulasan as $row) :?>
                               <div class="media d-flex">
                                   <a href="#"><img alt="Generic placeholder image" src="<?= base_url("assets/img/profile/") . $row["profile_user"]?>" class="mr-3 mt-3 rounded-pill"></a>
-                                  <div class="media-body">
-                                      <div class="reviews-members-header">
-                                          <div class="ratings">
-                                            <?php 
-                                            $jml_rating = $row["rating"];
-                                            for ($i = 0 ; $i < 5; $i++) {
-                                              if ($i < $jml_rating) {
-                                                echo '<i class="fa fa-star rating-color" style="font-size:  0.75rem;"></i>';
-                                              } else {
-                                                echo '<i class="fa fa-star" style="font-size: 0.75rem;"></i>';
+                                  <div class="media-body w-100">
+                                      <div class="d-flex justify-content-between align-items center">
+                                        <div class="reviews-members-header">
+                                            <!-- star reviews -->
+                                            <div class="ratings">
+                                              <?php 
+                                              $jml_rating = $row["rating"];
+                                              for ($i = 0 ; $i < 5; $i++) {
+                                                if ($i < $jml_rating) {
+                                                  echo '<i class="fa fa-star rating-color" style="font-size:  0.75rem;"></i>';
+                                                } else {
+                                                  echo '<i class="fa fa-star" style="font-size: 0.75rem;"></i>';
+                                                }
                                               }
-                                            }
-                                            ?>
+                                              ?>
+                                            </div>
+                                            <h6 class="my-1"><a class="text-black" href="#">@<?= $row["username"]; ?></a></h6>
+                                            <small><p class="text-muted"><?= date("D, j M Y" , $row["upload_ulasan"]); ?></p></small>
+                                        </div>
+                                        <?php if ( $this->session->userdata("email") == $row["email"] ) :?>
+                                          <div >
+                                            <a class="link_hapus_ulasan" href="<?= base_url("ulasan/hapus_ulasan?id_ulasan=") . $row["id_ulasan"] . "&id_produk={$_GET["id_produk"]}"; ?>" title="hapus ulasan">
+                                              <button class="btn btn-danger p-1"><i class="fas fa-fw fa-solid fa-trash-can m-0 "></i></button>
+                                            </a>
                                           </div>
-                                          <h6 class="my-1"><a class="text-black" href="#">@<?= $row["username"]; ?></a></h6>
-                                          <small><p class="text-muted"><?= date("D, j M Y" , $row["upload_ulasan"]); ?></p></small>
+                                        <?php endif; ?>
                                       </div>
                                       <div class="reviews-members-body">
                                           <p>
