@@ -20,3 +20,18 @@ $(".link_hapus_ulasan").click(function (e) {
     }
   });
 });
+
+$(".link_edit_ulasan").click(function (e) {
+  $.ajax({
+    url: "/Project-PPL/ulasan/getRowUlasan",
+    data: { id_user: $(this).attr("data-id_user"), id_produk: $(this).attr("data-id_produk") },
+    method: "post",
+    dataType: "json",
+    success: function (response) {
+      console.log(response);
+      $("#id_produk").val(response[0].id_produk);
+      $("#ulasan_edit").val(response[0].ulasan);
+      $("input[type=radio][value=" + response[0].rating + "]").prop("checked", true);
+    },
+  });
+});

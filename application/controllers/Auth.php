@@ -76,7 +76,10 @@ class Auth extends CI_Controller
         }
 
         $this->form_validation->set_rules('nama_lengkap', 'Nama Lengkap', 'required|trim');
-        $this->form_validation->set_rules('username', 'Username', 'required|trim');
+        $this->form_validation->set_rules('username', 'Username', 'required|trim|is_unique[user.username]', [
+            'is_unique' => 'This username has already registered!'
+        ]);
+        
         $this->form_validation->set_rules('jenis_kelamin', 'Jenis Kelamin', 'required|trim');
         $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[user.email]', [
             'is_unique' => 'This email has already registered!'

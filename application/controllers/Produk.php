@@ -16,7 +16,7 @@ class Produk extends CI_Controller
     {
         $data['title'] = 'Produk';
         $data['css'] = 'produk';
-        $data['js'] = 'produkkk';
+        $data['js'] = 'produk';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $data["produk"] = $this->db->query("SELECT * FROM produk");
 

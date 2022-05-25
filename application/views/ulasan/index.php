@@ -78,7 +78,7 @@
                     <div class="bg-white rounded shadow-sm p-4 mb-4 restaurant-detailed-ratings-and-reviews">
                         <div class="d-flex justify-content-between">
                             <h5 class="mb-1">All Ratings and Reviews</h5>
-                            <a href="#" class="btn btn-outline-primary btn-sm float-end">Scroll to Product</a>
+                            <a href="#" class="btn btn-outline-secondary btn-sm float-end">Scroll to Product</a>
                         </div>
                         <div class="reviews-members pt-4 pb-4">
 
@@ -107,9 +107,12 @@
                                             <small><p class="text-muted"><?= date("D, j M Y" , $row["upload_ulasan"]); ?></p></small>
                                         </div>
                                         <?php if ( $this->session->userdata("email") == $row["email"] ) :?>
-                                          <div >
+                                          <div class="col-1 d-flex justify-content-evenly">
                                             <a class="link_hapus_ulasan" href="<?= base_url("ulasan/hapus_ulasan?id_ulasan=") . $row["id_ulasan"] . "&id_produk={$_GET["id_produk"]}"; ?>" title="hapus ulasan">
                                               <button class="btn btn-danger p-1"><i class="fas fa-fw fa-solid fa-trash-can m-0 "></i></button>
+                                            </a>
+                                            <a class="link_edit_ulasan" href="#ModalEditReview" data-bs-toggle="modal" title="edit ulasan" data-id_user="<?= $row["id_user"]; ?>" data-id_produk="<?= $_GET["id_produk"]?>">
+                                              <button class="btn btn-primary p-1"><i class="fas fa-fw fa-solid fa-pen-nib m-0 "></i></button>
                                             </a>
                                           </div>
                                         <?php endif; ?>
@@ -128,13 +131,13 @@
                         </div>
                     </div>
 
-                    <?php if ($isPurchased) :?>
+                    <?php if ($isPurchased && !$isReviewed) :?>
                     <!-- Form inputan ulasan -->
                     <?= form_open_multipart('ulasan'); ?>
                       <div class="bg-white rounded shadow-sm p-4 mb-5 rating-review-select-page">
                           <h5 class="mb-4">Tinggalkan jejak</h5>
                           
-                          <p class="mb-2">Pilih rating</p>
+                          <p style="margin-bottom: 0 !important;">Pilih rating</p>
                           
                           <!-- star rating -->
                           <div class="rating-wrapperr">

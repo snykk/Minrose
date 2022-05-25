@@ -25,6 +25,7 @@ class Ulasan extends CI_Controller
         $data["rateStar"] = $this->Ulasan_model->getRateStar($id_produk); 
 
         $data["isPurchased"] = $this->Ulasan_model->isPurchased($data['user']["id"], $id_produk);
+        $data["isReviewed"] = $this->Ulasan_model->isReviewed($data['user']["id"],$id_produk);
 
         $data["starCounter"] = [];
         $data["sum"] = 0;
@@ -53,6 +54,7 @@ class Ulasan extends CI_Controller
             }
        
             $this->load->view('templates/sidebar_footer');
+            $this->load->view('ulasan/modal_edit_review');
             $this->load->view('templates/modal_logout');
             $this->load->view('templates/footer', $data);
         } else {
@@ -93,5 +95,54 @@ class Ulasan extends CI_Controller
             
             redirect('ulasan?id_produk=' . $id_produk);
         }
+    }
+
+
+    public function edit_ulasan() {
+        $user = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $id_produk = $this->Ulasan_model->idChooser();
+        $ulasan = $this->Ulasan_model->getRowUlasan($user["id"], $id_produk);
+
+        if ($this->input->post("ulasan_edit")) {
+            if (!$this->Ulasan_model->isSameData($ulasan)) {
+                if ($this->Ulasan_model->editUlasan($user["id"], $id_produk)) {
+                    $message = "<div>Ulasan <strong>berhasil</strong> diubah</div>";
+                    $this->Global_model->flasher($message, berhasil:true);
+                    
+                    redirect('ulasan?id_produk=' . $id_produk);
+                } else {
+                    $message = "<div>Internal server error</div>";
+                    $this->Global_model->flasher($message, gagal:true);
+                    
+                    redirect('ulasan?id_produk=' . $id_produk);
+                }
+            } else {
+                $message = "<div>Aksi dibatalkan, tidak ada data yang berubah</div>";
+                $this->Global_model->flasher($message, gagal:true);
+                
+                redirect('ulasan?id_produk=' . $id_produk);
+            }
+        } else {
+            $message = "<div>Aksi <strong>dibatalkan</strong> field ulasan kosong</div>";
+            $this->Global_model->flasher($message, gagal:true);
+            
+            redirect('ulasan?id_produk=' . $id_produk);
+        }
+    }
+
+
+    public function getRowUlasan() {
+        $id_user = $_POST["id_user"];
+        $id_produk = $_POST["id_produk"];
+
+        $ulasan = $this->Ulasan_model->getRowUlasan($id_user, $id_produk);
+
+        $data = [];
+
+        array_push($data, $ulasan);
+
+        header("Content-Type: application/json");
+        echo json_encode($data);
     }
 }
