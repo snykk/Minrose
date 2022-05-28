@@ -78,7 +78,7 @@
                     <td id="modal_section_detail_bukti">
                       <div class="d-flex flex-column">
                         <span class="heading d-block">bukti transfer</span>
-                        <span class="d-flex flex-row gallery"> <img id="bukti_transfer_detail" src="<?= base_url("assets/img/bukti/default.png")?>" width="100px" class="rounded" alt="bukti transfer"> </span>
+                        <span class="d-flex flex-row gallery"> <a data-bs-dismiss="modal" data-bs-toggle="modal" href="#DetailBukti" id="link_bukti_transfer"><img id="bukti_transfer_detail" src="<?= base_url("assets/img/bukti/default.png")?>" style="transition:1s;cursor:pointer;" onMouseOver="this.style.width='110px'" onMouseOut="this.style.width='100px'" width="100px" class="rounded" alt="bukti transfer"></a> </span>
                       </div>
                     </td>
                     <td>
@@ -100,8 +100,6 @@
                   <div>Total Harga: Rp.</div>
                   <div style="margin-left:5px" id="total_harga_detail"></div>
                 </div>
-                <!-- <a data-bs-dismiss="modal" data-bs-toggle="modal" href="#ModalUbahDataPemesanan" title="detail pemesanan" title="ubah data pemesanan"><button class="btn btn-outline-dark">ubah</button></a> -->
-
                 <?php if ($this->session->userdata('role_id') == 2) :?>
                 <a id="link_ubah" title="ubah data pemesanan"><button class="btn btn-outline-dark mb-3">ubah</button></a>
                 <a id="link_batalkan" href="<?= base_url("pemesanan/dibatalkan"); ?>" title="batalkan pemesanan"><button  id="btn_batalkan_pemesanan" class="btn btn-outline-danger mb-3">batalkan</button></a>
@@ -109,7 +107,6 @@
                 <?php endif; ?>
                 
                 <?php if ($this->session->userdata('role_id') == 1 && !$this->session->userdata('restrict_confirm_admin')) :?>
-                <!-- <a id="link_tolak" href="<//?= base_url("pemesanan/ditolak") ?>" title="tolak data pemesanan"><button class="btn btn-outline-danger mb-3">ditolak</button></a> -->
                 <a id="link_tolak" data-bs-dismiss="modal" data-bs-toggle="modal" href="#ModalPenolakan" title="tolak data pemesanan"><button class="btn btn-outline-danger mb-3">ditolak</button></a>
                 <a id="link_selesai" href="<?= base_url("pemesanan/selesai") ?>" title="akhiri data pemesanan"><button class="btn btn-outline-info mb-3">selesai</button></a>
                 <a id="link_setujui" href="<?= base_url("pemesanan/disetujui") ?>" title="setujui data pemesanan"><button class="btn btn-outline-success mb-3">setujui</button></a>

@@ -108,6 +108,7 @@ class Pemesanan extends CI_Controller
         $this->load->view('pemesanan/modal_detail_data_pemesanan', $data);
         $this->load->view('pemesanan/modal_pemesanan');
         $this->load->view('pemesanan/modal_upload_bukti_ditolak.php');
+        $this->load->view('pemesanan/modal_detail_bukti_transfer.php');
         $this->load->view('pemesanan/modal_penolakan.php');
         $this->load->view('templates/modal_logout');
         $this->load->view('templates/footer');
@@ -144,6 +145,7 @@ class Pemesanan extends CI_Controller
         $this->load->view('pemesanan/modal_detail_data_pemesanan', $data);
         $this->load->view('pemesanan/modal_pemesanan');
         $this->load->view('pemesanan/modal_upload_bukti_ditolak.php');
+        $this->load->view('pemesanan/modal_detail_bukti_transfer.php');
         $this->load->view('templates/modal_logout');
         $this->load->view('templates/footer');
 
@@ -231,6 +233,10 @@ class Pemesanan extends CI_Controller
         $this->db->from("pemesanan");
         $this->db->where("id",  $_POST["id"]);
         $pemesanan = $this->db->get()->result();
+
+        if (isset($_POST["data_dipesan"])) {
+            array_push($pemesanan, $_POST["data_dipesan"]);
+        }
 
         header("Content-Type: application/json");
         echo json_encode($pemesanan);

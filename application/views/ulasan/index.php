@@ -108,11 +108,11 @@
                                         </div>
                                         <?php if ( $this->session->userdata("email") == $row["email"] ) :?>
                                           <div class="col-1 d-flex justify-content-evenly">
-                                            <a class="link_hapus_ulasan" href="<?= base_url("ulasan/hapus_ulasan?id_ulasan=") . $row["id_ulasan"] . "&id_produk={$_GET["id_produk"]}"; ?>" title="hapus ulasan">
-                                              <button class="btn btn-danger p-1"><i class="fas fa-fw fa-solid fa-trash-can m-0 "></i></button>
-                                            </a>
                                             <a class="link_edit_ulasan" href="#ModalEditReview" data-bs-toggle="modal" title="edit ulasan" data-id_user="<?= $row["id_user"]; ?>" data-id_produk="<?= $_GET["id_produk"]?>">
                                               <button class="btn btn-primary p-1"><i class="fas fa-fw fa-solid fa-pen-nib m-0 "></i></button>
+                                            </a>
+                                            <a class="link_hapus_ulasan" href="<?= base_url("ulasan/hapus_ulasan?id_ulasan=") . $row["id_ulasan"] . "&id_produk={$_GET["id_produk"]}"; ?>" title="hapus ulasan">
+                                              <button class="btn btn-danger p-1"><i class="fas fa-fw fa-solid fa-trash-can m-0 "></i></button>
                                             </a>
                                           </div>
                                         <?php endif; ?>
@@ -122,6 +122,11 @@
                                             <?= $row["ulasan"]; ?>
                                           </p>
                                       </div>
+                                      <?php if ($row["isEdited"] == 1) : ?>
+                                        <div class="w-100 d-flex justify-content-end">
+                                          <small class="text-muted">Ulasan diubah pada <?= date("D, j M Y" , $row["ulasan_diubah"]); ?></small>
+                                        </div>
+                                      <?php endif; ?>
                                   </div>
                               </div>
                               <?php endforeach; ?>

@@ -17,7 +17,7 @@ class Ulasan_model extends CI_model {
     }
 
     public function getAllUlasan($id_produk) {
-        $this->db->select("user.id as id_user, ulasan.id as id_ulasan, rating, ulasan, ulasan.data_dibuat as upload_ulasan, email, username, user.image as profile_user");
+        $this->db->select("user.id as id_user, ulasan.id as id_ulasan, rating, ulasan, ulasan.data_dibuat as upload_ulasan, email, username, user.image as profile_user, isEdited, ulasan.data_diubah as ulasan_diubah");
         $this->db->from("ulasan");
         $this->db->join("user", "ulasan.id_user=user.id");
         $this->db->join("produk", "ulasan.id_produk=produk.id");

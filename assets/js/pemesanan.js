@@ -21,7 +21,6 @@ $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
     method: "post",
     dataType: "json",
     success: function (response) {
-      console.log(response);
       $("#username_detail").html("@" + response[0].username);
       $("#tanggal_dipesan_detail").html(response[1]);
       $("#jumlah_produk_detail").html(response[0].jumlah_produk);
@@ -37,6 +36,8 @@ $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
       $("#total_harga_detail").html(response[0].total_harga);
       $("#bukti_transfer_detail").attr("src", "/Project-PPL/assets/img/bukti/" + response[0].bukti_transfer);
       $("#image_detail").attr("src", "/Project-PPL/assets/img/produk/" + response[0].image_produk);
+      $("#link_bukti_transfer").attr("data-id", response[0].id_pemesanan);
+      $("#link_bukti_transfer").attr("data-dipesan", response[1]);
 
       // [user] link ubah
       $("#link_ubah").each(function () {
@@ -95,7 +96,6 @@ $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
 
       // jika status dari pemesanan "dibatalkan"
       if (response[0].id_status == 5) {
-        console.log("ini status " + response[0].status_pemesanan);
         $("#link_ubah").css("display", "none");
         $("#link_batalkan").css("display", "none");
         $("#message").css("display", "unset");
@@ -191,5 +191,18 @@ $("#link_batalkan").click(function (e) {
     if (result.value) {
       document.location.href = href;
     }
+  });
+});
+
+// link detail bukti transfer diklik
+$("#link_bukti_transfer").click(function (event) {
+  $.ajax({
+    url: "/Project-PPL/pemesanan/getBuktiTransfer",
+    data: { id: $(this).attr("data-id"), data_dipesan: $(this).attr("data-dipesan") },
+    method: "post",
+    dataType: "json",
+    success: function (response) {
+      $("#image_detail_bukti").attr("src", "/Project-PPL/assets/img/bukti/" + response[0].bukti_transfer);
+    },
   });
 });
