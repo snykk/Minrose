@@ -9,6 +9,11 @@ class Landing extends CI_Controller
             redirect("home");
         }
 
+        $data['title'] = 'Landing Page';
+        $data['css'] = 'landing';
+
+        $this->load->view('templates/header', $data);
         $this->load->view("landing/index");
+        $this->load->view('templates/footer');
     }
 }
