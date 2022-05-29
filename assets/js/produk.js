@@ -2,13 +2,13 @@ $("button.detail").click(function (event) {
   console.log("buttton detail click");
   // event.preventDefault();
   $.ajax({
-    url: "/Project-PPL/produk/getDataProduk",
+    url: "/Minrose/produk/getDataProduk",
     data: { id: $(this).attr("data-id") },
     method: "post",
     dataType: "json",
     success: function (response) {
       console.log(response);
-      $("#modal-image").attr("src", "/Project-PPL/assets/img/produk/" + response[0].image);
+      $("#modal-image").attr("src", "/Minrose/assets/img/produk/" + response[0].image);
       $(".text-uppercase").html(response[0].nama);
       $(".orientasi").html(response[0].orientasi);
       $(".deskripsi").html(response[0].deskripsi);
@@ -23,7 +23,7 @@ $("button.ubah").click(function (event) {
   console.log("buttton ubah click");
   // event.preventDefault();
   $.ajax({
-    url: "/Project-PPL/produk/getDataProduk",
+    url: "/Minrose/produk/getDataProduk",
     data: { id: $(this).attr("data-id") },
     method: "post",
     dataType: "json",

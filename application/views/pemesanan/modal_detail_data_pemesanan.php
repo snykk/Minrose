@@ -4,9 +4,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="ModalDetailDataPemesananLabel">detail data pemesanan</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true" data-bs-dismiss="modal"><i class="fa fa-close"></i></span>
-        </button>
+        <button type="button" class="btn m-0 p-0 d-flex justify-content-center align-items-center" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-fw fa-solid fa-xmark" style="color: white;font-size:1.5rem;"></i></button>
       </div>
       <div class="modal-body detail">
         <div class="row g-0">

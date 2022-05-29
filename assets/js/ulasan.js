@@ -23,7 +23,7 @@ $(".link_hapus_ulasan").click(function (e) {
 
 $(".link_edit_ulasan").click(function (e) {
   $.ajax({
-    url: "/Project-PPL/ulasan/getRowUlasan",
+    url: "/Minrose/ulasan/getRowUlasan",
     data: { id_user: $(this).attr("data-id_user"), id_produk: $(this).attr("data-id_produk") },
     method: "post",
     dataType: "json",

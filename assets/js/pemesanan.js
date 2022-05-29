@@ -16,7 +16,7 @@ function myCounter() {
 // modal detail data pemesanan
 $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
   $.ajax({
-    url: "/Project-PPL/pemesanan/getDataPemesanan",
+    url: "/Minrose/pemesanan/getDataPemesanan",
     data: { id: $(this).attr("data-id"), data_dipesan: $(this).attr("data-dipesan") },
     method: "post",
     dataType: "json",
@@ -34,8 +34,8 @@ $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
       $("#no_rekening_detail").html(response[0].no_rekening);
       $("#catatan_transaksi_detail").html(response[0].alasan_penolakan ? response[0].alasan_penolakan : response[0].catatan_pemesanan);
       $("#total_harga_detail").html(response[0].total_harga);
-      $("#bukti_transfer_detail").attr("src", "/Project-PPL/assets/img/bukti/" + response[0].bukti_transfer);
-      $("#image_detail").attr("src", "/Project-PPL/assets/img/produk/" + response[0].image_produk);
+      $("#bukti_transfer_detail").attr("src", "/Minrose/assets/img/bukti/" + response[0].bukti_transfer);
+      $("#image_detail").attr("src", "/Minrose/assets/img/produk/" + response[0].image_produk);
       $("#link_bukti_transfer").attr("data-id", response[0].id_pemesanan);
       $("#link_bukti_transfer").attr("data-dipesan", response[1]);
 
@@ -44,7 +44,7 @@ $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
         if (response[0].id_status == 2) {
           $(this).removeAttr("data-bs-dismiss");
           $(this).removeAttr("data-bs-toggle");
-          this.href = "/Project-PPL/pemesanan/ubah_pemesanan?id=" + response[0].id_pemesanan;
+          this.href = "/Minrose/pemesanan/ubah_pemesanan?id=" + response[0].id_pemesanan;
         } else if (response[0].id_status == 1) {
           $(this).attr("data-bs-dismiss", "modal");
           $(this).attr("data-bs-toggle", "modal");
@@ -112,13 +112,13 @@ $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
 // modal action upload bukti
 $("a.iniUploadBukti").click(function (event) {
   $.ajax({
-    url: "/Project-PPL/pemesanan/getBuktiTransfer",
+    url: "/Minrose/pemesanan/getBuktiTransfer",
     data: { id: $(this).attr("data-id") },
     method: "post",
     dataType: "json",
     success: function (response) {
       $("#id_pemesanan_upload").val(response[0].id);
-      $("#image_ubah").attr("src", "/Project-PPL/assets/img/bukti/" + response[0].bukti_transfer);
+      $("#image_ubah").attr("src", "/Minrose/assets/img/bukti/" + response[0].bukti_transfer);
     },
   });
 });
@@ -197,12 +197,12 @@ $("#link_batalkan").click(function (e) {
 // link detail bukti transfer diklik
 $("#link_bukti_transfer").click(function (event) {
   $.ajax({
-    url: "/Project-PPL/pemesanan/getBuktiTransfer",
+    url: "/Minrose/pemesanan/getBuktiTransfer",
     data: { id: $(this).attr("data-id"), data_dipesan: $(this).attr("data-dipesan") },
     method: "post",
     dataType: "json",
     success: function (response) {
-      $("#image_detail_bukti").attr("src", "/Project-PPL/assets/img/bukti/" + response[0].bukti_transfer);
+      $("#image_detail_bukti").attr("src", "/Minrose/assets/img/bukti/" + response[0].bukti_transfer);
     },
   });
 });
