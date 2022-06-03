@@ -40,14 +40,14 @@
                             <div class="col-12 col-sm-8 mb-3">
                               <div class="form-group">
                                 <label for="kategori">Kategori</label>
-                                <input class="form-control" type="text" id="kategori" name="kategori" placeholder="Masukkan nama produk" value="<?= set_value('kategori'); ?>">
+                                <input class="form-control" type="text" id="kategori" name="kategori" placeholder="Masukkan nama kategori" value="<?= set_value('kategori'); ?>">
                                 <?= form_error('kategori', '<small class="text-danger pl-3">', '</small>'); ?>
                               </div>
                             </div>
                             <div class="col-12 col-sm-4 mb-3">
                               <div class="form-group">
                                 <label for="pengeluaran">Total pengeluaran</label>
-                                <input class="form-control" type="text" id="pengeluaran" name="pengeluaran" placeholder="Masukkan banyak pengeluaran" value="<?= set_value('pengeluaran'); ?>">
+                                <input class="form-control" type="text" id="pengeluaran" name="pengeluaran" placeholder="Masukkan nominal pengeluaran" value="<?= set_value('pengeluaran'); ?>">
                                 <?= form_error('pengeluaran', '<small class="text-danger pl-3">', '</small>'); ?>
                               </div>
                             </div>

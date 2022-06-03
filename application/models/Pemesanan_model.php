@@ -163,7 +163,10 @@ class Pemesanan_model extends CI_model {
 
     public function setBuktiUpload($id, $new_image) {
         try {
-            $this->db->set('bukti_transfer', $new_image);
+            $this->db->set([
+                'bukti_transfer' => $new_image, 
+                "id_catatan" => 6
+            ]);
             $this->db->where('id', $id);
             $this->db->update('pemesanan');
             
