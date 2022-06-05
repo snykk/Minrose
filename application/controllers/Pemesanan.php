@@ -350,6 +350,14 @@ class Pemesanan extends CI_Controller
 
         $pemesanan = $this->Pemesanan_model->getPemesananDitolak($id_pemesanan)->result_array();
 
+        // akan dibatalkan jika inputan alasan penolakan kosoong
+        if ($alasan_penolakan == "" ) {
+            $message = "<div>Aksi <strong>dibatalkan</strong> inputan alasan penolakan <strong>kosong</strong></div>";
+            $this->Global_model->flasher($message, gagal : true);
+            
+            redirect("pemesanan/data_pemesanan");
+        }
+
         // akan otomatis dicancel jika id status sebelumnya sudah "ditolak"
         if ($pemesanan[0]["id_status"] == 3) {
             $message = "<div>Aksi <strong>dibatalkan</strong> status pemesanan sebelumnya sudah ditolak</div>";
