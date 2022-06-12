@@ -44,7 +44,7 @@ class Pemesanan_model extends CI_model {
 
     public function getDataPemesanan($post = false, $get = false) {
         // prepare data pemesanan
-        $this->db->select('pemesanan.id as id_pemesanan, produk.image as image_produk, status.style as style_status, status_pemesanan, produk.nama as nama_produk, metode_pembayaran, jumlah_produk, total_harga, catatan_pemesanan, metode_pembayaran, username, status.id as id_status, pemesanan.data_dibuat as tanggal_pemesanan, pemesanan.data_diubah as pesanan_diubah, alasan_penolakan, pemesanan.alamat as alamat_pemesanan, nama_bank, no_rekening, bukti_transfer, stok, produk.harga as harga_produk, is_done');
+        $this->db->select('pemesanan.id as id_pemesanan, produk.id as id_produk, produk.image as image_produk, status.style as style_status, status_pemesanan, produk.nama as nama_produk, metode_pembayaran, jumlah_produk, total_harga, catatan_pemesanan, metode_pembayaran, username, status.id as id_status, pemesanan.data_dibuat as tanggal_pemesanan, pemesanan.data_diubah as pesanan_diubah, alasan_penolakan, pemesanan.alamat as alamat_pemesanan, nama_bank, no_rekening, bukti_transfer, stok, produk.harga as harga_produk, is_done');
         $this->db->from('pemesanan');
         $this->db->join('produk', 'pemesanan.id_produk=produk.id');
         $this->db->join('user', 'pemesanan.id_user=user.id');
@@ -261,7 +261,7 @@ class Pemesanan_model extends CI_model {
     }
 
 
-    public function setPemesananSelesai($id) {
+    public function setPemesananSelesai($id_pemesanan) {
         try {
             // ubah status di tabel pemesanan
             $set_pemesanan = [
@@ -269,12 +269,37 @@ class Pemesanan_model extends CI_model {
                 "id_catatan" => 3,
                 "is_done" => 1,
                 "alasan_penolakan" => null,
+                "data_diubah" => time(),
             ];
 
             $this->db->set($set_pemesanan);
-            $this->db->where("id", $id);
+            $this->db->where("id", $id_pemesanan);
             $this->db->update('pemesanan');
 
+            // tambahkan point di tabel user dengan kriteria sebagai berikut
+
+            // produk 1 2 point
+            // produk 2 3 point
+            // produk 3 12 point
+
+            $this->db->select("jumlah_produk, produk.id as id_produk, id_user, user.point as point_saat_ini");
+            $this->db->from("pemesanan");
+            $this->db->join("produk", "pemesanan.id_produk=produk.id");
+            $this->db->join("user", "pemesanan.id_user=user.id");
+            $this->db->where("pemesanan.id", $id_pemesanan);
+            $result = $this->db->get()->row_array();
+
+            $kriteria_point = [
+                "1" => 2,
+                "2" => 3,
+                "3" => 12
+            ];
+
+            $jumlah_point = ($kriteria_point[$result["id_produk"]] * (INT)$result["jumlah_produk"]) + $result["point_saat_ini"];
+            
+            $this->db->set('point', $jumlah_point);
+            $this->db->where('id', $result["id_user"]);
+            $this->db->update('user'); 
             return true;
         } catch (Exception $e) {
             return false;
@@ -282,12 +307,12 @@ class Pemesanan_model extends CI_model {
     }
 
 
-    public function addPemesananToTransaksi($id) {
+    public function addPemesananToTransaksi($id_pemesanan) {
         try {
             $this->db->select("jumlah_produk, produk.nama as nama_produk, total_harga");
             $this->db->from("pemesanan");
             $this->db->join("produk", "pemesanan.id_produk=produk.id");
-            $this->db->where("pemesanan.id", $id);
+            $this->db->where("pemesanan.id", $id_pemesanan);
             $result = $this->db->get()->row_array();
 
             $data_pemasukan = [

@@ -8,6 +8,10 @@
             <div class="sb-nav-link-icon"><i class="fas fa-fw fa-home-alt"></i></div>
             Home
           </a>
+          <a class="nav-link" href="<?= base_url("home/myPoint") ?>">
+            <div class="sb-nav-link-icon"><i class="fa-solid fa-fw fa-paw"></i></div>
+            My Point
+          </a>
 
           <div class="sb-sidenav-menu-heading">Interface</div>
           <a class="nav-link" href="<?= base_url("Produk/index"); ?>">

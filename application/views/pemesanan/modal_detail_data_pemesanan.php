@@ -100,14 +100,14 @@
                 </div>
                 <?php if ($this->session->userdata('role_id') == 2) :?>
                 <a id="link_ubah" title="ubah data pemesanan"><button class="btn btn-outline-dark mb-3">ubah</button></a>
-                <a id="link_batalkan" href="<?= base_url("pemesanan/dibatalkan"); ?>" title="batalkan pemesanan"><button  id="btn_batalkan_pemesanan" class="btn btn-outline-danger mb-3">batalkan</button></a>
+                <a id="link_batalkan" title="batalkan pemesanan"><button  id="btn_batalkan_pemesanan" class="btn btn-outline-danger mb-3">batalkan</button></a>
                 <em id="message" class="link-danger">pemesanan telah dibatalkan</em>
                 <?php endif; ?>
                 
                 <?php if ($this->session->userdata('role_id') == 1 && !$this->session->userdata('restrict_confirm_admin')) :?>
                 <a id="link_tolak" data-bs-dismiss="modal" data-bs-toggle="modal" href="#ModalPenolakan" title="tolak data pemesanan"><button class="btn btn-outline-danger mb-3">ditolak</button></a>
-                <a id="link_selesai" href="<?= base_url("pemesanan/selesai") ?>" title="akhiri data pemesanan"><button class="btn btn-outline-info mb-3">selesai</button></a>
-                <a id="link_setujui" href="<?= base_url("pemesanan/disetujui") ?>" title="setujui data pemesanan"><button class="btn btn-outline-success mb-3">setujui</button></a>
+                <a id="link_selesai" title="akhiri data pemesanan"><button class="btn btn-outline-info mb-3">selesai</button></a>
+                <a id="link_setujui" title="setujui data pemesanan"><button class="btn btn-outline-success mb-3">setujui</button></a>
                 <?php endif; ?>
 
               </div>

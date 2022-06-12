@@ -68,19 +68,19 @@ $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
         if (response[0].id_status != 2) {
           $("#btn_batalkan_pemesanan").css("display", "none");
         }
-        this.href += "?id=" + response[0].id_pemesanan;
+        this.href = "/Minrose/pemesanan/dibatalkan?id_pemesanan=" + response[0].id_pemesanan;
       });
 
       // [admin] konfirmasi pemesanan
       $("#link_tolak").each(function () {
         // this.href += "?id=" + response[0].id_pemesanan;
-        $(this).attr("data-idProduk", response[0].id_pemesanan);
+        $(this).attr("data-idPemesanan", response[0].id_pemesanan);
       });
       $("#link_selesai").each(function () {
-        this.href += "?id=" + response[0].id_pemesanan;
+        this.href = "/Minrose/pemesanan/selesai?id_pemesanan=" + response[0].id_pemesanan;
       });
       $("#link_setujui").each(function () {
-        this.href += "?id=" + response[0].id_pemesanan;
+        this.href = "/Minrose/pemesanan/disetujui?id_pemesanan=" + response[0].id_pemesanan;
       });
 
       // restrict fitur upload bukti untuk metode pembayaran COD
@@ -125,7 +125,7 @@ $("a.iniUploadBukti").click(function (event) {
 
 // id tolak diklik
 $("#link_tolak").click(function (e) {
-  $("#id_pemesanan_ditolak").val($(this).attr("data-idProduk"));
+  $("#id_pemesanan_ditolak").val($(this).attr("data-idPemesanan"));
 });
 
 // sweetalert 2

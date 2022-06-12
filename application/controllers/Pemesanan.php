@@ -295,9 +295,9 @@ class Pemesanan extends CI_Controller
             redirect('auth/blocked');
         }
 
-        $id = $_GET["id"];
+        $id_pemesanan = $_GET["id_pemesanan"];
 
-        $pemesanan = $this->Pemesanan_model->getPemesananDisetujui($id)->result_array();
+        $pemesanan = $this->Pemesanan_model->getPemesananDisetujui($id_pemesanan)->result_array();
 
         // akan otomatis dicancel jika id status sebelumnya sudah "disejutui"
         if ($pemesanan[0]["id_status"] == 1) {
@@ -324,7 +324,7 @@ class Pemesanan extends CI_Controller
             redirect("pemesanan/data_pemesanan");
         }
         
-        if ($this->Pemesanan_model->setujuiPemesanan($pemesanan[0], $id) && $this->Pemesanan_model->ubahStok($pemesanan[0])) {
+        if ($this->Pemesanan_model->setujuiPemesanan($pemesanan[0], $id_pemesanan) && $this->Pemesanan_model->ubahStok($pemesanan[0])) {
             $message = "<div>Status pemesanan <strong>berhasil</strong> diubah</div>";
             $this->Global_model->flasher($message, berhasil:true);
 
@@ -386,13 +386,18 @@ class Pemesanan extends CI_Controller
             redirect('auth/blocked');
         }
 
-        $id = $_GET["id"];
+        $id_pemesanan = $_GET["id_pemesanan"];
         
-        if ($this->Pemesanan_model->setPemesananSelesai($id) && $this->Pemesanan_model->addPemesananToTransaksi($id)) {
-            $message = "<div>Pemesanan <strong>berhasil</strong> diakhiri </div> dan data pemesanan <strong>berhasil</strong> ditambahkan di transaksi";
+        if ($this->Pemesanan_model->setPemesananSelesai($id_pemesanan) && $this->Pemesanan_model->addPemesananToTransaksi($id_pemesanan)) {
+            $message = "<div>Pemesanan <strong>berhasil</strong> diakhiri dan data pemesanan <strong>berhasil</strong> ditambahkan di transaksi </div>";
             $this->Global_model->flasher($message, berhasil:true);
 
             redirect("pemesanan/riwayat_pemesanan");
+        } else {
+            $message = "<div>Internal server error</div>";
+            $this->Global_model->flasher($message, gagal:true);
+
+            redirect("pemesanan/data_pemesanan");
         }
     }
 
@@ -403,7 +408,7 @@ class Pemesanan extends CI_Controller
             redirect('auth/blocked');
         }
 
-        $id_pemesanan = $_GET["id"];
+        $id_pemesanan = $_GET["id_pemesanan"];
 
         if ($this->Pemesanan_model->batalkanPemesanan($id_pemesanan)) {
             $message = "<div>Transaksi pemesanan <strong>berhasil</strong> dibatalkan</div>";

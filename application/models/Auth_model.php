@@ -14,7 +14,8 @@ class Auth_model extends CI_model {
                 'role_id' => 2,
                 'alamat' => htmlspecialchars($this->input->post('alamat', true)),
                 'image' => 'default.jpg',
-                'data_dibuat' => time()
+                'data_dibuat' => time(),
+                "point" => 0,
             ];
 
             $this->db->insert('user', $data);

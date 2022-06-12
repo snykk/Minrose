@@ -57,4 +57,24 @@ class Home extends CI_Controller
         $this->load->view('templates/modal_logout');
         $this->load->view('templates/footer', $data);
     }
+
+    public function myPoint() {
+        $data['title'] = 'My Point';
+        $data['css'] = "point";
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/topbar', $data);
+
+        if ($this->session->userdata('role_id') == 1) {
+            $this->load->view('templates/sidebar_admin', $data);
+        } else {
+            $this->load->view('templates/sidebar_user', $data);
+        }
+
+        $this->load->view("home/myPoint", $data);
+        $this->load->view('templates/sidebar_footer');
+        $this->load->view('templates/modal_logout');
+        $this->load->view('templates/footer', $data);
+    }
 }
