@@ -224,6 +224,9 @@
             <span>TOTAL</span> <strong class="text-dark"><span>Rp. </span><span id="total">10000</span></strong>
             <input type="hidden" name="input_total" id="input_total" value="<?= set_value('input_total'); ?>">
           </div>
+          <div class="form-group small mb-3">
+            Pastikan anda benar-benar paham terkait pesanan yang anda buat. Jika ingin mendapatkan infor lebih lanjut silahkan hubungi <a class="link-danger" href="https://wa.me/6281230451084?text=Saya%20ingin%20menanyakan%20detail%20terkait%20produk%20anda" target="_blank" style="text-decoration: none;">@admin</a>
+          </div>
           <button type="submit" class="btn btn-primary w-100 mt-2">Submit</button>
         </div>
       </div>
