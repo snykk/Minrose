@@ -1,8 +1,10 @@
 <?php
 
-class Profile_model extends CI_model {
+class Profile_model extends CI_model
+{
 
-    public function isSameData($user) {
+    public function isSameData($user)
+    {
 
         if ($this->input->post('email') == $user["email"] && $this->input->post('username') == $user["username"] && $this->input->post('nama_lengkap') == $user["nama_lengkap"] && $this->input->post('jenis_kelamin') == $user["jenis_kelamin"] && $this->input->post('no_hp') == $user["no_hp"] && $this->input->post('alamat') == $user["alamat"] && !($_FILES['image']['name'])) {
             return true;
@@ -11,7 +13,8 @@ class Profile_model extends CI_model {
         return false;
     }
 
-    public function editProfile($user) {
+    public function editProfile($user)
+    {
         try {
             $email = $this->input->post('email');
 
@@ -47,21 +50,22 @@ class Profile_model extends CI_model {
             $this->db->set($data);
             $this->db->where('email', $email);
             $this->db->update('user');
-            
+
             return true;
         } catch (Exception $e) {
             return false;
         }
     }
 
-    public function gantiPassword($new_password) {
+    public function gantiPassword($new_password)
+    {
         try {
             $password_hash = password_hash($new_password, PASSWORD_DEFAULT);
 
             $this->db->set('password', $password_hash);
             $this->db->where('email', $this->session->userdata('email'));
             $this->db->update('user');
-            
+
             return true;
         } catch (Exception $e) {
             return false;

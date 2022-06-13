@@ -24,23 +24,23 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
-                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password"  value="<?= set_value('password'); ?>">
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" value="<?= set_value('password'); ?>">
                                     <?= form_error('password', '<small class="text-danger pl-3">', '</small>'); ?>
                                 </div>
                                 <div class="col-sm-6">
-                                    <input type="password" class="form-control" id="verif-password" name="verif-password" placeholder="Verifikasi Password"  value="<?= set_value('verif-password'); ?>">
+                                    <input type="password" class="form-control" id="verif-password" name="verif-password" placeholder="Verifikasi Password" value="<?= set_value('verif-password'); ?>">
                                     <?= form_error('verif-password', '<small class="text-danger pl-3">', '</small>'); ?>
                                 </div>
                             </div>
                             <div class="ml-2">Jenis Kelamin</div>
                             <div class="form-check ml-3">
-                                <input class="form-check-input" type="radio" name="jenis_kelamin" id="laki_laki" value="L" <?=  set_radio('jenis_kelamin', 'L', TRUE); ?>>
+                                <input class="form-check-input" type="radio" name="jenis_kelamin" id="laki_laki" value="L" <?= set_radio('jenis_kelamin', 'L', TRUE); ?>>
                                 <label class="form-check-label" for="laki_laki">
                                     Laki Laki
                                 </label>
-                                </div>
+                            </div>
                             <div class="form-check ml-3">
-                                <input class="form-check-input" type="radio" name="jenis_kelamin" id="perempuan" value="P" <?=  set_radio('jenis_kelamin', 'P'); ?>>
+                                <input class="form-check-input" type="radio" name="jenis_kelamin" id="perempuan" value="P" <?= set_radio('jenis_kelamin', 'P'); ?>>
                                 <label class="form-check-label" for="perempuan">
                                     Perempuan
                                 </label>
@@ -54,7 +54,7 @@
                                 <input type="text" class="form-control" id="alamat" name="alamat" placeholder="Alamat" value="<?= set_value('alamat'); ?>">
                                 <?= form_error('alamat', '<small class="text-danger pl-3">', '</small>'); ?>
                             </div>
-                            <input type="hidden" name="role_id" value="2"/>
+                            <input type="hidden" name="role_id" value="2" />
 
                             <button type="submit" class="btn btn-info btn-block">
                                 Submit Registrasi
@@ -62,9 +62,9 @@
                         </form>
                         <hr>
                         <?php if (false) : ?>
-                        <div class="text-center">
-                            <a class="small" href="<?= base_url('auth/forgotpassword'); ?>">Forgot Password?</a>
-                        </div>
+                            <div class="text-center">
+                                <a class="small" href="<?= base_url('auth/forgotpassword'); ?>">Forgot Password?</a>
+                            </div>
                         <?php endif; ?>
                         <div class="text-center">
                             <a class="small" href="<?= base_url('auth'); ?>">Sudah punya akun? Login sekarang!</a>
@@ -75,4 +75,4 @@
         </div>
     </div>
 
-</div> 
+</div>

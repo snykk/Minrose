@@ -1,8 +1,10 @@
 <?php
 
-class Auth_model extends CI_model {
-    
-    public function buatAkun() {
+class Auth_model extends CI_model
+{
+
+    public function buatAkun()
+    {
         try {
             $data = [
                 'nama_lengkap' => htmlspecialchars($this->input->post('nama_lengkap', true)),

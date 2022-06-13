@@ -6,7 +6,7 @@
         <h5 class="modal-title" id="ModalAlertPemesananLabel" style="color: black;">Oops</h5>
       </div>
       <div class="modal-body" id="kontent_modal_pemesanan">
-      <!-- content -->
+        <!-- content -->
       </div>
       <div class="modal-footer" style="padding: 0.25rem;">
         <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Kembali</button>

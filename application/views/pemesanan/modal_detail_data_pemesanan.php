@@ -16,13 +16,17 @@
                     <td>
                       <div class="d-flex flex-column">
                         <span class="heading d-block">dipesan oleh</span>
-                        <span class="subheadings" id="username_detail"> <!-- content dipesan oleh --> </span>
+                        <span class="subheadings" id="username_detail">
+                          <!-- content dipesan oleh -->
+                        </span>
                       </div>
                     </td>
                     <td>
                       <div class="d-flex flex-column">
                         <span class="heading d-block">tanggal dipesan</span>
-                        <span class="subheadings" id="tanggal_dipesan_detail"> <!-- content tanggal pemesanan --> </span>
+                        <span class="subheadings" id="tanggal_dipesan_detail">
+                          <!-- content tanggal pemesanan -->
+                        </span>
                       </div>
                     </td>
                   </tr>
@@ -30,13 +34,17 @@
                     <td>
                       <div class="d-flex flex-column">
                         <span class="heading d-block">jumlah produk</span>
-                        <span class="subheadings" id="jumlah_produk_detail"> <!-- content jumlah produk --> </span>
+                        <span class="subheadings" id="jumlah_produk_detail">
+                          <!-- content jumlah produk -->
+                        </span>
                       </div>
                     </td>
                     <td>
                       <div class="d-flex flex-column">
                         <span class="heading d-block">alamat</span>
-                        <span class="subheadings" id="alamat_detail"> <!-- content alamat --> </span>
+                        <span class="subheadings" id="alamat_detail">
+                          <!-- content alamat -->
+                        </span>
                       </div>
                     </td>
                   </tr>
@@ -44,7 +52,9 @@
                     <td>
                       <div class="d-flex flex-column">
                         <span class="heading d-block">metode</span>
-                        <span class="subheadings" id="metode_detail"> <!-- content metode --> </span>
+                        <span class="subheadings" id="metode_detail">
+                          <!-- content metode -->
+                        </span>
                       </div>
                     </td>
                     <td>
@@ -52,7 +62,9 @@
                         <span class="heading d-block">status</span>
                         <div class="subheadings d-flex justify-content-start align-items-center mt-1">
                           <div id="style_status" style="margin-right: 8px;"></div>
-                          <div id="status_detail"> <!-- content status --> </div>
+                          <div id="status_detail">
+                            <!-- content status -->
+                          </div>
                         </div>
                       </div>
                     </td>
@@ -61,13 +73,17 @@
                     <td>
                       <div class="d-flex flex-column">
                         <span class="heading d-block">nama bank</span>
-                        <span class="subheadings" id="bank_detail"> <!-- content nama bank --> </span>
+                        <span class="subheadings" id="bank_detail">
+                          <!-- content nama bank -->
+                        </span>
                       </div>
                     </td>
                     <td>
                       <div class="d-flex flex-column">
                         <span class="heading d-block">no. rekening</span>
-                        <span class="subheadings" style="color:red;" id="no_rekening_detail"> <!-- content no rekening bank --></span>
+                        <span class="subheadings" style="color:red;" id="no_rekening_detail">
+                          <!-- content no rekening bank -->
+                        </span>
                       </div>
                     </td>
                   </tr>
@@ -76,12 +92,14 @@
                     <td id="modal_section_detail_bukti">
                       <div class="d-flex flex-column">
                         <span class="heading d-block">bukti transfer</span>
-                        <span class="d-flex flex-row gallery"> <a data-bs-dismiss="modal" data-bs-toggle="modal" href="#DetailBukti" id="link_bukti_transfer"><img id="bukti_transfer_detail" src="<?= base_url("assets/img/bukti/default.png")?>" style="transition:1s;cursor:pointer;" onMouseOver="this.style.width='110px'" onMouseOut="this.style.width='100px'" width="100px" class="rounded" alt="bukti transfer"></a> </span>
+                        <span class="d-flex flex-row gallery"> <a data-bs-dismiss="modal" data-bs-toggle="modal" href="#DetailBukti" id="link_bukti_transfer"><img id="bukti_transfer_detail" src="<?= base_url("assets/img/bukti/default.png") ?>" style="transition:1s;cursor:pointer;" onMouseOver="this.style.width='110px'" onMouseOut="this.style.width='100px'" width="100px" class="rounded" alt="bukti transfer"></a> </span>
                       </div>
                     </td>
                     <td>
                       <span class="heading d-block">catatan</span>
-                      <span class="subheadings" style="text-transform: lowercase;" id="catatan_transaksi_detail"> <!-- content catatan transaksi --> </span>
+                      <span class="subheadings" style="text-transform: lowercase;" id="catatan_transaksi_detail">
+                        <!-- content catatan transaksi -->
+                      </span>
                     </td>
                   </tr>
                 </tbody>
@@ -98,16 +116,16 @@
                   <div>Total Harga: Rp.</div>
                   <div style="margin-left:5px" id="total_harga_detail"></div>
                 </div>
-                <?php if ($this->session->userdata('role_id') == 2) :?>
-                <a id="link_ubah" title="ubah data pemesanan"><button class="btn btn-outline-dark mb-3">ubah</button></a>
-                <a id="link_batalkan" title="batalkan pemesanan"><button  id="btn_batalkan_pemesanan" class="btn btn-outline-danger mb-3">batalkan</button></a>
-                <em id="message" class="link-danger">pemesanan telah dibatalkan</em>
+                <?php if ($this->session->userdata('role_id') == 2) : ?>
+                  <a id="link_ubah" title="ubah data pemesanan"><button class="btn btn-outline-dark mb-3">ubah</button></a>
+                  <a id="link_batalkan" title="batalkan pemesanan"><button id="btn_batalkan_pemesanan" class="btn btn-outline-danger mb-3">batalkan</button></a>
+                  <em id="message" class="link-danger">pemesanan telah dibatalkan</em>
                 <?php endif; ?>
-                
-                <?php if ($this->session->userdata('role_id') == 1 && !$this->session->userdata('restrict_confirm_admin')) :?>
-                <a id="link_tolak" data-bs-dismiss="modal" data-bs-toggle="modal" href="#ModalPenolakan" title="tolak data pemesanan"><button class="btn btn-outline-danger mb-3">ditolak</button></a>
-                <a id="link_selesai" title="akhiri data pemesanan"><button class="btn btn-outline-info mb-3">selesai</button></a>
-                <a id="link_setujui" title="setujui data pemesanan"><button class="btn btn-outline-success mb-3">setujui</button></a>
+
+                <?php if ($this->session->userdata('role_id') == 1 && !$this->session->userdata('restrict_confirm_admin')) : ?>
+                  <a id="link_tolak" data-bs-dismiss="modal" data-bs-toggle="modal" href="#ModalPenolakan" title="tolak data pemesanan"><button class="btn btn-outline-danger mb-3">ditolak</button></a>
+                  <a id="link_selesai" title="akhiri data pemesanan"><button class="btn btn-outline-info mb-3">selesai</button></a>
+                  <a id="link_setujui" title="setujui data pemesanan"><button class="btn btn-outline-success mb-3">setujui</button></a>
                 <?php endif; ?>
 
               </div>

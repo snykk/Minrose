@@ -35,9 +35,9 @@
                                 </form>
                                 <hr>
                                 <?php if (false) : ?>
-                                <div class="text-center">
-                                    <a class="small" href="<?= base_url('auth/forgotpassword'); ?>">Forgot Password?</a>
-                                </div>
+                                    <div class="text-center">
+                                        <a class="small" href="<?= base_url('auth/forgotpassword'); ?>">Forgot Password?</a>
+                                    </div>
                                 <?php endif;  ?>
 
                                 <div class="text-center">

@@ -12,7 +12,8 @@ class Pemesanan extends CI_Controller
     }
 
 
-    public function buat_pemesanan() {
+    public function buat_pemesanan()
+    {
 
         // action akan dilempar ke status 403 jika diakses oleh role yang tidak berwenang
         if ($this->session->userdata('role_id') == 1) {
@@ -26,28 +27,34 @@ class Pemesanan extends CI_Controller
 
         $id_produk = $this->Pemesanan_model->idChooser();
 
-        $data["produk"] =  $this->db->get_where('produk', ['id' =>$id_produk])->row_array();
-        
-        $stok = 0; //mengantisipasi error di lane 42
-        if ($id_produk != false) {
+        $data["produk"] =  $this->db->get_where('produk', ['id' => $id_produk])->row_array();
+
+        $stok = 0; //mengantisipasi error di lane 46
+        if ($id_produk != false && $data["produk"] != "") {
             $stok = $data["produk"]['stok'];
+        } else {
+            $id_produk = false;
         }
 
-        $this->form_validation->set_rules('jumlah_produk', 'Jumlah produk','required|trim', ["required"=>"Jumlah produk tidak boleh kosong"]);
-        $this->form_validation->set_rules('alamat', 'Alamat','required|trim', ["required"=>"Alamat tidak boleh kosong"]);
-        $this->form_validation->set_rules('id_metode', 'Metode transaksi','required|trim', ["required"=>"Pilih salah satu metode transaksi"]);
-        $this->form_validation->set_rules('id_bank', 'Bank','required|trim', ["required"=>"Pilih salah satu bank"]);
-        $this->form_validation->set_rules('jumlah_produk', 'Alamat','trim|greater_than_equal_to[1]|less_than_equal_to'. "[$stok]", 
-        ["required"=>"Alamat tujuan tidak boleh kosong",
-        "greater_than_equal_to"=>"Jumlah produk tidak boleh 0",
-        "less_than_equal_to"=>"Produk yang tersedia untuk saat ini hanya $stok unit" 
-        ],
+        $this->form_validation->set_rules('jumlah_produk', 'Jumlah produk', 'required|trim', ["required" => "Jumlah produk tidak boleh kosong"]);
+        $this->form_validation->set_rules('alamat', 'Alamat', 'required|trim', ["required" => "Alamat tidak boleh kosong"]);
+        $this->form_validation->set_rules('id_metode', 'Metode transaksi', 'required|trim', ["required" => "Pilih salah satu metode transaksi"]);
+        $this->form_validation->set_rules('id_bank', 'Bank', 'required|trim', ["required" => "Pilih salah satu bank"]);
+        $this->form_validation->set_rules(
+            'jumlah_produk',
+            'Alamat',
+            'trim|greater_than_equal_to[1]|less_than_equal_to' . "[$stok]",
+            [
+                "required" => "Alamat tujuan tidak boleh kosong",
+                "greater_than_equal_to" => "Jumlah produk tidak boleh 0",
+                "less_than_equal_to" => "Produk yang tersedia untuk saat ini hanya $stok unit"
+            ],
         );
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/header', $data);
             $this->load->view('templates/topbar', $data);
-    
+
             if ($this->session->userdata('role_id') == 1) {
                 $this->load->view('templates/sidebar_admin', $data);
             } else {
@@ -66,24 +73,24 @@ class Pemesanan extends CI_Controller
         } else {
             if ($this->Pemesanan_model->buatPemesanan()) {
                 $message = "<div>Data pemesanan <strong>berhasil</strong> ditambahkan</div>";
-                $this->Global_model->flasher($message, berhasil : true);
+                $this->Global_model->flasher($message, berhasil: true);
 
                 redirect('pemesanan/data_pemesanan');
             } else {
                 $message = "<div>Internal server error</div>";
-                $this->Global_model->flasher($message, gagal : true);
+                $this->Global_model->flasher($message, gagal: true);
 
                 redirect('pemesanan/buat_pemesanan?id_produk=' . $id_produk);
             }
         }
-
     }
 
 
-    public function data_pemesanan() {
+    public function data_pemesanan()
+    {
         $data['title'] = 'Data Pemesanan';
         $data['css'] = 'pemesanan';
-        $data['js'] = 'pemesanan'; 
+        $data['js'] = 'pemesanan';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         $data["pemesanan"] = $this->Pemesanan_model->getDataPemesanan();
@@ -101,7 +108,7 @@ class Pemesanan extends CI_Controller
             $this->load->view('pemesanan/blank_data', $data);
         } else {
             $this->load->view('pemesanan/data_pemesanan', $data);
-        } 
+        }
 
         $this->load->view('templates/sidebar_footer');
         $this->load->view('pemesanan/modal_upload_bukti');
@@ -115,10 +122,11 @@ class Pemesanan extends CI_Controller
     }
 
 
-    public function riwayat_pemesanan() {
+    public function riwayat_pemesanan()
+    {
         $data['title'] = 'Riwayat Pemesanan';
         $data['css'] = 'pemesanan';
-        $data['js'] = 'pemesanan'; 
+        $data['js'] = 'pemesanan';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         $data["pemesanan"] = $this->Pemesanan_model->getDataRiwayat();
@@ -139,7 +147,7 @@ class Pemesanan extends CI_Controller
             $this->load->view('pemesanan/blank_data', $data);
         } else {
             $this->load->view('pemesanan/data_pemesanan', $data);
-        } 
+        }
 
         $this->load->view('templates/sidebar_footer');
         $this->load->view('pemesanan/modal_detail_data_pemesanan', $data);
@@ -153,14 +161,15 @@ class Pemesanan extends CI_Controller
         $this->session->unset_userdata('restrict_confirm_admin');
     }
 
-    
-    public function getDataPemesanan() {
+
+    public function getDataPemesanan()
+    {
         $data_dipesan = $_POST["data_dipesan"];
-        
-        $result = $this->Pemesanan_model->getDataPemesanan(post : true);
+
+        $result = $this->Pemesanan_model->getDataPemesanan(post: true);
 
         $data = $result->result();
-        
+
         // array_push($data, $result->result());
         array_push($data, $data_dipesan);
 
@@ -169,30 +178,35 @@ class Pemesanan extends CI_Controller
     }
 
 
-    public function ubah_pemesanan() {
+    public function ubah_pemesanan()
+    {
         // set link files data
         $data['title'] = 'Ubah Pemesanan';
         $data['css'] = 'pemesanan';
         $data['js'] = 'pemesanan';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-        
-        $data["pemesanan"] = $this->Pemesanan_model->getDataPemesanan(get : true)->result_array();
+
+        $data["pemesanan"] = $this->Pemesanan_model->getDataPemesanan(get: true)->result_array();
 
         // set rules
         $stok =  $data["pemesanan"][0]["stok"];
-        
-        $this->form_validation->set_rules('alamat_pemesanan', 'Alamat','required|trim', ["required"=>"Alamat tujuan tidak boleh kosong"]);
-        $this->form_validation->set_rules('jumlah_produk', 'Alamat','trim|greater_than_equal_to[1]|less_than_equal_to'. "[$stok]", 
-        ["required"=>"Alamat tujuan tidak boleh kosong",
-        "greater_than_equal_to"=>"Jumlah produk tidak boleh 0",
-        "less_than_equal_to"=>"Produk yang tersedia untuk saat ini hanya $stok unit" 
-        ],
+
+        $this->form_validation->set_rules('alamat_pemesanan', 'Alamat', 'required|trim', ["required" => "Alamat tujuan tidak boleh kosong"]);
+        $this->form_validation->set_rules(
+            'jumlah_produk',
+            'Alamat',
+            'trim|greater_than_equal_to[1]|less_than_equal_to' . "[$stok]",
+            [
+                "required" => "Alamat tujuan tidak boleh kosong",
+                "greater_than_equal_to" => "Jumlah produk tidak boleh 0",
+                "less_than_equal_to" => "Produk yang tersedia untuk saat ini hanya $stok unit"
+            ],
         );
 
         // proses akan diredirect jika tidak ada perubahan
         if ($this->Pemesanan_model->isSameData($data["pemesanan"])) {
             $message = "<div>Perubahan <strong>dibatalkan</strong>, tidak ada data yang diubah</div>";
-            $this->Global_model->flasher($message, gagal:true);
+            $this->Global_model->flasher($message, gagal: true);
 
             redirect('pemesanan/ubah_pemesanan?id=' . $this->input->post("id"));
         }
@@ -200,7 +214,7 @@ class Pemesanan extends CI_Controller
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/header', $data);
             $this->load->view('templates/topbar', $data);
-    
+
             if ($this->session->userdata('role_id') == 1) {
                 $this->load->view('templates/sidebar_admin', $data);
             } else {
@@ -211,15 +225,15 @@ class Pemesanan extends CI_Controller
             $this->load->view('templates/modal_logout');
             $this->load->view('templates/footer');
         } else {
-            if ( $this->Pemesanan_model->ubahPemesanan($data["pemesanan"]) ) {
+            if ($this->Pemesanan_model->ubahPemesanan($data["pemesanan"])) {
                 $message = "<div>Data pemesanan <strong>berhasil</strong> diubah</div>";
-                $this->Global_model->flasher($message, berhasil:true);
+                $this->Global_model->flasher($message, berhasil: true);
 
 
                 redirect('pemesanan/data_pemesanan');
             } else {
                 $message = "<div>Internal server error</div>";
-                $this->Global_model->flasher($message, berhasil:true);
+                $this->Global_model->flasher($message, berhasil: true);
 
                 redirect('pemesanan/ubah_pemesanan');
             }
@@ -227,7 +241,8 @@ class Pemesanan extends CI_Controller
     }
 
 
-    public function getBuktiTransfer() {
+    public function getBuktiTransfer()
+    {
         // $pemesanan = $this->db->get_where('pemesanan', ['id' => $_POST["id"]])->result();
         $this->db->select("id, bukti_transfer");
         $this->db->from("pemesanan");
@@ -243,8 +258,9 @@ class Pemesanan extends CI_Controller
     }
 
 
-    public function setBuktiTransfer() {
-        $id = $this->input->post('id',true);
+    public function setBuktiTransfer()
+    {
+        $id = $this->input->post('id', true);
 
         $upload_image = $_FILES['image']['name'];
         if ($upload_image) {
@@ -267,13 +283,13 @@ class Pemesanan extends CI_Controller
 
                 if ($this->Pemesanan_model->setBuktiUpload($id, $new_image)) {
                     $message = "<div>Bukti transfer <strong>berhasil</strong> diupload</div>";
-                    $this->Global_model->flasher($message, berhasil:true);
-                    
+                    $this->Global_model->flasher($message, berhasil: true);
+
                     redirect('pemesanan/data_pemesanan');
                 } else {
                     $message = "Internal server error";
-                    $this->Global_model->flasher($message, gagal:true);
-                    
+                    $this->Global_model->flasher($message, gagal: true);
+
                     redirect('pemesanan/data_pemesanan');
                 }
             } else {
@@ -281,14 +297,15 @@ class Pemesanan extends CI_Controller
             }
         } else {
             $message = "<div>Upload bukti <strong>gagal</strong> tidak ada gambar yang diupload ke sistem</div>";
-            $this->Global_model->flasher($message, gagal:true);
+            $this->Global_model->flasher($message, gagal: true);
 
             redirect("pemesanan/data_pemesanan");
         }
     }
 
 
-    public function disetujui() {
+    public function disetujui()
+    {
 
         // action akan dilempar ke status 403 jika diakses oleh role yang tidak berwenang
         if ($this->session->userdata('role_id') == 2) {
@@ -302,7 +319,7 @@ class Pemesanan extends CI_Controller
         // akan otomatis dicancel jika id status sebelumnya sudah "disejutui"
         if ($pemesanan[0]["id_status"] == 1) {
             $message = "<div>Aksi <strong>dibatalkan</strong> status pemesanan sebelumnya sudah disetujui</div>";
-            $this->Global_model->flasher($message, gagal:true);
+            $this->Global_model->flasher($message, gagal: true);
 
             redirect("pemesanan/data_pemesanan");
         }
@@ -311,34 +328,35 @@ class Pemesanan extends CI_Controller
         // jika pemesanan belum ada bukti transfer otomatis akan dicancel oleh sistem
         if ($pemesanan[0]["bukti_transfer"] == "default.png") {
             $message = "<div>Aksi <strong>dibatalkan</strong> tidak ada bukti transfer di database</div>";
-            $this->Global_model->flasher($message, gagal:true);
-            
+            $this->Global_model->flasher($message, gagal: true);
+
             redirect("pemesanan/data_pemesanan");
         }
 
         // cek apakah produk tersedia
         if ($pemesanan[0]["stok_produk"] - $pemesanan[0]["jumlah_produk"] < 0) {
             $message = "<div>[Stok tidak tersedia] <strong> gagal </strong> mengubah status pemesanan</div>";
-            $this->Global_model->flasher($message, gagal:true);
-                       
+            $this->Global_model->flasher($message, gagal: true);
+
             redirect("pemesanan/data_pemesanan");
         }
-        
+
         if ($this->Pemesanan_model->setujuiPemesanan($pemesanan[0], $id_pemesanan) && $this->Pemesanan_model->ubahStok($pemesanan[0])) {
             $message = "<div>Status pemesanan <strong>berhasil</strong> diubah</div>";
-            $this->Global_model->flasher($message, berhasil:true);
+            $this->Global_model->flasher($message, berhasil: true);
 
             redirect("pemesanan/data_pemesanan");
         } else {
             $message = "<div>Internal server error</div>";
-            $this->Global_model->flasher($message, berhasil:true);
+            $this->Global_model->flasher($message, berhasil: true);
 
             redirect("pemesanan/data_pemesanan");
         }
     }
-    
 
-    public function ditolak() {
+
+    public function ditolak()
+    {
 
         // action akan dilempar ke status 403 jika diakses oleh role yang tidak berwenang
         if ($this->session->userdata('role_id') == 2) {
@@ -351,18 +369,18 @@ class Pemesanan extends CI_Controller
         $pemesanan = $this->Pemesanan_model->getPemesananDitolak($id_pemesanan)->result_array();
 
         // akan dibatalkan jika inputan alasan penolakan kosoong
-        if ($alasan_penolakan == "" ) {
+        if ($alasan_penolakan == "") {
             $message = "<div>Aksi <strong>dibatalkan</strong> inputan alasan penolakan <strong>kosong</strong></div>";
-            $this->Global_model->flasher($message, gagal : true);
-            
+            $this->Global_model->flasher($message, gagal: true);
+
             redirect("pemesanan/data_pemesanan");
         }
 
         // akan otomatis dicancel jika id status sebelumnya sudah "ditolak"
         if ($pemesanan[0]["id_status"] == 3) {
             $message = "<div>Aksi <strong>dibatalkan</strong> status pemesanan sebelumnya sudah ditolak</div>";
-            $this->Global_model->flasher($message, gagal : true);
-            
+            $this->Global_model->flasher($message, gagal: true);
+
             redirect("pemesanan/data_pemesanan");
         }
 
@@ -373,13 +391,14 @@ class Pemesanan extends CI_Controller
             }
 
             $message = "<div> Status pemesanan <strong>berhasil</strong> diubah </div>";
-            $this->Global_model->flasher($message, berhasil:true);
-            
+            $this->Global_model->flasher($message, berhasil: true);
+
             redirect("pemesanan/data_pemesanan");
         }
     }
 
-    public function selesai() {
+    public function selesai()
+    {
 
         // action akan dilempar ke status 403 jika diakses oleh role yang tidak berwenang
         if ($this->session->userdata('role_id') == 2) {
@@ -387,21 +406,22 @@ class Pemesanan extends CI_Controller
         }
 
         $id_pemesanan = $_GET["id_pemesanan"];
-        
+
         if ($this->Pemesanan_model->setPemesananSelesai($id_pemesanan) && $this->Pemesanan_model->addPemesananToTransaksi($id_pemesanan)) {
             $message = "<div>Pemesanan <strong>berhasil</strong> diakhiri dan data pemesanan <strong>berhasil</strong> ditambahkan di transaksi </div>";
-            $this->Global_model->flasher($message, berhasil:true);
+            $this->Global_model->flasher($message, berhasil: true);
 
             redirect("pemesanan/riwayat_pemesanan");
         } else {
             $message = "<div>Internal server error</div>";
-            $this->Global_model->flasher($message, gagal:true);
+            $this->Global_model->flasher($message, gagal: true);
 
             redirect("pemesanan/data_pemesanan");
         }
     }
 
-    public function dibatalkan() {
+    public function dibatalkan()
+    {
 
         // action akan dilempar ke status 403 jika diakses oleh role yang tidak berwenang
         if ($this->session->userdata('role_id') == 1) {
@@ -412,12 +432,12 @@ class Pemesanan extends CI_Controller
 
         if ($this->Pemesanan_model->batalkanPemesanan($id_pemesanan)) {
             $message = "<div>Transaksi pemesanan <strong>berhasil</strong> dibatalkan</div>";
-            $this->Global_model->flasher($message, berhasil:true);
+            $this->Global_model->flasher($message, berhasil: true);
 
             redirect("pemesanan/data_pemesanan");
         } else {
             $message = "<div>Internal server error</div>";
-            $this->Global_model->flasher($message, gagal:true);
+            $this->Global_model->flasher($message, gagal: true);
 
             redirect("pemesanan/data_pemesanan");
         }

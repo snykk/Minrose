@@ -30,13 +30,14 @@ class Home extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    public function customers() {
+    public function customers()
+    {
 
         // action akan dilempar ke status 403 jika diakses oleh role yang tidak berwenang
         if ($this->session->userdata('role_id') == 2) {
             redirect('auth/blocked');
         }
-        
+
         $data['title'] = 'Customers';
         $data["cdn_datatable"] = "https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js";
         $data["js"] = "tabel_user";
@@ -59,10 +60,11 @@ class Home extends CI_Controller
         $this->load->view('templates/footer', $data);
     }
 
-    public function myPoint() {
+    public function myPoint()
+    {
 
-         // action akan dilempar ke status 403 jika diakses oleh role yang tidak berwenang
-         if ($this->session->userdata('role_id') == 1) {
+        // action akan dilempar ke status 403 jika diakses oleh role yang tidak berwenang
+        if ($this->session->userdata('role_id') == 1) {
             redirect('auth/blocked');
         }
 
@@ -86,7 +88,8 @@ class Home extends CI_Controller
         $this->load->view('templates/footer', $data);
     }
 
-    public function ambilPoint() {
+    public function ambilPoint()
+    {
 
         // action akan dilempar ke status 403 jika diakses oleh role yang tidak berwenang
         if ($this->session->userdata('role_id') == 1) {
@@ -96,16 +99,16 @@ class Home extends CI_Controller
         $user = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         if ($user['point'] >= 150) {
-            $kupon = (INT) $user['kupon'] + 1;
-            $point = (INT) $user['point'] - 150;
+            $kupon = (int) $user['kupon'] + 1;
+            $point = (int) $user['point'] - 150;
             $set_data = [
                 'kupon' => $kupon,
                 'point' => $point
             ];
-            
+
             $this->db->set($set_data);
-            $this->db->where('id',$user['id']);
-            $this->db->update('user'); 
+            $this->db->where('id', $user['id']);
+            $this->db->update('user');
 
             redirect('home/myPoint');
         } else {

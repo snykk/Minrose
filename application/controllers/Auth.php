@@ -56,13 +56,13 @@ class Auth extends CI_Controller
                 // }
             } else {
                 $message = "Password <strong>salah!</strong>";
-                $this->Global_model->flasherAuth($message, gagal:true);
-                
+                $this->Global_model->flasherAuth($message, gagal: true);
+
                 redirect('auth');
             }
         } else {
             $message = "Email <strong>belum</strong> teregistrasi!";
-            $this->Global_model->flasherAuth($message, gagal:true);
+            $this->Global_model->flasherAuth($message, gagal: true);
 
             redirect('auth');
         }
@@ -79,7 +79,7 @@ class Auth extends CI_Controller
         $this->form_validation->set_rules('username', 'Username', 'required|trim|is_unique[user.username]', [
             'is_unique' => 'This username has already registered!'
         ]);
-        
+
         $this->form_validation->set_rules('jenis_kelamin', 'Jenis Kelamin', 'required|trim');
         $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[user.email]', [
             'is_unique' => 'This email has already registered!'
@@ -90,8 +90,8 @@ class Auth extends CI_Controller
             'min_length' => 'Password terlalu pendek'
         ]);
 
-        $this->form_validation->set_rules('verif-password', 'Password', 'required|trim|matches[password]',[
-            'matches' =>'Password tidak sama',
+        $this->form_validation->set_rules('verif-password', 'Password', 'required|trim|matches[password]', [
+            'matches' => 'Password tidak sama',
         ]);
         $this->form_validation->set_rules('no_hp', 'No. HP', 'required|trim|is_unique[user.no_hp]', ['is_unique' => 'no hp ini telah terdaftar silahkan gunakan nomor hp lain!']);
         $this->form_validation->set_rules('alamat', 'Alamant', 'required|trim');
@@ -105,12 +105,12 @@ class Auth extends CI_Controller
         } else {
             if ($this->Auth_model->buatAkun()) {
                 $message = "Selamat registrasi akun anda <strong>berhasil</strong>";
-                $this->Global_model->flasherAuth($message, berhasil:true);
+                $this->Global_model->flasherAuth($message, berhasil: true);
 
                 redirect('auth');
             } else {
                 $message = "Registrasi akun anda <strong>gagal</strong>";
-                $this->Global_model->flasherAuth($message, gagal:true);
+                $this->Global_model->flasherAuth($message, gagal: true);
 
                 redirect('registration');
             }
@@ -124,12 +124,12 @@ class Auth extends CI_Controller
         $this->session->unset_userdata('role_id');
 
         $message = "Session berakhir, anda <strong>berhasil</strong> logout!";
-        $this->Global_model->flasherAuth($message, berhasil:true);
+        $this->Global_model->flasherAuth($message, berhasil: true);
 
         redirect('auth');
     }
 
-    
+
     public function blocked()
     {
         $this->load->view('auth/blocked');

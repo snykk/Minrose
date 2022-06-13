@@ -15,12 +15,12 @@
         <!-- flasher -->
 
         <hr class="mt-0 mb-4">
-        
+
         <?php
         echo $this->session->flashdata('message');
         unset($_SESSION["message"]);
         ?>
-        
+
         <div class="row">
             <div class="col-xl-4">
                 <!-- Profile picture card-->

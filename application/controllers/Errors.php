@@ -1,6 +1,6 @@
 <?php
 
-class Errors extends CI_Controller 
+class Errors extends CI_Controller
 {
     public function error404()
     {

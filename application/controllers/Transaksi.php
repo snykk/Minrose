@@ -11,7 +11,8 @@ class Transaksi extends CI_Controller
         $this->load->model('Global_model');
     }
 
-    public function index() {
+    public function index()
+    {
 
         // action akan dilempar ke status 403 jika diakses oleh role yang tidak berwenang
         if ($this->session->userdata('role_id') == 2) {
@@ -41,25 +42,30 @@ class Transaksi extends CI_Controller
         $this->load->view('templates/footer', $data);
     }
 
-    public function tambah_pengeluaran() {
+    public function tambah_pengeluaran()
+    {
         $data['title'] = 'Tambah Pengeluaran';
         $data["css"] = "transaksi";
 
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         // set rules inputan
-        $this->form_validation->set_rules('kategori', 'Kategori','required|trim', ["required"=>"Kategori tidak boleh kosong"]);
-        $this->form_validation->set_rules('pengeluaran', 'Pengeluaran','required|trim|numeric',
-        [
-            "required"=>"Pengeluaran tidak boleh kosong",
-            "numeric"=>"Data yang diinputkan bukan berupa karakter numerik"
-        ]);
-        $this->form_validation->set_rules('keterangan', 'Keterangan','required|trim', ["required"=>"Keterangan tidak boleh kosong"]);
+        $this->form_validation->set_rules('kategori', 'Kategori', 'required|trim', ["required" => "Kategori tidak boleh kosong"]);
+        $this->form_validation->set_rules(
+            'pengeluaran',
+            'Pengeluaran',
+            'required|trim|numeric',
+            [
+                "required" => "Pengeluaran tidak boleh kosong",
+                "numeric" => "Data yang diinputkan bukan berupa karakter numerik"
+            ]
+        );
+        $this->form_validation->set_rules('keterangan', 'Keterangan', 'required|trim', ["required" => "Keterangan tidak boleh kosong"]);
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/header', $data);
             $this->load->view('templates/topbar', $data);
-    
+
             if ($this->session->userdata('role_id') == 1) {
                 $this->load->view('templates/sidebar_admin', $data);
             } else {
@@ -73,21 +79,21 @@ class Transaksi extends CI_Controller
             if ($this->Transaksi_model->tambahPengeluaran()) {
 
                 $message = "<div> Pengeluaran <strong>berhasil</strong> ditambahkan </div>";
-                $this->Global_model->flasher($message, berhasil : true);
+                $this->Global_model->flasher($message, berhasil: true);
 
                 redirect('transaksi');
-
             } else {
 
                 $message = "<div>Pengeluaran <strong>gagal</strong> ditambahkan</div>";
-                $this->Global_model->flasher($message, gagal : true);
+                $this->Global_model->flasher($message, gagal: true);
 
                 redirect('transaksi/tambah_pengeluaran');
             }
         }
     }
 
-    public function ubah_pengeluaran() {
+    public function ubah_pengeluaran()
+    {
 
         // action akan dilempar ke status 403 jika diakses oleh role yang tidak berwenang
         if ($this->session->userdata('role_id') == 2) {
@@ -96,7 +102,7 @@ class Transaksi extends CI_Controller
 
         $data['title'] = 'Ubah Pengeluaran';
         $data["css"] = "transaksi";
-        
+
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         if (isset($_GET["id_transaksi"])) {
@@ -112,25 +118,29 @@ class Transaksi extends CI_Controller
         if ($this->Transaksi_model->isSameData($data["pengeluaran"])) {
 
             $message = "<div>Perubahan <strong>dibatalkan</strong> tidak ada data yang diubah</div>";
-            $this->Global_model->flasher($message, gagal : true);
+            $this->Global_model->flasher($message, gagal: true);
 
             redirect('transaksi/ubah_pengeluaran?id_transaksi=' . $this->input->post("id_transaksi"));
         }
-        
 
-        $this->form_validation->set_rules('kategori', 'Kategori','required|trim', ["required"=>"Kategori tidak boleh kosong"]);
-        $this->form_validation->set_rules('pengeluaran', 'Pengeluaran','required|trim|numeric',
-        [
-            "required"=>"Pengeluaran tidak boleh kosong",
-            "numeric"=>"Data yang diinputkan bukan berupa karakter numerik"
-        ]);
-        $this->form_validation->set_rules('keterangan', 'Keterangan','required|trim', ["required"=>"Keterangan tidak boleh kosong"]);
+
+        $this->form_validation->set_rules('kategori', 'Kategori', 'required|trim', ["required" => "Kategori tidak boleh kosong"]);
+        $this->form_validation->set_rules(
+            'pengeluaran',
+            'Pengeluaran',
+            'required|trim|numeric',
+            [
+                "required" => "Pengeluaran tidak boleh kosong",
+                "numeric" => "Data yang diinputkan bukan berupa karakter numerik"
+            ]
+        );
+        $this->form_validation->set_rules('keterangan', 'Keterangan', 'required|trim', ["required" => "Keterangan tidak boleh kosong"]);
 
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/header', $data);
             $this->load->view('templates/topbar', $data);
-    
+
             if ($this->session->userdata('role_id') == 1) {
                 $this->load->view('templates/sidebar_admin', $data);
             } else {
@@ -144,17 +154,16 @@ class Transaksi extends CI_Controller
             if ($this->Transaksi_model->ubahPengeluaran($this->input->post("id_transaksi"))) {
 
                 $message = "<div> Data transaksi pengeluaran <strong>berhasil</strong> diubah </div>";
-                $this->Global_model->flasher($message, berhasil : true);
+                $this->Global_model->flasher($message, berhasil: true);
 
                 redirect('transaksi');
             } else {
 
                 $message = "<div>Pengeluaran <strong>gagal</strong> diubah</div>";
-                $this->Global_model->flasher($message, gagal : true);
+                $this->Global_model->flasher($message, gagal: true);
 
                 redirect('transaksi/ubah_pengeluaran');
             }
         }
-
     }
 }

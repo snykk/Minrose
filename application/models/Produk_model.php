@@ -1,8 +1,10 @@
 <?php
 
-class Produk_model extends CI_model {
-    
-    public function tambahProduk() {
+class Produk_model extends CI_model
+{
+
+    public function tambahProduk()
+    {
         try {
             // cek jika ada gambar yang akan diupload
             $upload_image = $_FILES['image']['name'];
@@ -22,12 +24,12 @@ class Produk_model extends CI_model {
             }
 
             $data = [
-                'nama' => $this->input->post('nama',true),
-                'orientasi' => $this->input->post('orientasi',true),
-                'deskripsi' => $this->input->post('deskripsi',true),
-                'harga' => (INT)$this->input->post('harga',true),
-                'stok' => (INT)$this->input->post('stok',true),
-                'diskon' => (FLOAT)$this->input->post('diskon',true),
+                'nama' => $this->input->post('nama', true),
+                'orientasi' => $this->input->post('orientasi', true),
+                'deskripsi' => $this->input->post('deskripsi', true),
+                'harga' => (int)$this->input->post('harga', true),
+                'stok' => (int)$this->input->post('stok', true),
+                'diskon' => (float)$this->input->post('diskon', true),
                 'image' => (isset($image)) ? $image : "default.png",
                 'data_dibuat' => time(),
                 'data_diedit' => time()
@@ -35,13 +37,14 @@ class Produk_model extends CI_model {
 
             $this->db->insert('produk', $data);
 
-            return true; 
+            return true;
         } catch (Exception $e) {
             return false;
         }
     }
 
-    public function isSameData($produk) {
+    public function isSameData($produk)
+    {
         if ($this->input->post('nama') == $produk["nama"] && $this->input->post('deskripsi') == $produk["deskripsi"] && $this->input->post('stok') == $produk["stok"] && $this->input->post('harga') == $produk["harga"] && $this->input->post('diskon') == $produk["diskon"] && $this->input->post('orientasi') == $produk["orientasi"] && !($_FILES['image']['name'])) {
             return true;
         }
@@ -49,10 +52,11 @@ class Produk_model extends CI_model {
         return false;
     }
 
-    public function ubahProduk() {
+    public function ubahProduk()
+    {
         try {
             // mengambil id produk
-            $id = $this->input->post('id',true);
+            $id = $this->input->post('id', true);
 
             // cek jika ada gambar yang akan diupload
             $upload_image = $_FILES['image']['name'];
@@ -81,12 +85,12 @@ class Produk_model extends CI_model {
             }
 
             $data = [
-                'nama' => $this->input->post('nama',true),
-                'orientasi' => $this->input->post('orientasi',true),
-                'deskripsi' => $this->input->post('deskripsi',true),
-                'harga' => (INT)$this->input->post('harga',true),
-                'stok' => (INT)$this->input->post('stok',true),
-                'diskon' => (FLOAT)$this->input->post('diskon',true),
+                'nama' => $this->input->post('nama', true),
+                'orientasi' => $this->input->post('orientasi', true),
+                'deskripsi' => $this->input->post('deskripsi', true),
+                'harga' => (int)$this->input->post('harga', true),
+                'stok' => (int)$this->input->post('stok', true),
+                'diskon' => (float)$this->input->post('diskon', true),
                 'data_diedit' => time()
             ];
 

@@ -36,10 +36,11 @@ class Produk extends CI_Controller
         $this->load->view('templates/footer', $data);
     }
 
-    public function getDataProduk() {
-        $produk_id = (INT)$_POST["id"];
+    public function getDataProduk()
+    {
+        $produk_id = (int)$_POST["id"];
         $result = $this->db->query("SELECT * FROM produk WHERE id={$produk_id}");
-            
+
         $data = [];
 
         array_push($data, $result->row());
@@ -48,7 +49,8 @@ class Produk extends CI_Controller
         echo json_encode($data);
     }
 
-    public function tambah_produk() {
+    public function tambah_produk()
+    {
 
         // action akan dilempar ke status 403 jika diakses oleh role yang tidak berwenang
         if ($this->session->userdata('role_id') == 2) {
@@ -63,31 +65,31 @@ class Produk extends CI_Controller
             'is_unique' => 'Nama produk ini telah ada di daftar produk, silahkan gunakan nama lain!',
             "required" => "Nama produk tidak boleh kosong"
         ]);
-        $this->form_validation->set_rules('stok', 'Stok','required|trim|numeric', [
-            "required"=>"Stok tidak boleh kosong",
-            "numeric"=>"Data yang diinputkan bukan berupa karakter numeric",
+        $this->form_validation->set_rules('stok', 'Stok', 'required|trim|numeric', [
+            "required" => "Stok tidak boleh kosong",
+            "numeric" => "Data yang diinputkan bukan berupa karakter numeric",
         ]);
         $this->form_validation->set_rules('harga', 'Harga', 'required|trim|numeric', [
-            "required"=>"Harga tidak boleh kosong",
-            "numeric"=>"Data yang diinputkan bukan berupa karakter numeric",
+            "required" => "Harga tidak boleh kosong",
+            "numeric" => "Data yang diinputkan bukan berupa karakter numeric",
         ]);
         $this->form_validation->set_rules('diskon', 'Diskon', 'required|trim|numeric', [
-            "required"=>"Diskon tidak boleh kosong",
-            "numeric"=>"Data yang diinputkan bukan berupa karakter numeric",
+            "required" => "Diskon tidak boleh kosong",
+            "numeric" => "Data yang diinputkan bukan berupa karakter numeric",
         ]);
-        $this->form_validation->set_rules('orientasi', 'Orientasi', 'required|trim',["required"=>"Orientasi tidak boleh kosong"]);
-        $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'required|trim',["required"=>"Deskripsi tidak boleh kosong"]);
+        $this->form_validation->set_rules('orientasi', 'Orientasi', 'required|trim', ["required" => "Orientasi tidak boleh kosong"]);
+        $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'required|trim', ["required" => "Deskripsi tidak boleh kosong"]);
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/header', $data);
             $this->load->view('templates/topbar', $data);
-    
+
             if ($this->session->userdata('role_id') == 1) {
                 $this->load->view('templates/sidebar_admin', $data);
             } else {
                 $this->load->view('templates/sidebar_user', $data);
             }
-    
+
             $this->load->view('produk/tambah_produk', $data);
             $this->load->view('templates/sidebar_footer');
             $this->load->view('templates/modal_logout');
@@ -96,13 +98,13 @@ class Produk extends CI_Controller
 
             if ($this->Produk_model->tambahProduk()) {
                 $message = "<div> Data produk <strong>berhasil</strong> ditambahkan </div>";
-                $this->Global_model->flasher($message, berhasil:true);
+                $this->Global_model->flasher($message, berhasil: true);
 
 
                 redirect('produk');
             } else {
                 $message = "<div>Internal server error</div>";
-                $this->Global_model->flasher($message, gagal:true);
+                $this->Global_model->flasher($message, gagal: true);
 
 
                 redirect('produk');
@@ -110,7 +112,8 @@ class Produk extends CI_Controller
         }
     }
 
-    public function ubah_produk() {
+    public function ubah_produk()
+    {
 
         // action akan dilempar ke status 403 jika diakses oleh role yang tidak berwenang
         if ($this->session->userdata('role_id') == 2) {
@@ -120,8 +123,8 @@ class Produk extends CI_Controller
         $data['title'] = 'Ubah Produk';
         $data['css'] = 'produk';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-        
-        if (isset($_GET["id"])){
+
+        if (isset($_GET["id"])) {
             $data["produk"] =  $this->db->get_where('produk', ['id' => $_GET["id"]])->row_array();
         } else {
             $data["produk"] =  $this->db->get_where('produk', ['id' => $this->input->post("id")])->row_array();
@@ -137,26 +140,26 @@ class Produk extends CI_Controller
             'is_unique' => 'Nama produk ini telah ada di daftar produk, silahkan gunakan nama lain!',
             "required" => "Nama produk tidak boleh kosong"
         ]);
-        $this->form_validation->set_rules('stok', 'Stok','required|trim|numeric', [
-            "required"=>"Stok tidak boleh kosong",
-            "numeric"=>"Data yang diinputkan bukan berupa karakter numeric",
+        $this->form_validation->set_rules('stok', 'Stok', 'required|trim|numeric', [
+            "required" => "Stok tidak boleh kosong",
+            "numeric" => "Data yang diinputkan bukan berupa karakter numeric",
         ]);
         $this->form_validation->set_rules('harga', 'Harga', 'required|trim|numeric', [
-            "required"=>"Harga tidak boleh kosong",
-            "numeric"=>"Data yang diinputkan bukan berupa karakter numeric",
+            "required" => "Harga tidak boleh kosong",
+            "numeric" => "Data yang diinputkan bukan berupa karakter numeric",
         ]);
         $this->form_validation->set_rules('diskon', 'Diskon', 'required|trim|numeric', [
-            "required"=>"Diskon tidak boleh kosong",
-            "numeric"=>"Data yang diinputkan bukan berupa karakter numeric",
+            "required" => "Diskon tidak boleh kosong",
+            "numeric" => "Data yang diinputkan bukan berupa karakter numeric",
         ]);
-        $this->form_validation->set_rules('orientasi', 'Orientasi', 'required|trim',["required"=>"Orientasi tidak boleh kosong"]);
-        $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'required|trim',["required"=>"Deskripsi tidak boleh kosong"]);
+        $this->form_validation->set_rules('orientasi', 'Orientasi', 'required|trim', ["required" => "Orientasi tidak boleh kosong"]);
+        $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'required|trim', ["required" => "Deskripsi tidak boleh kosong"]);
 
         // proses akan diredirect jika tidak ada perubahan
-        if ( $this->Produk_model->isSameData($data["produk"]) ) {
+        if ($this->Produk_model->isSameData($data["produk"])) {
             $message = "<div>Perubahan <strong>dibatalkan</strong>, tidak ada data yang diubah</div>";
-            $this->Global_model->flasher($message, gagal:true);
-            
+            $this->Global_model->flasher($message, gagal: true);
+
             redirect('produk/ubah_produk?id=' . $data["produk"]["id"]);
         }
 
@@ -177,12 +180,12 @@ class Produk extends CI_Controller
 
             if ($this->Produk_model->ubahProduk()) {
                 $message = "<div>Data produk <strong>berhasil</strong> diubah</div>";
-                $this->Global_model->flasher($message, berhasil:true);
+                $this->Global_model->flasher($message, berhasil: true);
 
                 redirect('produk/index');
             } else {
                 $message = "<div>Internal server error</div>";
-                $this->Global_model->flasher($message, gagal:true);
+                $this->Global_model->flasher($message, gagal: true);
 
                 redirect('produk/index');
             }

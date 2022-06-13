@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 function is_logged_in($data)
 {
@@ -7,7 +7,7 @@ function is_logged_in($data)
         redirect('auth');
     } else {
         $role_id = $ci->session->userdata('role_id');
-        
+
         if ($role_id  == 2 and $data == "Admin") {
             redirect('auth/blocked');
         }

@@ -12,7 +12,7 @@
                       </h2>
                       <br>
                       <p class="orientasi text-center">
-                      <!-- content orientasi -->
+                        <!-- content orientasi -->
                       </p>
                       <img id="modal-image" src="<?= base_url("assets/img/produk/"); ?>" width="70%" class="img-fluid d-block mx-auto" alt="" />
                       <div>
@@ -21,9 +21,9 @@
                         </h3>
                         <div class="content">
                           <div>
-                              <p class="deskripsi">
-                                <!-- content deskripsi -->
-                              </p>
+                            <p class="deskripsi">
+                              <!-- content deskripsi -->
+                            </p>
                           </div>
                           <div class="pembagi"></div>
                           <div class="harga">
@@ -34,7 +34,7 @@
                           </div>
                         </div>
                       </div>
-                      <button class="btn btn-primary btn-xl j mt-4" data-bs-dismiss="modal" type="button" > KEMBALI
+                      <button class="btn btn-primary btn-xl j mt-4" data-bs-dismiss="modal" type="button"> KEMBALI
                       </button>
                     </div>
                   </div>

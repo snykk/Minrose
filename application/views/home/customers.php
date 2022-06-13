@@ -1,7 +1,7 @@
 <main>
     <div class="container-fluid px-4 mt-4">
         <!-- inisial value -->
-        <input type="hidden" name="username" id="username" value="<?php if (isset($_GET["username"])) echo $_GET["username"]; else echo ""; ?>">
+        <input type="hidden" name="username" id="username" value="<?= (isset($_GET["username"])) ? $_GET["username"] : ""; ?>">
 
         <div class="card mb-4">
             <div class="card-header">
@@ -22,7 +22,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($user_member->result() as $row) :?>
+                        <?php foreach ($user_member->result() as $row) : ?>
                             <tr>
                                 <td><?= $row->nama_lengkap; ?></td>
                                 <td><?= $row->username; ?></td>

@@ -16,7 +16,7 @@
                         <div class="custom-file">
                             <input type="file" class="form-control" id="image" name="image" value="<?= set_value('image'); ?>">
                             <?= form_error('image', '<small class="text-danger pl-3">', '</small>'); ?>
-                        </div>	
+                        </div>
                     </div>
                 </div>
             </div>
@@ -27,4 +27,4 @@
             </form>
         </div>
     </div>
-</div> 
+</div>

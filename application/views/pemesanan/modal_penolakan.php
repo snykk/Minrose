@@ -11,9 +11,9 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label for="alasan_penolakan">alasan penolakan</label>
-                    <input id="alasan_penolakan" name="alasan_penolakan" type="text" class="form-control mt-1" >
+                    <input id="alasan_penolakan" name="alasan_penolakan" type="text" class="form-control mt-1">
                 </div>
-                </div>
+            </div>
             <div class="modal-footer">
                 <button class="btn btn-outline-secondary" data-bs-dismiss="modal" data-bs-toggle="modal" href="#ModalDetailDataPemesanan" type="button"> kembali</button>
                 <button id="submit_penolakan" class="btn btn btn-outline-dark" data-bs-dismiss="modal" type="submit">submit</button>
@@ -21,4 +21,4 @@
             </form>
         </div>
     </div>
-</div> 
+</div>

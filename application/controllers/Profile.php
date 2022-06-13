@@ -52,7 +52,7 @@ class Profile extends CI_Controller
         // proses akan diredirect jika tidak ada perubahan
         if ($this->Profile_model->isSameData($data["user"])) {
             $message = "<div>Perubahan <strong>dibatalkan</strong>, tidak ada data yang diubah</div>";
-            $this->Global_model->flasher($message, gagal:true);
+            $this->Global_model->flasher($message, gagal: true);
 
             redirect('profile/edit_profile');
         }
@@ -80,12 +80,12 @@ class Profile extends CI_Controller
         } else {
             if ($this->Profile_model->editProfile($data["user"])) {
                 $message = "<div> Profil anda <strong>berhasil</strong> diubah </div>";
-                $this->Global_model->flasher($message, berhasil:true);
+                $this->Global_model->flasher($message, berhasil: true);
 
                 redirect('home');
             } else {
                 $message = "<div>Server error dimohon untuk coba lagi!</div>";
-                $this->Global_model->flasher($message, gagal:true);
+                $this->Global_model->flasher($message, gagal: true);
 
                 redirect('profile/edit_profile');
             }
@@ -122,23 +122,23 @@ class Profile extends CI_Controller
             $new_password = $this->input->post('new_password1');
             if (!password_verify($current_password, $data['user']['password'])) {
                 $message = "<div>Password saat ini salah !!!</div>";
-                $this->Global_model->flasher($message, gagal:true);
-                
+                $this->Global_model->flasher($message, gagal: true);
+
                 redirect('profile/ganti_password');
             } else if ($current_password == $new_password) {
                 $message = "<div>Password baru tidak boleh sama dengan password saat ini !!!</div>";
-                $this->Global_model->flasher($message, gagal:true);
+                $this->Global_model->flasher($message, gagal: true);
 
                 redirect('profile/ganti_password');
             } else {
                 if ($this->Profile_model->gantiPassword($new_password)) {
                     $message = "<div> Password berhasil diubah! </div>";
-                    $this->Global_model->flasher($message, berhasil:true);
+                    $this->Global_model->flasher($message, berhasil: true);
 
                     redirect('profile/ganti_password');
                 } else {
                     $message = "<div>Server error dimohon untuk coba lagi!</div>";
-                    $this->Global_model->flasher($message, berhasil:true);
+                    $this->Global_model->flasher($message, berhasil: true);
 
                     redirect('profile/ganti_password');
                 }
