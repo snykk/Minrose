@@ -144,8 +144,10 @@ $("#link_selesai").click(function (e) {
     confirmButtonColor: "#3085d6",
     timer: 10000,
   }).then((result) => {
-    if (result.value) {
-      document.location.href = href;
+    if (result.isConfirmed) {
+      Swal.fire("Pesanan berhasil diakhiri", "", "success").then((_) => (document.location.href = href));
+    } else {
+      Swal.fire("Gagal mengakhiri pesanan", "", "info");
     }
   });
 });
@@ -166,8 +168,10 @@ $("#link_setujui").click(function (e) {
     confirmButtonColor: "#08a10b",
     timer: 10000,
   }).then((result) => {
-    if (result.value) {
-      document.location.href = href;
+    if (result.isConfirmed) {
+      Swal.fire("Pesanan berhasil disetujui", "", "success").then((_) => (document.location.href = href));
+    } else {
+      Swal.fire("Gagal menyetujui pesanan", "", "info");
     }
   });
 });
@@ -188,8 +192,10 @@ $("#link_batalkan").click(function (e) {
     confirmButtonColor: "#08a10b",
     timer: 10000,
   }).then((result) => {
-    if (result.value) {
-      document.location.href = href;
+    if (result.isConfirmed) {
+      Swal.fire("Pesanan berhasil dibatalkan", "", "success").then((_) => (document.location.href = href));
+    } else {
+      Swal.fire("Gagal membatalkan pesanan", "", "info");
     }
   });
 });

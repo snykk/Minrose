@@ -19,11 +19,12 @@ class Home extends CI_Controller
 
         if ($this->session->userdata('role_id') == 1) {
             $this->load->view('templates/sidebar_admin', $data);
+            $this->load->view('home/home_admin', $data);
         } else {
             $this->load->view('templates/sidebar_user', $data);
+            $this->load->view('home/home_user', $data);
         }
 
-        $this->load->view('home/index', $data);
         $this->load->view('templates/sidebar_footer');
         $this->load->view('templates/modal_logout');
         $this->load->view('templates/footer');
@@ -59,8 +60,15 @@ class Home extends CI_Controller
     }
 
     public function myPoint() {
+
+         // action akan dilempar ke status 403 jika diakses oleh role yang tidak berwenang
+         if ($this->session->userdata('role_id') == 1) {
+            redirect('auth/blocked');
+        }
+
         $data['title'] = 'My Point';
         $data['css'] = "point";
+        $data['js'] = "point";
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         $this->load->view('templates/header', $data);
@@ -76,5 +84,37 @@ class Home extends CI_Controller
         $this->load->view('templates/sidebar_footer');
         $this->load->view('templates/modal_logout');
         $this->load->view('templates/footer', $data);
+    }
+
+    public function ambilPoint() {
+
+        // action akan dilempar ke status 403 jika diakses oleh role yang tidak berwenang
+        if ($this->session->userdata('role_id') == 1) {
+            redirect('auth/blocked');
+        }
+
+        $user = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        if ($user['point'] >= 150) {
+            $kupon = (INT) $user['kupon'] + 1;
+            $point = (INT) $user['point'] - 150;
+            $set_data = [
+                'kupon' => $kupon,
+                'point' => $point
+            ];
+            
+            $this->db->set($set_data);
+            $this->db->where('id',$user['id']);
+            $this->db->update('user'); 
+
+            redirect('home/myPoint');
+        } else {
+            redirect('home/action_blocked');
+        }
+    }
+
+    public function action_blocked()
+    {
+        $this->load->view('home/action_blocked');
     }
 }
