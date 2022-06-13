@@ -11,15 +11,16 @@ $("#ambil_point").click(function (e) {
       icon: "success",
       title: "Kupon berhasil diambil",
       showConfirmButton: false,
-      timer: 1500,
+      timer: 2000,
     }).then((_) => (document.location.href = href));
   } else {
     Swal.fire({
       position: "center",
       icon: "error",
       title: "Point anda tidak cukup",
+      text: "kumpulkan 150 point untuk dapatkan 1 kupon",
       showConfirmButton: false,
-      timer: 1500,
+      timer: 2000,
     });
   }
 });

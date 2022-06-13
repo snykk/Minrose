@@ -39,7 +39,7 @@
 
           <hr class="sidebar-divider">
 
-          <a class="nav-link" data-bs-toggle="modal" style="cursor: pointer;" data-bs-target="#logoutModal">
+          <a class="nav-link auth_logout" href="<?= base_url('auth/logout') ?>" style="cursor: pointer;">
             <div class="sb-nav-link-icon"><i class="fas fa-fw fa-sign-out-alt"></i></div>
             Logout
           </a>

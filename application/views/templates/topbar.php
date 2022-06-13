@@ -18,7 +18,7 @@
         <li>
           <hr class="dropdown-divider" />
         </li>
-        <li><a class="dropdown-item" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#logoutModal"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400" style="margin-right: 10px;"></i>Logout</a></li>
+        <li><a class="dropdown-item auth_logout" href="<?= base_url('auth/logout') ?>" style="cursor: pointer;"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400" style="margin-right: 10px;"></i>Logout</a></li>
       </ul>
     </li>
   </ul>
