@@ -16,16 +16,29 @@
 
 
           <div class="row mb-3">
-            <div class="col-8">
+            <div class="col-md-8">
               <div class="form-group">
                 <label for="nama_produk">Nama Produk</label>
                 <input id="nama_produk" name="nama_produk" value="<?= set_value('nama', $produk["nama"]); ?>" type="text" class="form-control" disabled>
               </div>
             </div>
-            <div class="col-4">
+            <div class="col-md-4">
               <div class="form-group">
                 <label for="harga_produk">Harga 1 produk</label>
-                <input id="harga_produk" name="harga_produk" data-trueHarga="<?= set_value('nama', $produk["harga"]); ?>" value="Rp. <?= set_value('nama', $produk["harga"]); ?>" type="text" class="form-control" disabled>
+                <?php if ($produk["diskon"] == 0) { ?>
+                  <input type="hidden" id="harga_produk" name="harga_produk" data-trueHarga="<?= set_value('nama', $produk["harga"]); ?>" value="Rp. <?= set_value('nama', $produk["harga"]); ?>" type="text" class="form-control" disabled>
+                <?php } else { ?>
+                  <input type="hidden" id="harga_produk" name="harga_produk" data-trueHarga="<?= set_value('nama', (1 - $produk["diskon"]) * $produk["harga"]); ?>" value="Rp. <?= set_value('nama', (1 - $produk["diskon"]) * $produk["harga"]); ?>" type="text" class="form-control" disabled>
+                <?php } ?>
+                <div class="input-group" style="display:unset;">
+                  <div class="input-group-prepend">
+                    <?php if ($produk["diskon"] == 0) { ?>
+                      <span class="input-group-text"><?= $produk["harga"]; ?></span>
+                    <?php } else { ?>
+                      <span class="input-group-text">Rp. <?= (1 - $produk["diskon"]) * $produk["harga"] ?><span class="strikethrough ms-4"><?= $produk["harga"] ?></span><sup><sub class="mx-1">of</sub><?= $produk["diskon"] * 100 ?>%</sup></span>
+                    <?php } ?>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

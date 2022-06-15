@@ -45,9 +45,9 @@
                                     </a>
                                 <?php endif; ?>
 
-                                <?php if (isset($row["id_produk"]) && $this->session->userdata('role_id') == 2) : ?>
+                                <?php if (isset($row["id_produk"]) && $this->session->userdata('role_id') == 2 && $row["is_done"] == 1) : ?>
                                     <div>
-                                        <a href="<?= base_url("ulasan?id_produk=") . $row["id_produk"]; ?>" class="link-info" style="text-decoration: none">
+                                        <a href="<?= base_url("ulasan?id_produk=") . $row["id_produk"]; ?>" class="link-info" style="text-decoration: none; font-size:0.9rem;">
                                             Ulas sekarang!
                                         </a>
                                     </div>

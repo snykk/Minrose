@@ -32,6 +32,9 @@
                           <div class="stok">
                             <!-- content stok -->
                           </div>
+                          <div class="diskon">
+                            <!-- content stok -->
+                          </div>
                         </div>
                       </div>
                       <button class="btn btn-primary btn-xl j mt-4" data-bs-dismiss="modal" type="button"> KEMBALI
