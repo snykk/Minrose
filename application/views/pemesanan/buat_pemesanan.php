@@ -229,9 +229,30 @@
           <div class="d-flex justify-content-between mb-1 small">
             <span>Ongkir</span> <span><span>Rp. </span><span id="ongkir" data-valueOngkir="10000">10000</span></span>
           </div>
+
+          <input type="hidden" name="kuponUsed" id="kuponUsed">
+
           <div class="d-flex justify-content-between mb-1 small">
-            <span>Kupon (kode: tidak ada kupon)</span> <span class="text-danger"><span>Rp. </span><span id="kupon" data-valueKupon="0">0</span></span>
+            <span>Kupon
+              <?php if ($user["kupon"] == 0) { ?>
+                (tidak ada kupon)
+              <?php } else { ?>
+                (
+                <span class="align-items-center">
+                  <label for="gunakan_kupon">Gunakan</label>
+                </span>
+                <span>
+                  <input id="gunakan_kupon" type="checkbox" onchange="changeKuponStatus()">
+                </span>
+                )
+              <?php } ?>
+            </span><span><span></span><span id="kupon" data-valueKupon="<?= $user["kupon"] ?>"><?= $user["kupon"] ?> Kupon</span></span>
           </div>
+          <?php if ($user["kupon"] != 0) : ?>
+            <div class="d-flex justify-content-between mb-1 small text-danger">
+              <span>Kupon digunakan</span> <span><span id="kuponUsedShow">0 kupon</span></span>
+            </div>
+          <?php endif; ?>
           <hr>
           <div class="d-flex justify-content-between mb-4 small">
             <span>TOTAL</span> <strong class="text-dark"><span>Rp. </span><span id="total">10000</span></strong>

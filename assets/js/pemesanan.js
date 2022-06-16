@@ -1,16 +1,50 @@
-console.log("hloo");
+var isUseKupon = false;
+var totalKupon;
+var currentNum = 0;
+var kuponUsed = 0;
+
+window.onload = function () {
+  totalKupon = $("#kupon").attr("data-valueKupon");
+}
+
+function changeKuponStatus() {
+  isUseKupon = !isUseKupon;
+}
+
 // counter order summary [buat ]
 function myCounter() {
-  var num = document.getElementById("jumlah_produk");
-  var harga = document.getElementById("harga_produk");
-  var ongkir = document.getElementById("ongkir");
+  var num = parseInt(document.getElementById("jumlah_produk").value);
+  var harga = parseInt(document.getElementById("harga_produk").getAttribute("data-trueHarga"));
+  var ongkir = parseInt(document.getElementById("ongkir").getAttribute("data-valueOngkir"));
 
-  var sub_total = parseInt(harga.getAttribute("data-trueHarga")) * num.value;
-  var total = sub_total + parseInt(ongkir.getAttribute("data-valueOngkir")) + parseInt(kupon.getAttribute("data-valueKupon"));
+  if (isUseKupon && totalKupon > 0 && currentNum < num) {
+    console.log("100");
+    // ketika user menggunakan kupon
+    totalKupon = totalKupon - 1;
+    kuponUsed = kuponUsed + 1;
+    console.log(totalKupon);
+  } else if (isUseKupon && kuponUsed > 0 && currentNum > num) {
+    console.log(`${currentNum} > ${num}: ${currentNum > num}`)
+    console.log("2");
+    totalKupon = totalKupon + 1;
+    kuponUsed = kuponUsed - 1;
+  } else if (!isUseKupon && kuponUsed > 0) {
+    console.log("3");
+    totalKupon = totalKupon + 1;
+    kuponUsed = kuponUsed - 1;
+  }
+  console.log(`kupon digunakan: ${kuponUsed}`)
+  console.log(`total Kupon: ${totalKupon}`)
+  var sub_total = harga * (num - kuponUsed);
+  var total = sub_total + ongkir;
 
   $("#sub-total").html(sub_total);
   $("#total").html(total);
   $("#input_total").val(total);
+  $("#kupon").html(`${totalKupon} kupon`);
+  $("#kuponUsed").val(kuponUsed);
+  $("#kuponUsedShow").html(`${kuponUsed} kupon`);
+  currentNum = num;
 }
 
 // modal detail data pemesanan
@@ -21,6 +55,7 @@ $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
     method: "post",
     dataType: "json",
     success: function (response) {
+      console.log(response);
       $("#username_detail").html("@" + response[0].username);
       $("#tanggal_dipesan_detail").html(response[1]);
       $("#jumlah_produk_detail").html(response[0].jumlah_produk);
@@ -38,6 +73,12 @@ $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
       $("#image_detail").attr("src", "/Minrose/assets/img/produk/" + response[0].image_produk);
       $("#link_bukti_transfer").attr("data-id", response[0].id_pemesanan);
       $("#link_bukti_transfer").attr("data-dipesan", response[1]);
+
+      if (response[0].kuponUsed != null) {
+        $("#content-kuponUsed").html(`<span class="link-danger" style="cursor: pointer; ">` + response[0].kuponUsed + ` kupon</span> digunakan untuk pemesanan ini`);
+      } else {
+        $("#content-kuponUsed").html(`tidak ada kupon yang digunakan untuk pemesanan ini`);
+      }
 
       // [user] link ubah
       $("#link_ubah").each(function () {

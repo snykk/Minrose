@@ -19,6 +19,8 @@ class Pemesanan_model extends CI_model
         try {
             $id_metode = (int)$this->input->post('id_metode', true);
 
+            $kuponUsed =  (int)$this->input->post('kuponUsed', true);
+
             // menyiapkan data pemesanan
             $data = [
                 'id_produk' => (int)$this->input->post('id_produk', true),
@@ -34,9 +36,17 @@ class Pemesanan_model extends CI_model
                 'data_dibuat' => time(),
                 'data_diubah' => time(),
                 'is_done' => 0,
+                'kuponUsed' => ($kuponUsed == 0) ? null : $kuponUsed,
             ];
 
             $this->db->insert('pemesanan', $data);
+
+            $user = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+            $kuponSaatIni = $user["kupon"] - $kuponUsed;
+
+            $this->db->set("kupon", $kuponSaatIni);
+            $this->db->where("id", $user['id']);
+            $this->db->update('user');
 
             return true;
         } catch (Exception $e) {
@@ -48,7 +58,7 @@ class Pemesanan_model extends CI_model
     public function getDataPemesanan($post = false, $get = false)
     {
         // prepare data pemesanan
-        $this->db->select('pemesanan.id as id_pemesanan, produk.id as id_produk, produk.image as image_produk, status.style as style_status, status_pemesanan, produk.nama as nama_produk, metode_pembayaran, jumlah_produk, total_harga, catatan_pemesanan, metode_pembayaran, username, status.id as id_status, pemesanan.data_dibuat as tanggal_pemesanan, pemesanan.data_diubah as pesanan_diubah, alasan_penolakan, pemesanan.alamat as alamat_pemesanan, nama_bank, no_rekening, bukti_transfer, stok, produk.harga as harga_produk, is_done');
+        $this->db->select('pemesanan.id as id_pemesanan, produk.id as id_produk, produk.image as image_produk, status.style as style_status, status_pemesanan, produk.nama as nama_produk, metode_pembayaran, jumlah_produk, total_harga, catatan_pemesanan, metode_pembayaran, username, status.id as id_status, pemesanan.data_dibuat as tanggal_pemesanan, pemesanan.data_diubah as pesanan_diubah, alasan_penolakan, pemesanan.alamat as alamat_pemesanan, nama_bank, no_rekening, bukti_transfer, stok, produk.harga as harga_produk, is_done, kuponUsed');
         $this->db->from('pemesanan');
         $this->db->join('produk', 'pemesanan.id_produk=produk.id');
         $this->db->join('user', 'pemesanan.id_user=user.id');

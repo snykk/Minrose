@@ -96,10 +96,14 @@
                       </div>
                     </td>
                     <td>
-                      <span class="heading d-block">catatan</span>
-                      <span class="subheadings" style="text-transform: lowercase;" id="catatan_transaksi_detail">
+                      <div class="heading d-block" id="heading-kuponUsed">kupon</div>
+                      <div class="subheadings mb-2" style="text-transform: lowercase;" id="content-kuponUsed">
+                        <!-- content kupon -->
+                      </div>
+                      <div class="heading d-bloc">catatan</div>
+                      <div class="subheadings" style="text-transform: lowercase;" id="catatan_transaksi_detail">
                         <!-- content catatan transaksi -->
-                      </span>
+                      </div>
                     </td>
                   </tr>
                 </tbody>
