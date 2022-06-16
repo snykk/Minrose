@@ -390,6 +390,8 @@ class Pemesanan extends CI_Controller
                 $this->Pemesanan_model->pengembalianStok($pemesanan[0]);
             }
 
+            $this->Pemesanan_model->pengembalianKupon($pemesanan[0]["id_pemesanan"]);
+
             $message = "<div> Status pemesanan <strong>berhasil</strong> diubah </div>";
             $this->Global_model->flasher($message, berhasil: true);
 

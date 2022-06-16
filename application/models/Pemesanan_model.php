@@ -246,7 +246,7 @@ class Pemesanan_model extends CI_model
     public function getPemesananDitolak($id_pemesanan)
     {
         // ambil data
-        $this->db->select("jumlah_produk, produk.stok as stok_produk, id_produk, id_status");
+        $this->db->select("jumlah_produk, produk.stok as stok_produk, id_produk, id_status, pemesanan.id as id_pemesanan");
         $this->db->from("pemesanan");
         $this->db->join("produk", "pemesanan.id_produk=produk.id");
         $this->db->where("pemesanan.id", $id_pemesanan);
@@ -370,9 +370,24 @@ class Pemesanan_model extends CI_model
             $this->db->where("id", $id_pemesanan);
             $this->db->update('pemesanan');
 
+            $this->pengembalianKupon($id_pemesanan);
+
             return true;
         } catch (Exception $e) {
             return false;
         }
+    }
+
+    public function pengembalianKupon($id_pemesanan)
+    {
+        // mengembalikan kupon user jika menggunakan kupon
+        $pemesanan = $this->db->get_where('pemesanan', ['id' => $id_pemesanan])->row_array();
+        $user = $this->db->get_where('user', ['id' => $pemesanan["id_user"]])->row_array();
+
+        $kuponSaatIni = (int)$user['kupon'] + (int)$pemesanan["kuponUsed"];
+
+        $this->db->set("kupon", $kuponSaatIni);
+        $this->db->where("id", $user["id"]);
+        $this->db->update('user');
     }
 }
