@@ -7,6 +7,10 @@ body {
   background: #eee;
 }
 
+.btn-group > .dropdown-menu > a {
+  text-decoration: none;
+}
+
 .main-title {
   font-size: 28px;
   margin-top: 1rem;

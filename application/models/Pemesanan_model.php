@@ -76,7 +76,15 @@ class Pemesanan_model extends CI_model
                 $this->db->where('pemesanan.id', $this->input->post("id"));
             }
         } else { //get data dari layout data pemesanan
-            $this->db->where("is_done =", 0);
+            if (isset($_GET["filter"])  && $_GET["filter"] != 4) {
+                $data = [
+                    "is_done" => 0,
+                    "id_status" => $_GET["filter"],
+                ];
+                $this->db->where($data);
+            } else {
+                $this->db->where("is_done =", 0);
+            }
             $this->db->order_by("pemesanan.data_dibuat", "asc");
 
             if ($this->session->userdata('role_id') == 2) {
