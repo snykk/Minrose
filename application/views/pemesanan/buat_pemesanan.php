@@ -80,10 +80,13 @@
                 <div id="section_mandiri" class="accordion-collapse collapse show collapse-pilih-bank" data-bs-parent="#collapseCC">
                   <!-- collapse pilih bank -->
                   <div class="divider"></div>
-                  <small class="rek-title">No. Rekening Admin: </small>
-                  <div class="rek-content d-flex justify-content-between mt-1">
+                  <div class="d-flex justify-content-between">
+                    <small class="rek-title">No. Rekening Admin: </small>
+                    <small class="rek-title">Atas Nama: </small>
+                  </div>
+                  <div class="d-flex justify-content-between mt-1">
                     <small class="no-rek">092 7840 1923 7422</small>
-                    <small class="salin-rek">salin</small>
+                    <small class="salin-rek">Elvin Raty P.</small>
                   </div>
                   <div class="divider"></div>
                   <small class="note">Akan dicek dalam 10 menit setelah pembayaran berhasil</small>
@@ -96,10 +99,13 @@
                 <div id="section_bri" class="accordion-collapse collapse fade collapse-pilih-bank" data-bs-parent="#collapseCC">
                   <!-- collapse pilih bank -->
                   <div class="divider"></div>
-                  <small class="rek-title">No. Rekening Admin: </small>
+                  <div class="d-flex justify-content-between">
+                    <small class="rek-title">No. Rekening Admin: </small>
+                    <small class="rek-title">Atas Nama: </small>
+                  </div>
                   <div class="rek-content d-flex justify-content-between mt-1">
                     <small class="no-rek">058 9092 8274 9125</small>
-                    <small class="salin-rek">salin</small>
+                    <small class="salin-rek">Elvin Raty P.</small>
                   </div>
                   <div class="divider"></div>
                   <small class="note">Akan dicek dalam 10 menit setelah pembayaran berhasil</small>
@@ -112,10 +118,13 @@
                 <div id="section_bca" class="accordion-collapse collapse fade collapse-pilih-bank" data-bs-parent="#collapseCC">
                   <!-- collapse pilih bank -->
                   <div class="divider"></div>
-                  <small class="rek-title">No. Rekening Admin: </small>
+                  <div class="d-flex justify-content-between">
+                    <small class="rek-title">No. Rekening Admin: </small>
+                    <small class="rek-title">Atas Nama: </small>
+                  </div>
                   <div class="rek-content d-flex justify-content-between mt-1">
                     <small class="no-rek">088 7182 4291 9123</small>
-                    <small class="salin-rek">salin</small>
+                    <small class="salin-rek">Elvin Raty P.</small>
                   </div>
                   <div class="divider"></div>
                   <small class="note">Akan dicek dalam 10 menit setelah pembayaran berhasil</small>
@@ -128,10 +137,13 @@
                 <div id="section_bni" class="accordion-collapse collapse fade collapse-pilih-bank" data-bs-parent="#collapseCC">
                   <!-- collapse pilih bank -->
                   <div class="divider"></div>
-                  <small class="rek-title">No. Rekening Admin: </small>
+                  <div class="d-flex justify-content-between">
+                    <small class="rek-title">No. Rekening Admin: </small>
+                    <small class="rek-title">Atas Nama: </small>
+                  </div>
                   <div class="rek-content d-flex justify-content-between mt-1">
                     <small class="no-rek">098 2937 9823 2341</small>
-                    <small class="salin-rek">salin</small>
+                    <small class="salin-rek">Elvin Raty P.</small>
                   </div>
                   <div class="divider"></div>
                   <small class="note">Akan dicek dalam 10 menit setelah pembayaran berhasil</small>
@@ -162,21 +174,6 @@
                     </div>
                   </div>
                   <div class="item">
-                    <div class="item-header" id="headingThree">
-                      <h2 class="mb-0">
-                        <button class="btn btn-link collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                          <div class="title-accordion-petunjuk">Petunjuk transfer iBanking</div>
-                          <img class="title-accordion-petunjuk" src="<?= base_url("assets/icons/angle-down.svg") ?>" alt="angle down fas icon" width="18px">
-                        </button>
-                      </h2>
-                    </div>
-                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-bs-parent="#accordionPetunjuk">
-                      <div class="t-p">
-                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-                      </div>
-                    </div>
-                  </div>
-                  <div class="item">
                     <div class="item-header" id="headingFour">
                       <h2 class="mb-0">
                         <button class="btn btn-link collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
@@ -187,7 +184,21 @@
                     </div>
                     <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-bs-parent="#accordionPetunjuk">
                       <div class="t-p">
-                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+                        <ol>
+                          <li>Masukkan kartu ATM ke slot mesin ATM</li>
+                          <li>Masukkan nomor PIN</li>
+                          <li>Pilih jenis transaksi transfer</li>
+                          <li>Pilih tujuan transfer
+                            <ul>
+                              <li>Pilih <strong>Transfer Sesama Bank</strong> apabila nomor rekening tujuan berasal dari bank yang sama dengan anda, kemudian masukkan nomor rekening, lalu pilih Benar.</li>
+                              <li>Pilih <strong>Transfer Antar Bank</strong> apabila nomor rekening tujuan berasal dari bank yang berbeda dengan anda. Kemudian masukkan kode bank terkait dan nomor rekening tujuan, lalu pilih Benar.</li>
+                            </ul>
+                          </li>
+                          <li>Masukkan jumlah transfer</li>
+                          <li>Transaksi berhasil diproses</li>
+                          <li>Menunggu konfirmasi. Pilih Ya jika ingin melanjutkan atau pilih Tidak jika ingin menyudahi.</li>
+                          <li>Tunggu bukti transfer</li>
+                        </ol>
                       </div>
                     </div>
                   </div>
