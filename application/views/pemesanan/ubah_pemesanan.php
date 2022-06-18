@@ -127,9 +127,14 @@
                                   <div class="mt-3">
                                     <p class="text-secondary mb-1">upload bukti transfer</p>
                                     <!-- <a data-bs-dismiss="modal" data-bs-toggle="modal" href="#ModalUploadBukti" title="upload bukti" style="text-decoration: none;color:red;transition:0.5s" onMouseOver="this.style.fontSize='28px'" onMouseOut="this.style.fontSize='16px'">upload</a> -->
-                                    <div class="custom-file">
-                                      <input type="file" class="form-control" id="image" name="image" value="<?= set_value('image'); ?>">
-                                      <?= form_error('image', '<small class="text-danger pl-3">', '</small>'); ?>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                      <div class="custom-file">
+                                        <input type="file" class="form-control" id="image" name="image" value="<?= set_value('image'); ?>">
+                                        <?= form_error('image', '<small class="text-danger pl-3">', '</small>'); ?>
+                                      </div>
+                                      <?php if ($pemesanan[0]["bukti_transfer"] != "default.png") : ?>
+                                        <a href="<?= base_url("pemesanan/hapus_bukti?id=" . $pemesanan[0]["id_pemesanan"]) ?>" class="btn btn-outline-danger ms-2"><i class="bi bi-file-earmark-excel-fill"></i> Hapus bukti</a>
+                                      <?php endif; ?>
                                     </div>
                                   </div>
                                 </div>
@@ -159,14 +164,35 @@
         <div class="p-3 bg-light bg-opacity-10">
           <h6 class="card-title mb-3">Order Summary</h6>
           <div class="d-flex justify-content-between mb-1 small">
-            <span>Subtotal</span> <span><span>Rp. </span> <span id="sub-total"><?= $pemesanan[0]["harga_produk"] * $pemesanan[0]["jumlah_produk"] ?></span></span>
+            <span>Subtotal</span> <span><span>Rp. </span> <span id="sub-total">0</span></span>
           </div>
           <div class="d-flex justify-content-between mb-1 small">
             <span>Ongkir</span> <span><span>Rp. </span><span id="ongkir" data-valueOngkir="10000">10000</span></span>
           </div>
+
+          <input type="hidden" name="kuponUsed" id="kuponUsed">
+
           <div class="d-flex justify-content-between mb-1 small">
-            <span>Kupon (kode: tidak ada kupon)</span> <span class="text-danger"><span>Rp. </span><span id="kupon" data-valueKupon="0">0</span></span>
+            <span>Kupon
+              <?php if ($user["kupon"] == 0) { ?>
+                (tidak ada kupon)
+              <?php } else { ?>
+                (
+                <span class="align-items-center">
+                  <label for="gunakan_kupon">Gunakan</label>
+                </span>
+                <span>
+                  <input id="gunakan_kupon" type="checkbox" onchange="changeKuponStatus()">
+                </span>
+                )
+              <?php } ?>
+            </span><span><span></span><span id="kupon" data-valueKupon="<?= $user["kupon"] ?>"><?= $user["kupon"] ?> Kupon</span></span>
           </div>
+          <?php if ($user["kupon"] != 0) : ?>
+            <div class="d-flex justify-content-between mb-1 small text-danger">
+              <span>Kupon digunakan</span> <span><span id="kuponUsedShow">0 kupon</span></span>
+            </div>
+          <?php endif; ?>
           <hr>
           <div class="d-flex justify-content-between mb-4 small">
             <?php

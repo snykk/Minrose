@@ -45,8 +45,8 @@
                         oleh <a href="<?= base_url($dest); ?>" style="text-decoration:none;">@<?= $row["username"] ?></a>
                     </div>
                 <?php } ?>
-
             </div>
         </div>
     </div>
 <?php endforeach; ?>
+<div class="mb-5"></div>

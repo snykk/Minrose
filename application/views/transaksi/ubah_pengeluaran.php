@@ -31,7 +31,7 @@
 
                 <!-- Form -->
                 <?= form_open_multipart('transaksi/ubah_pengeluaran'); ?>
-                <input type="hidden" name="id_transaksi" value="<?= $_GET['id_transaksi']; ?>">
+                <input type="hidden" name="id_transaksi" value="<?= $pengeluaran["id"]; ?>">
 
                 <div class="tab-content pt-3">
                   <div class="tab-pane active">

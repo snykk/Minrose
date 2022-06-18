@@ -233,7 +233,12 @@ class Pemesanan extends CI_Controller
             $this->load->view('templates/modal_logout');
             $this->load->view('templates/footer');
         } else {
-            if ($this->Pemesanan_model->ubahPemesanan($data["pemesanan"])) {
+            if ($this->Pemesanan_model->isReadyTransfer()) {
+                $message = "<div>Bukti transfer sudah terkirim, <strong>tidak dapat mengubah data pemesanan</strong> </div>";
+                $this->Global_model->flasher($message, gagal: true);
+
+                redirect('pemesanan/ubah_pemesanan?id=' . $this->input->post("id", true));
+            } else if ($this->Pemesanan_model->ubahPemesanan($data["pemesanan"])) {
                 $message = "<div>Data pemesanan <strong>berhasil</strong> diubah</div>";
                 $this->Global_model->flasher($message, berhasil: true);
 
@@ -450,6 +455,21 @@ class Pemesanan extends CI_Controller
             $this->Global_model->flasher($message, gagal: true);
 
             redirect("pemesanan/data_pemesanan");
+        }
+    }
+
+    public function hapus_bukti()
+    {
+        if ($this->Pemesanan_model->hapusBukti()) {
+            $message = "<div>Bukti transfer <strong>berhasil</strong> dihapus</div>";
+            $this->Global_model->flasher($message, berhasil: true);
+
+            redirect("pemesanan/ubah_pemesanan?id=" . $_GET["id"]);
+        } else {
+            $message = "<div>Internal server error</div>";
+            $this->Global_model->flasher($message, gagal: true);
+
+            redirect("pemesanan/ubah_pemesanan?id=" . $_GET["id"]);
         }
     }
 }

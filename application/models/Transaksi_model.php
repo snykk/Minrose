@@ -48,7 +48,6 @@ class Transaksi_model extends CI_model
                 "pemasukan" => null,
                 "pengeluaran" => $this->input->post("pengeluaran"),
                 "keterangan" => $this->input->post("keterangan"),
-                "data_dibuat" => time(),
             ];
 
             $this->db->set($data);
