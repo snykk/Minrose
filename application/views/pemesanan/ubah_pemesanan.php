@@ -42,7 +42,7 @@
                       <div class="mt-2">
 
                         <!-- Form -->
-                        <?= form_open_multipart('pemesanan/ubah_pemesanan'); ?>
+                        <?= form_open_multipart('pemesanan/ubah_pemesanan', 'id=form_ubah_pemesanan'); ?>
                         <!-- id pemesanan -->
                         <input type="hidden" name="id" id="id" value="<?= set_value('id', $pemesanan[0]["id_pemesanan"]); ?>">
                       </div>
@@ -133,7 +133,7 @@
                                         <?= form_error('image', '<small class="text-danger pl-3">', '</small>'); ?>
                                       </div>
                                       <?php if ($pemesanan[0]["bukti_transfer"] != "default.png") : ?>
-                                        <a href="<?= base_url("pemesanan/hapus_bukti?id=" . $pemesanan[0]["id_pemesanan"]) ?>" class="btn btn-outline-danger ms-2"><i class="bi bi-file-earmark-excel-fill"></i> Hapus bukti</a>
+                                        <a href="<?= base_url("pemesanan/hapus_bukti?id=" . $pemesanan[0]["id_pemesanan"]) ?>" class="btn btn-outline-danger ms-2" id="hapus_bukti_transfer"><i class="bi bi-file-earmark-excel-fill"></i> Hapus bukti</a>
                                       <?php endif; ?>
                                     </div>
                                   </div>
@@ -147,7 +147,7 @@
                     <div class="row">
                       <div class="col d-flex justify-content-end">
                         <a class="btn btn-outline-secondary mx-3" href="<?= base_url("pemesanan/data_pemesanan") ?>">Kembali</a>
-                        <button class="btn btn-dark" type="submit">Simpan perubahan</button>
+                        <button class="btn btn-dark" type="submit" id="submit_simpan_perubahan">Simpan perubahan</button>
                       </div>
                     </div>
                   </div>

@@ -186,7 +186,7 @@ $("#link_selesai").click(function (e) {
     timer: 10000,
   }).then((result) => {
     if (result.isConfirmed) {
-      Swal.fire("Pesanan berhasil diakhiri", "", "success").then((_) => (document.location.href = href));
+      Swal.fire("Aksi anda sedang diproses", "", "success").then((_) => (document.location.href = href));
     } else {
       Swal.fire("Gagal mengakhiri pesanan", "", "info");
     }
@@ -210,7 +210,7 @@ $("#link_setujui").click(function (e) {
     timer: 10000,
   }).then((result) => {
     if (result.isConfirmed) {
-      Swal.fire("Pesanan berhasil disetujui", "", "success").then((_) => (document.location.href = href));
+      Swal.fire("Aksi anda sedang diproses", "", "success").then((_) => (document.location.href = href));
     } else {
       Swal.fire("Gagal menyetujui pesanan", "", "info");
     }
@@ -234,7 +234,7 @@ $("#link_batalkan").click(function (e) {
     timer: 10000,
   }).then((result) => {
     if (result.isConfirmed) {
-      Swal.fire("Pesanan berhasil dibatalkan", "", "success").then((_) => (document.location.href = href));
+      Swal.fire("Aksi anda sedang diproses", "", "success").then((_) => (document.location.href = href));
     } else {
       Swal.fire("Gagal membatalkan pesanan", "", "info");
     }
@@ -251,5 +251,52 @@ $("#link_bukti_transfer").click(function (event) {
     success: function (response) {
       $("#image_detail_bukti").attr("src", "/Minrose/assets/img/bukti/" + response[0].bukti_transfer);
     },
+  });
+});
+
+
+$("#submit_simpan_perubahan").click(function (e) {
+  console.log("clicked");
+  e.preventDefault();
+  var form = document.getElementById("form_ubah_pemesanan");
+
+  Swal.fire({
+    title: "Apakah anda yakin?",
+    text: "setelah proses ini data pemesanan akan diubah",
+    icon: "question",
+    confirmButtonText: "Simpan",
+    cancelButtonColor: "#d33",
+    showCancelButton: true,
+    confirmButtonColor: "#08a10b",
+    timer: 10000,
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire("Aksi anda sedang diproses", "", "success").then((_) => form.submit());
+    } else {
+      Swal.fire("Gagal mengubah pesanan", "", "info");
+    }
+  });
+});
+
+$("#hapus_bukti_transfer").click(function (e) {
+  console.log("clicked");
+  e.preventDefault();
+  const href = $(this).attr("href");
+
+  Swal.fire({
+    title: "Apakah anda yakin?",
+    text: "setelah proses ini bukti transfer akan dihapus",
+    icon: "warning",
+    confirmButtonText: "Hapus",
+    cancelButtonColor: "grey",
+    showCancelButton: true,
+    confirmButtonColor: "red",
+    timer: 10000,
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire("Aksi anda sedang diproses", "", "success").then((_) => document.location.href = href);
+    } else {
+      Swal.fire("Gagal menghapus bukti transfer", "", "info");
+    }
   });
 });
