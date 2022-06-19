@@ -120,4 +120,50 @@ class Home extends CI_Controller
     {
         $this->load->view('home/action_blocked');
     }
+
+    public function penjualan()
+    {
+        // action akan dilempar ke status 403 jika diakses oleh role yang tidak berwenang
+        if ($this->session->userdata('role_id') == 2) {
+            return;
+        }
+
+        $oneWeekAgo = $this->db->query('SELECT DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 6 DAY), "%Y-%m-%d") AS tanggal')->result_array()[0]['tanggal'];
+        $now = date('Y-m-d', time());
+
+        $data = [
+            "one_week_ago" => $oneWeekAgo,
+            "now" => $now,
+        ];
+
+        $query2 = "select count(*) as total_penjualan, from_unixtime(data_diubah, '%d') as tanggal, from_unixtime(data_diubah, '%Y-%m-%d') as waktu
+        from pemesanan 
+        where is_done=1 AND from_unixtime(data_diubah, '%Y-%m-%d') BETWEEN '$oneWeekAgo' AND '$now'
+        GROUP BY 
+        from_unixtime(data_diubah, '%Y-%m-%d')";
+        $data["data"] = $this->db->query($query2)->result_array();
+
+        header("Content-Type: application/json");
+        echo json_encode($data);
+    }
+
+    public function keuntungan()
+    {
+        $six_month_ago = $this->db->query('SELECT DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 5 MONTH), "%Y-%m") AS date')->result_array()[0]['date'];
+        $now = date('Y-m', time());
+        $data = [
+            "six_month_ago" => $six_month_ago,
+            "now" => $now,
+        ];
+
+        $query = "select (SUM(pemasukan) - SUM(pengeluaran)) as keuntungan, from_unixtime(data_dibuat, '%Y-%m') as date
+        from transaksi 
+        where from_unixtime(data_dibuat, '%Y-%m') BETWEEN '$six_month_ago' AND '$now'
+        GROUP BY 
+        from_unixtime(data_dibuat, '%Y-%m')";
+        $data["data"] = $this->db->query($query)->result_array();
+
+        header("Content-Type: application/json");
+        echo json_encode($data);
+    }
 }

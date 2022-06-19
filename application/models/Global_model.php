@@ -16,7 +16,7 @@ class Global_model extends CI_model
         $this->session->set_flashdata(
             'message',
             '<div class="alert alert-' . $status . ' d-flex justify-content-between align-items-center mt-3" role="alert">
-            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="' . $status . ':"><use xlink:href="#' . $logo . '"/></svg>
+            <i class="bi bi-' . $logo . ' me-2" style="font-size:1.5rem"></i>
             ' . $message . '
             <button type="button" class="btn-close ms-auto p-2 bd-highlight" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>'
@@ -36,8 +36,8 @@ class Global_model extends CI_model
         $this->session->set_flashdata(
             'message',
             '<div class="alert alert-' . $status . ' d-flex align-items-center" role="alert">
-                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#' . $logo . '"/></svg>
-                <div style="margin-left:1rem">' . $message . '</div>
+            <i class="bi bi-' . $logo . ' mr-2" style="font-size:1.5rem"></i>
+                <div>' . $message . '</div>
             </div>'
         );
     }
