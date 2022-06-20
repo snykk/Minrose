@@ -44,18 +44,30 @@
           </div>
           <div class="form-group col-2">
             <label for="jumlah_produk">Jumlah Produk</label>
-            <input id="jumlah_produk" name="jumlah_produk" value="<?= set_value('jumlah_produk', "0"); ?>" type="number" min="0" class="form-control" onchange="myCounter()">
+            <input id="jumlah_produk" name="jumlah_produk" data-idProduk="<?= $produk["id"]; ?>" value="<?= set_value('jumlah_produk', "0"); ?>" type="number" min="0" class="form-control" onchange="myCounter()">
           </div>
           <div class="mb-3 col-12">
             <?= form_error('jumlah_produk', '<small class="text-danger pl-3">', '</small>'); ?>
           </div>
+          <div class="row mb-3">
+            <div class="col-12">Destinasi</div>
+            <div class="form-group col-7">
+              <select class="form-control" id="select_provinsi">
+                <option value="">Pilih Provinsi</option>
+              </select>
+            </div>
+            <div class="form-group col-5">
+              <select class="form-control" id="select_kota" disabled>
+                <option value="">Pilih Kota</option>
+              </select>
+            </div>
+          </div>
           <div class="form-group mb-3">
-            <label for="alamat">Alamat Pelanggan</label>
+            <label for="alamat">Detail Alamat</label>
             <input id="alamat" name="alamat" value="<?= set_value('alamat', $user["alamat"]); ?>" type="text" class="form-control">
             <?= form_error('alamat', '<small class="text-danger pl-3">', '</small>'); ?>
           </div>
         </div>
-
 
         <!-- Online Banking -->
         <div class="accordion-item mb-3 ">
@@ -238,7 +250,7 @@
             <span>Subtotal</span> <span><span>Rp. </span> <span id="sub-total">0</span></span>
           </div>
           <div class="d-flex justify-content-between mb-1 small">
-            <span>Ongkir</span> <span><span>Rp. </span><span id="ongkir" data-valueOngkir="10000">10000</span></span>
+            <span>Ongkir</span> <span><span>Rp. </span><span id="ongkir" data-valueOngkir="0">0</span></span>
           </div>
 
           <input type="hidden" name="kuponUsed" id="kuponUsed">
@@ -266,7 +278,7 @@
           <?php endif; ?>
           <hr>
           <div class="d-flex justify-content-between mb-4 small">
-            <span>TOTAL</span> <strong class="text-dark"><span>Rp. </span><span id="total">10000</span></strong>
+            <span>TOTAL</span> <strong class="text-dark"><span>Rp. </span><span id="total">0</span></strong>
             <input type="hidden" name="input_total" id="input_total" value="<?= set_value('input_total'); ?>">
           </div>
           <div class="form-group small mb-3">

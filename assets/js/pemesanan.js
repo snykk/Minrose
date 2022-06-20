@@ -11,11 +11,22 @@ function changeKuponStatus() {
   isUseKupon = !isUseKupon;
 }
 
+// ================ order summary ==================
+var sub_total
+var total
+var ongkir
+// ===============================================
+
+
 // counter order summary [buat ]
 function myCounter() {
   var num = parseInt(document.getElementById("jumlah_produk").value);
   var harga = parseInt(document.getElementById("harga_produk").getAttribute("data-trueHarga"));
-  var ongkir = parseInt(document.getElementById("ongkir").getAttribute("data-valueOngkir"));
+  ongkir = parseInt(document.getElementById("ongkir").getAttribute("data-valueOngkir"));
+
+  if (jumlah_produk != null && id_produk != null && destinasi != null) {
+    setOngkir({ destination: destinasi, qty: num, idProd: id_produk })
+  }
 
   if (isUseKupon && totalKupon > 0 && currentNum < num) {
     console.log("100");
@@ -32,19 +43,32 @@ function myCounter() {
     console.log("3");
     totalKupon = totalKupon + 1;
     kuponUsed = kuponUsed - 1;
-  }
-  console.log(`kupon digunakan: ${kuponUsed}`)
-  console.log(`total Kupon: ${totalKupon}`)
-  var sub_total = harga * (num - kuponUsed);
-  var total = sub_total + ongkir;
 
-  $("#sub-total").html(sub_total);
-  $("#total").html(total);
-  $("#input_total").val(total);
+  }
+
+  sub_total = harga * (num - kuponUsed);
+  total = sub_total + ongkir;
+
   $("#kupon").html(`${totalKupon} kupon`);
   $("#kuponUsed").val(kuponUsed);
   $("#kuponUsedShow").html(`${kuponUsed} kupon`);
+
+  refresh_data({ sub_total: sub_total, total: total })
   currentNum = num;
+}
+
+function refresh_data({ sub_total = 0, ongkir = 0, total = 0 }) {
+  if (total != 0) {
+    $("#input_total").val(total);
+    $("#total").html(total);
+  }
+  if (sub_total != 0) {
+    $("#sub-total").html(sub_total);
+  }
+  if (ongkir != 0) {
+    $("#ongkir").attr("data-valueOngkir", ongkir);
+    $("#ongkir").html(ongkir);
+  }
 }
 
 // modal detail data pemesanan
@@ -300,3 +324,71 @@ $("#hapus_bukti_transfer").click(function (e) {
     }
   });
 });
+
+
+
+// ===================================  Ongkir  =======================================
+// ==== DATA ====
+var id_produk;
+var destinasi;
+var jumlah_produk
+
+// ==============
+
+
+function getLokasi() {
+  $op = $("#select_provinsi");
+
+  $.getJSON("/Minrose/ongkir/provinsi", function (data) {
+    $.each(data, function (i, field) {
+      $op.append('<option value="' + field.province_id + '">' + field.province + '</option>');
+    });
+  });
+}
+
+getLokasi();
+
+$("#select_provinsi").on("change", function (e) {
+  e.preventDefault();
+  var option = $('option:selected', this).val();
+  $('#select_kota option:gt(0)').remove();
+  $('#kurir').val('');
+
+  if (option === '') {
+    alert('null');
+    $("#select_kota").prop("disabled", true);
+    $("#kurir").prop("disabled", true);
+  } else {
+    $("#select_kota").prop("disabled", false);
+    getKota(option);
+  }
+});
+
+$("#select_kota").on("change", function (e) {
+  e.preventDefault();
+
+  id_produk = $("#jumlah_produk").attr("data-idProduk");
+  destinasi = $(this).val();
+  jumlah_produk = $("#jumlah_produk").val();
+
+  setOngkir({ destination: destinasi, qty: jumlah_produk, idProd: id_produk });
+});
+
+function getKota(idpro) {
+  var $op = $("#select_kota");
+
+  $.getJSON("/Minrose/ongkir/kota/" + idpro, function (data) {
+    $.each(data, function (i, field) {
+      $op.append('<option value="' + field.city_id + '">' + field.type + ' ' + field.city_name + '</option>');
+    });
+  });
+}
+
+function setOngkir({ origin = "86", destination, qty, courier = "jne", idProd }) {
+  $.getJSON("/Minrose/ongkir/tarif/" + origin + "/" + destination + "/" + qty + "/" + courier + "/" + idProd, function (data) {
+    console.log(data);
+    ongkir = data[0]['costs'][0]["cost"][0]["value"];
+    total = sub_total + ongkir;
+    refresh_data({ ongkir: ongkir, sub_total: sub_total, total: total })
+  });
+}
