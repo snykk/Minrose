@@ -9,6 +9,7 @@ class Transaksi extends CI_Controller
         $this->load->library('form_validation');
         $this->load->model('Transaksi_model');
         $this->load->model('Global_model');
+        is_logged_in();
     }
 
     public function index()

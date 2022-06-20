@@ -9,6 +9,7 @@ class Profile extends CI_Controller
         $this->load->library('form_validation');
         $this->load->model("Profile_model");
         $this->load->model("Global_model");
+        is_logged_in();
     }
 
     public function user_profile()

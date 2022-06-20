@@ -9,6 +9,7 @@ class Pemesanan extends CI_Controller
         $this->load->library('form_validation');
         $this->load->model("Pemesanan_model");
         $this->load->model("Global_model");
+        is_logged_in();
     }
 
 

@@ -10,6 +10,7 @@ class Produk extends CI_Controller
         $this->load->helper('url');
         $this->load->model("Produk_model");
         $this->load->model("Global_model");
+        is_logged_in();
     }
 
     public function index()
