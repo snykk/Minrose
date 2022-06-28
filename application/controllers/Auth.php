@@ -93,7 +93,7 @@ class Auth extends CI_Controller
         $this->form_validation->set_rules('verif-password', 'Password', 'required|trim|matches[password]', [
             'matches' => 'Password tidak sama',
         ]);
-        $this->form_validation->set_rules('no_hp', 'No. HP', 'required|trim|is_unique[user.no_hp]', ['is_unique' => 'no hp ini telah terdaftar silahkan gunakan nomor hp lain!']);
+        $this->form_validation->set_rules('no_hp', 'No. HP', 'required|trim|numeric|is_unique[user.no_hp]', ['is_unique' => 'no hp ini telah terdaftar silahkan gunakan nomor hp lain!', 'numeric' => 'inputan harus berupa bilangan numeric']);
         $this->form_validation->set_rules('alamat', 'Alamant', 'required|trim');
 
         if ($this->form_validation->run() == false) {

@@ -168,6 +168,16 @@ class Pemesanan_model extends CI_model
             // jika user ingin menggunakan kupon
             $kuponUsed =  (int)$this->input->post('kuponUsed', true);
 
+            if ($kuponUsed != null) {
+                $kuponPemesanan = $this->db->get_where("pemesanan", ["id" => $id])->row_array()["kuponUsed"];
+                $user = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+                $kuponSaatIni = (int)$user["kupon"] - (int)$kuponUsed + (int)$kuponPemesanan;
+
+                $this->db->set("kupon", $kuponSaatIni);
+                $this->db->where("id", $user['id']);
+                $this->db->update('user');
+            }
+
             $data = [
                 'jumlah_produk' => (int)$this->input->post('jumlah_produk', true),
                 'alamat' => $this->input->post('alamat_pemesanan', true),
@@ -179,14 +189,6 @@ class Pemesanan_model extends CI_model
             $this->db->set($data);
             $this->db->where('id', $id);
             $this->db->update('pemesanan');
-
-            $user = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-            $kuponSaatIni = $user["kupon"] - $kuponUsed;
-
-            $this->db->set("kupon", $kuponSaatIni);
-            $this->db->where("id", $user['id']);
-            $this->db->update('user');
-
 
             return true;
         } catch (Exception $e) {

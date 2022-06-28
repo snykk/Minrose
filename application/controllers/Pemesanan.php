@@ -6,10 +6,21 @@ class Pemesanan extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->helper(array('form', 'url'));
         $this->load->library('form_validation');
         $this->load->model("Pemesanan_model");
         $this->load->model("Global_model");
         is_logged_in();
+    }
+
+    public function custom_select_validate($str)
+    {
+        if ($str != "0") {
+            return TRUE;
+        } else {
+            $this->form_validation->set_message('custom_select_validate', 'The "{field}" field have to select');
+            return FALSE;
+        }
     }
 
 
@@ -37,13 +48,12 @@ class Pemesanan extends CI_Controller
             $id_produk = false;
         }
 
-        $this->form_validation->set_rules('jumlah_produk', 'Jumlah produk', 'required|trim', ["required" => "Jumlah produk tidak boleh kosong"]);
         $this->form_validation->set_rules('alamat', 'Alamat', 'required|trim', ["required" => "Alamat tidak boleh kosong"]);
         $this->form_validation->set_rules('id_metode', 'Metode transaksi', 'required|trim', ["required" => "Pilih salah satu metode transaksi"]);
         $this->form_validation->set_rules('id_bank', 'Bank', 'required|trim', ["required" => "Pilih salah satu bank"]);
         $this->form_validation->set_rules(
             'jumlah_produk',
-            'Alamat',
+            'Jumlah produk',
             'trim|greater_than_equal_to[1]|less_than_equal_to' . "[$stok]",
             [
                 "required" => "Alamat tujuan tidak boleh kosong",
@@ -51,6 +61,8 @@ class Pemesanan extends CI_Controller
                 "less_than_equal_to" => "Produk yang tersedia untuk saat ini hanya $stok unit"
             ],
         );
+        $this->form_validation->set_rules('provinsi_tujuan', 'Provinsi', 'callback_custom_select_validate');
+        $this->form_validation->set_rules('kota_tujuan', 'Kota', 'callback_custom_select_validate');
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/header', $data);
@@ -211,6 +223,8 @@ class Pemesanan extends CI_Controller
                 "less_than_equal_to" => "Produk yang tersedia untuk saat ini hanya $stok unit"
             ],
         );
+        $this->form_validation->set_rules('provinsi_tujuan', 'Provinsi', 'callback_custom_select_validate');
+        $this->form_validation->set_rules('kota_tujuan', 'Kota', 'callback_custom_select_validate');
 
         // proses akan diredirect jika tidak ada perubahan
         if ($this->Pemesanan_model->isSameData($data["pemesanan"])) {

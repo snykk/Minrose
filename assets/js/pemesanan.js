@@ -4,7 +4,15 @@ var currentNum = 0;
 var kuponUsed = 0;
 
 window.onload = function () {
-  totalKupon = $("#kupon").attr("data-valueKupon");
+  totalKupon = parseInt($("#kupon").attr("data-valueKupon"));
+  if ($("#kuponUsedShow").attr("data-kuponUsed") != null) {
+    kuponUsed = parseInt($("#kuponUsedShow").attr("data-kuponUsed"));
+  }
+  $("#kuponUsedShow").html(`${kuponUsed} kupon`);
+  console.log(isUseKupon)
+  console.log(totalKupon)
+  console.log(currentNum)
+  console.log(kuponUsed)
 }
 
 function changeKuponStatus() {
@@ -25,15 +33,17 @@ function myCounter() {
   ongkir = parseInt(document.getElementById("ongkir").getAttribute("data-valueOngkir"));
 
   if (jumlah_produk != null && id_produk != null && destinasi != null) {
+    console.log("asdf");
     setOngkir({ destination: destinasi, qty: num, idProd: id_produk })
   }
 
   if (isUseKupon && totalKupon > 0 && currentNum < num) {
-    console.log("100");
+    console.log("1");
     // ketika user menggunakan kupon
     totalKupon = totalKupon - 1;
     kuponUsed = kuponUsed + 1;
     console.log(totalKupon);
+    console.log("ini kupon used:", kuponUsed)
   } else if (isUseKupon && kuponUsed > 0 && currentNum > num) {
     console.log(`${currentNum} > ${num}: ${currentNum > num}`)
     console.log("2");
@@ -43,9 +53,10 @@ function myCounter() {
     console.log("3");
     totalKupon = totalKupon + 1;
     kuponUsed = kuponUsed - 1;
-
   }
 
+  console.log("ini num: ", num);
+  console.log("ini kupon used:", kuponUsed);
   sub_total = harga * (num - kuponUsed);
   total = sub_total + ongkir;
 
@@ -368,6 +379,7 @@ $("#select_kota").on("change", function (e) {
   e.preventDefault();
 
   id_produk = $("#jumlah_produk").attr("data-idProduk");
+  console.log("ini id produkk", id_produk);
   destinasi = $(this).val();
   jumlah_produk = $("#jumlah_produk").val();
 
@@ -385,6 +397,8 @@ function getKota(idpro) {
 }
 
 function setOngkir({ origin = "86", destination, qty, courier = "jne", idProd }) {
+  console.log("pepepe")
+  console.log("ini qty", qty)
   $.getJSON("/Minrose/ongkir/tarif/" + origin + "/" + destination + "/" + qty + "/" + courier + "/" + idProd, function (data) {
     console.log(data);
     ongkir = data[0]['costs'][0]["cost"][0]["value"];

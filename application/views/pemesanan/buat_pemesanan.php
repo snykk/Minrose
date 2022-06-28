@@ -52,14 +52,16 @@
           <div class="row mb-3">
             <div class="col-12">Destinasi</div>
             <div class="form-group col-7">
-              <select class="form-control" id="select_provinsi">
-                <option value="">Pilih Provinsi</option>
+              <select class="form-control" id="select_provinsi" name="provinsi_tujuan">
+                <option value="<?= set_value('provinsi_tujuan', "0"); ?>" selected="selected">Pilih Provinsi</option>
               </select>
+              <?= form_error('provinsi_tujuan', '<small class="text-danger pl-3">', '</small>'); ?>
             </div>
             <div class="form-group col-5">
-              <select class="form-control" id="select_kota" disabled>
-                <option value="">Pilih Kota</option>
+              <select class="form-control" id="select_kota" disabled name="kota_tujuan">
+                <option value="<?= set_value('kota_tujuan', "0"); ?>" selected="selected">Pilih Kota</option>
               </select>
+              <?= form_error('kota_tujuan', '<small class="text-danger pl-3">', '</small>'); ?>
             </div>
           </div>
           <div class="form-group mb-3">

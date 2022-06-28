@@ -27,7 +27,7 @@
                             <div class="backside">
                                 <div class="card">
                                     <div class="card-body text-center mt-4">
-                                        <h4 class="card-title">Minrose Cup</h4>
+                                        <h4 class="card-title"><?= $row->nama; ?></h4>
                                         <p class="card-text">Upsss cieee pasti penasaran yaaa? 😄 klik "detail Produk" di bawah</p>
 
                                         <!-- detail -->

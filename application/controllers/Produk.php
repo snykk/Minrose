@@ -149,9 +149,11 @@ class Produk extends CI_Controller
             "required" => "Harga tidak boleh kosong",
             "numeric" => "Data yang diinputkan bukan berupa karakter numeric",
         ]);
-        $this->form_validation->set_rules('diskon', 'Diskon', 'required|trim|numeric', [
+        $this->form_validation->set_rules('diskon', 'Diskon', 'required|trim|numeric|greater_than_equal_to[0]|less_than_equal_to[1]', [
             "required" => "Diskon tidak boleh kosong",
             "numeric" => "Data yang diinputkan bukan berupa karakter numeric",
+            "greater_than_equal_to" => "Diskon produk harus di antara 0 sampai 1",
+            "less_than_equal_to" => "Diskon produk harus di antara 0 sampai 1"
         ]);
         $this->form_validation->set_rules('orientasi', 'Orientasi', 'required|trim', ["required" => "Orientasi tidak boleh kosong"]);
         $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'required|trim', ["required" => "Deskripsi tidak boleh kosong"]);

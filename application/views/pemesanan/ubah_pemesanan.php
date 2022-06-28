@@ -76,7 +76,7 @@
                           <div class="col-12 col-md-3">
                             <div class="form-group">
                               <label for="jumlah_produk">Jumlah_produk</label>
-                              <input class="form-control" type="number" min="0" id="jumlah_produk" name="jumlah_produk" placeholder="Masukkan jumlah produk" value="<?= set_value('jumlah_produk', $pemesanan[0]["jumlah_produk"]); ?>" onchange="myCounter()">
+                              <input class="form-control" type="number" min="0" id="jumlah_produk" name="jumlah_produk" data-idProduk="<?= $pemesanan[0]["id_produk"]; ?>" placeholder="Masukkan jumlah produk" value="<?= set_value('jumlah_produk', $pemesanan[0]["jumlah_produk"]); ?>" onchange="myCounter()">
                               <?= form_error('jumlah_produk', '<small class="text-danger pl-3">', '</small>'); ?>
                             </div>
                           </div>
@@ -105,6 +105,21 @@
                                 </select> -->
 
                             </div>
+                          </div>
+                        </div>
+                        <div class="row mb-3">
+                          <div class="col-12">Destinasi</div>
+                          <div class="form-group col-7">
+                            <select class="form-control" id="select_provinsi" name="provinsi_tujuan">
+                              <option value="<?= set_value('provinsi_tujuan', "0"); ?>" selected="selected">Pilih Provinsi</option>
+                            </select>
+                            <?= form_error('provinsi_tujuan', '<small class="text-danger pl-3">', '</small>'); ?>
+                          </div>
+                          <div class="form-group col-5">
+                            <select class="form-control" id="select_kota" disabled name="kota_tujuan">
+                              <option value="<?= set_value('kota_tujuan', "0"); ?>" selected="selected">Pilih Kota</option>
+                            </select>
+                            <?= form_error('kota_tujuan', '<small class="text-danger pl-3">', '</small>'); ?>
                           </div>
                         </div>
                         <div class="row mb-3">
@@ -167,7 +182,7 @@
             <span>Subtotal</span> <span><span>Rp. </span> <span id="sub-total">0</span></span>
           </div>
           <div class="d-flex justify-content-between mb-1 small">
-            <span>Ongkir</span> <span><span>Rp. </span><span id="ongkir" data-valueOngkir="10000">10000</span></span>
+            <span>Ongkir</span> <span><span>Rp. </span><span id="ongkir" data-valueOngkir="0">0</span></span>
           </div>
 
           <input type="hidden" name="kuponUsed" id="kuponUsed">
@@ -190,16 +205,13 @@
           </div>
           <?php if ($user["kupon"] != 0) : ?>
             <div class="d-flex justify-content-between mb-1 small text-danger">
-              <span>Kupon digunakan</span> <span><span id="kuponUsedShow">0 kupon</span></span>
+              <span>Kupon digunakan</span> <span><span id="kuponUsedShow" data-kuponUsed=<?= $pemesanan[0]["kuponUsed"]; ?>><?= $pemesanan[0]["kuponUsed"]; ?> kupon</span></span>
             </div>
           <?php endif; ?>
           <hr>
           <div class="d-flex justify-content-between mb-4 small">
-            <?php
-            $init_total = $pemesanan[0]["harga_produk"] * $pemesanan[0]["jumlah_produk"] + 10000;
-            ?>
-            <span>TOTAL</span> <strong class="text-dark"><span>Rp. </span><span id="total"><?= $init_total; ?></span></strong>
-            <input type="hidden" name="input_total" id="input_total" value="<?= set_value('input_total', $init_total); ?>">
+            <span>TOTAL</span> <strong class="text-dark"><span>Rp. </span><span id="total"><?= $pemesanan[0]["total_harga"]; ?></span></strong>
+            <input type="hidden" name="input_total" id="input_total" value="<?= set_value('input_total', $pemesanan[0]["total_harga"]); ?>">
           </div>
         </div>
       </div>
