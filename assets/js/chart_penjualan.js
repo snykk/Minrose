@@ -4,7 +4,6 @@ Chart.defaults.global.defaultFontColor = "#292b2c";
 
 $(window).on('load', function () {
   $.get("/Minrose/home/penjualan", function (response) {
-    console.log(response);
 
     // buat data
     var response_length = response["data"].length;

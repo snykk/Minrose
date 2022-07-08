@@ -1,7 +1,5 @@
-console.log("halo");
 // sweetalert 2
 $(".link_hapus_ulasan").click(function (e) {
-  console.log("clicked");
   e.preventDefault();
   const href = $(this).attr("href");
 
@@ -28,7 +26,6 @@ $(".link_edit_ulasan").click(function (e) {
     method: "post",
     dataType: "json",
     success: function (response) {
-      console.log(response);
       $("#id_produk").val(response[0].id_produk);
       $("#ulasan_edit").val(response[0].ulasan);
       $("input[type=radio][value=" + response[0].rating + "]").prop("checked", true);

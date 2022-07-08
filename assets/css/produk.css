@@ -26,7 +26,6 @@ section {
 section .section-title {
   text-align: center;
   color: #007b5e;
-  margin-bottom: 30px;
   text-transform: uppercase;
 }
 
@@ -250,10 +249,10 @@ strong.strikethrough:before {
   right: 0;
   border-top: 1px solid;
   border-color: inherit;
-  
-  -webkit-transform:rotate(-5deg);
-  -moz-transform:rotate(-5deg);
-  -ms-transform:rotate(-5deg);
-  -o-transform:rotate(-5deg);
-  transform:rotate(-5deg);
+
+  -webkit-transform: rotate(-5deg);
+  -moz-transform: rotate(-5deg);
+  -ms-transform: rotate(-5deg);
+  -o-transform: rotate(-5deg);
+  transform: rotate(-5deg);
 }

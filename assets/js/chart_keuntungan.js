@@ -37,7 +37,6 @@ $(window).on('load', function () {
       newMonth = new Date(newMonth);
     }
 
-    console.log(montly_profit);
 
     var ctx = document.getElementById("Chart-Keuntungan");
     new Chart(ctx, {

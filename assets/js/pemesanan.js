@@ -9,10 +9,6 @@ window.onload = function () {
     kuponUsed = parseInt($("#kuponUsedShow").attr("data-kuponUsed"));
   }
   $("#kuponUsedShow").html(`${kuponUsed} kupon`);
-  console.log(isUseKupon)
-  console.log(totalKupon)
-  console.log(currentNum)
-  console.log(kuponUsed)
 }
 
 function changeKuponStatus() {
@@ -33,30 +29,21 @@ function myCounter() {
   ongkir = parseInt(document.getElementById("ongkir").getAttribute("data-valueOngkir"));
 
   if (jumlah_produk != null && id_produk != null && destinasi != null) {
-    console.log("asdf");
     setOngkir({ destination: destinasi, qty: num, idProd: id_produk })
   }
 
   if (isUseKupon && totalKupon > 0 && currentNum < num) {
-    console.log("1");
     // ketika user menggunakan kupon
     totalKupon = totalKupon - 1;
     kuponUsed = kuponUsed + 1;
-    console.log(totalKupon);
-    console.log("ini kupon used:", kuponUsed)
   } else if (isUseKupon && kuponUsed > 0 && currentNum > num) {
-    console.log(`${currentNum} > ${num}: ${currentNum > num}`)
-    console.log("2");
     totalKupon = totalKupon + 1;
     kuponUsed = kuponUsed - 1;
   } else if (!isUseKupon && kuponUsed > 0) {
-    console.log("3");
     totalKupon = totalKupon + 1;
     kuponUsed = kuponUsed - 1;
   }
 
-  console.log("ini num: ", num);
-  console.log("ini kupon used:", kuponUsed);
   sub_total = harga * (num - kuponUsed);
   total = sub_total + ongkir;
 
@@ -90,7 +77,6 @@ $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
     method: "post",
     dataType: "json",
     success: function (response) {
-      console.log(response);
       $("#username_detail").html("@" + response[0].username);
       $("#tanggal_dipesan_detail").html(response[1]);
       $("#jumlah_produk_detail").html(response[0].jumlah_produk);
@@ -206,7 +192,6 @@ $("#link_tolak").click(function (e) {
 
 // sweetalert 2
 $("#link_selesai").click(function (e) {
-  console.log("clicked");
   e.preventDefault();
   const href = $(this).attr("href");
 
@@ -230,7 +215,6 @@ $("#link_selesai").click(function (e) {
 
 // sweetalert 2
 $("#link_setujui").click(function (e) {
-  console.log("clicked");
   e.preventDefault();
   const href = $(this).attr("href");
 
@@ -254,7 +238,6 @@ $("#link_setujui").click(function (e) {
 
 // sweetalert 2
 $("#link_batalkan").click(function (e) {
-  console.log("clicked");
   e.preventDefault();
   const href = $(this).attr("href");
 
@@ -291,7 +274,6 @@ $("#link_bukti_transfer").click(function (event) {
 
 
 $("#submit_simpan_perubahan").click(function (e) {
-  console.log("clicked");
   e.preventDefault();
   var form = document.getElementById("form_ubah_pemesanan");
 
@@ -314,7 +296,6 @@ $("#submit_simpan_perubahan").click(function (e) {
 });
 
 $("#hapus_bukti_transfer").click(function (e) {
-  console.log("clicked");
   e.preventDefault();
   const href = $(this).attr("href");
 
@@ -379,7 +360,6 @@ $("#select_kota").on("change", function (e) {
   e.preventDefault();
 
   id_produk = $("#jumlah_produk").attr("data-idProduk");
-  console.log("ini id produkk", id_produk);
   destinasi = $(this).val();
   jumlah_produk = $("#jumlah_produk").val();
 
@@ -397,10 +377,7 @@ function getKota(idpro) {
 }
 
 function setOngkir({ origin = "86", destination, qty, courier = "jne", idProd }) {
-  console.log("pepepe")
-  console.log("ini qty", qty)
   $.getJSON("/Minrose/ongkir/tarif/" + origin + "/" + destination + "/" + qty + "/" + courier + "/" + idProd, function (data) {
-    console.log(data);
     ongkir = data[0]['costs'][0]["cost"][0]["value"];
     total = sub_total + ongkir;
     refresh_data({ ongkir: ongkir, sub_total: sub_total, total: total })

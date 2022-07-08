@@ -1,5 +1,4 @@
 $("button.detail").click(function (event) {
-  console.log("buttton detail click");
   // event.preventDefault();
   $.ajax({
     url: "/Minrose/produk/getDataProduk",
@@ -7,7 +6,6 @@ $("button.detail").click(function (event) {
     method: "post",
     dataType: "json",
     success: function (response) {
-      console.log(response);
       $("#modal-image").attr("src", "/Minrose/assets/img/produk/" + response[0].image);
       $(".text-uppercase").html(response[0].nama);
       $(".orientasi").html(response[0].orientasi);
@@ -26,7 +24,6 @@ $("button.detail").click(function (event) {
 });
 
 $("button.ubah").click(function (event) {
-  console.log("buttton ubah click");
   // event.preventDefault();
   $.ajax({
     url: "/Minrose/produk/getDataProduk",
@@ -34,7 +31,6 @@ $("button.ubah").click(function (event) {
     method: "post",
     dataType: "json",
     success: function (response) {
-      console.log(response[0]);
       $("#produk_id").val(response[0].id);
       $("#ubah_nama_produk").val(response[0].nama);
       $("#ubah_orientasi").val(response[0].orientasi);

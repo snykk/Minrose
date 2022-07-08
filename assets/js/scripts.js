@@ -8,7 +8,6 @@ window.addEventListener("DOMContentLoaded", (event) => {
     }
     sidebarToggle.addEventListener("click", (event) => {
       event.preventDefault();
-      console.log("klikk");
       document.body.classList.toggle("sb-sidenav-toggled");
       localStorage.setItem("sb|sidebar-toggle", document.body.classList.contains("sb-sidenav-toggled"));
     });
@@ -17,7 +16,6 @@ window.addEventListener("DOMContentLoaded", (event) => {
 
 // sweetalert 2
 $("a.auth_logout").click(function (e) {
-  console.log("clicked");
   e.preventDefault();
   const href = $(this).attr("href");
 
@@ -50,7 +48,6 @@ $("a.auth_logout").click(function (e) {
       }).then((result) => {
         /* Read more about handling dismissals below */
         if (result.dismiss === Swal.DismissReason.timer) {
-          console.log('I was closed by the timer');
           document.location.href = href;
         }
       })

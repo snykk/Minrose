@@ -1,6 +1,5 @@
 // sweetalert 2
 $("#ambil_point").click(function (e) {
-  console.log("clicked");
   e.preventDefault();
   const isValid = $(this).attr("data-validKah");
   const href = $(this).attr("href");
