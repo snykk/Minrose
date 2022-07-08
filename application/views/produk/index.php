@@ -8,6 +8,14 @@
         ?>
 
         <h5 class="section-title h1">PRODUK KAMI</h5>
+        <?php if ($user["role_id"] == 1) : ?>
+            <div class="d-flex align-items-end flex-column mb-4">
+                <a style="text-decoration: none;" href="<?= base_url("produk/tambah_produk"); ?>">
+                    <div class="text-right button-kemren mr-lg-5 mr-sm-3">pe</div>
+                </a>
+            </div>
+        <?php endif; ?>
+
         <div class="row justify-content-center">
             <?php foreach ($produk->result() as $row) : ?>
                 <!-- Produk card -->
@@ -54,13 +62,6 @@
                 <!-- ./product card -->
             <?php endforeach; ?>
         </div>
-        <?php if ($user["role_id"] == 1) : ?>
-            <div class="d-flex align-items-end flex-column">
-                <a style="text-decoration: none;" href="<?= base_url("produk/tambah_produk"); ?>">
-                    <div class="text-right button-kemren mr-lg-5 mr-sm-3">pe</div>
-                </a>
-            </div>
-        <?php endif; ?>
     </div>
 </section>
 <!-- product -->

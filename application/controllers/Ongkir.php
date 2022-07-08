@@ -23,7 +23,7 @@ class Ongkir extends CI_Controller
             CURLOPT_POSTFIELDS => "origin=" . $origin . "&destination=" . $des . "&weight=" . $qty . "&courier=" . $cour,
             CURLOPT_HTTPHEADER => array(
                 "content-type: application/x-www-form-urlencoded",
-                "key: ehe"
+                "key: YOUR-API-KEY" // raja ongkir api
             ),
         ));
         $response = curl_exec($curl);
@@ -49,7 +49,7 @@ class Ongkir extends CI_Controller
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => array(
-                "key: ehe"
+                "key: YOUR-API-KEY" // raja ongkir api
             ),
         ));
         $response = curl_exec($curl);
