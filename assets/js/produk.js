@@ -1,5 +1,6 @@
 $("button.detail").click(function (event) {
-  // event.preventDefault();
+  setVisible("#loading", true);
+
   $.ajax({
     url: "/Minrose/produk/getDataProduk",
     data: { id: $(this).attr("data-id") },
@@ -19,6 +20,9 @@ $("button.detail").click(function (event) {
         $(".harga").html("Harga: " + "<strong class='me-2'>" + (1 - response[0].diskon) * response[0].harga + "</strong>" + "<strong class='strikethrough'>" + response[0].harga + "</strong>");
         $(".diskon").html("Diskon: " + "<em class='text-danger'>" + response[0].diskon * 100 + "%" + "</em>");
       }
+
+      $("#ModalDetail").modal("show");
+      setVisible("#loading", false);
     },
   });
 });
@@ -42,3 +46,5 @@ $("button.ubah").click(function (event) {
     },
   });
 });
+
+const setVisible = (elementOrSelector, visible) => ((typeof elementOrSelector === "string" ? document.querySelector(elementOrSelector) : elementOrSelector).style.display = visible ? "block" : "none");

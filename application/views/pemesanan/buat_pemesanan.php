@@ -11,7 +11,7 @@
           <?= form_open_multipart('pemesanan/buat_pemesanan'); ?>
 
           <!-- hidden input -->
-          <input type="hidden" name="id_produk" value="<?= set_value('in_produk', $produk["id"]); ?>">
+          <input type="hidden" name="id_produk" value="<?= set_value('id_produk', $produk["id"]); ?>">
           <input type="hidden" name="id_user" value="<?= set_value('id_user', $user["id"]); ?>">
 
 
@@ -248,40 +248,46 @@
       <div class="card position-sticky top-0">
         <div class="p-3 bg-light bg-opacity-10">
           <h6 class="card-title mb-3">Order Summary</h6>
-          <div class="d-flex justify-content-between mb-1 small">
-            <span>Subtotal</span> <span><span>Rp. </span> <span id="sub-total">0</span></span>
+          <div id="loading_transaksi" style="display: none">
+            <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_raiw2hpe.json" background="transparent" speed="1" style="width: auto; height: 125px;" loop autoplay>
+            </lottie-player>
           </div>
-          <div class="d-flex justify-content-between mb-1 small">
-            <span>Ongkir</span> <span><span>Rp. </span><span id="ongkir" data-valueOngkir="0">0</span></span>
-          </div>
-
-          <input type="hidden" name="kuponUsed" id="kuponUsed">
-
-          <div class="d-flex justify-content-between mb-1 small">
-            <span>Kupon
-              <?php if ($user["kupon"] == 0) { ?>
-                (tidak ada kupon)
-              <?php } else { ?>
-                (
-                <span class="align-items-center">
-                  <label for="gunakan_kupon">Gunakan</label>
-                </span>
-                <span>
-                  <input id="gunakan_kupon" type="checkbox" onchange="changeKuponStatus()">
-                </span>
-                )
-              <?php } ?>
-            </span><span><span></span><span id="kupon" data-valueKupon="<?= $user["kupon"] ?>"><?= $user["kupon"] ?> Kupon</span></span>
-          </div>
-          <?php if ($user["kupon"] != 0) : ?>
-            <div class="d-flex justify-content-between mb-1 small text-danger">
-              <span>Kupon digunakan</span> <span><span id="kuponUsedShow">0 kupon</span></span>
+          <div id="transaksi">
+            <div class="d-flex justify-content-between mb-1 small">
+              <span>Subtotal</span> <span><span>Rp. </span> <span id="sub-total">0</span></span>
             </div>
-          <?php endif; ?>
-          <hr>
-          <div class="d-flex justify-content-between mb-4 small">
-            <span>TOTAL</span> <strong class="text-dark"><span>Rp. </span><span id="total">0</span></strong>
-            <input type="hidden" name="input_total" id="input_total" value="<?= set_value('input_total'); ?>">
+            <div class="d-flex justify-content-between mb-1 small">
+              <span>Ongkir</span> <span><span>Rp. </span><span id="ongkir" data-valueOngkir="0">0</span></span>
+            </div>
+
+            <input type="hidden" name="kuponUsed" id="kuponUsed">
+
+            <div class="d-flex justify-content-between mb-1 small">
+              <span>Kupon
+                <?php if ($user["kupon"] == 0) { ?>
+                  (tidak ada kupon)
+                <?php } else { ?>
+                  (
+                  <span class="align-items-center">
+                    <label for="gunakan_kupon">Gunakan</label>
+                  </span>
+                  <span>
+                    <input id="gunakan_kupon" type="checkbox" onchange="changeKuponStatus()">
+                  </span>
+                  )
+                <?php } ?>
+              </span><span><span></span><span id="kupon" data-valueKupon="<?= $user["kupon"] ?>"><?= $user["kupon"] ?> Kupon</span></span>
+            </div>
+            <?php if ($user["kupon"] != 0) : ?>
+              <div class="d-flex justify-content-between mb-1 small text-danger">
+                <span>Kupon digunakan</span> <span><span id="kuponUsedShow">0 kupon</span></span>
+              </div>
+            <?php endif; ?>
+            <hr>
+            <div class="d-flex justify-content-between mb-4 small">
+              <span>TOTAL</span> <strong class="text-dark"><span>Rp. </span><span id="total">0</span></strong>
+              <input type="hidden" name="input_total" id="input_total" value="<?= set_value('input_total'); ?>">
+            </div>
           </div>
           <div class="form-group small mb-3">
             Pastikan anda benar-benar paham terkait pesanan yang anda buat. Jika ingin mendapatkan infor lebih lanjut silahkan hubungi <a class="link-danger" href="https://wa.me/6281230451084?text=Saya%20ingin%20menanyakan%20detail%20terkait%20produk%20anda" target="_blank" style="text-decoration: none;">@admin</a>

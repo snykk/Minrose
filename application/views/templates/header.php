@@ -34,3 +34,4 @@
 </head>
 
 <body class="sb-nav-fixed">
+  <div id="loading" style="display: none"></div>

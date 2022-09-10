@@ -3,24 +3,25 @@ var totalKupon;
 var currentNum = 0;
 var kuponUsed = 0;
 
+const setVisible = (elementOrSelector, visible) => ((typeof elementOrSelector === "string" ? document.querySelector(elementOrSelector) : elementOrSelector).style.display = visible ? "block" : "none");
+
 window.onload = function () {
   totalKupon = parseInt($("#kupon").attr("data-valueKupon"));
   if ($("#kuponUsedShow").attr("data-kuponUsed") != null) {
     kuponUsed = parseInt($("#kuponUsedShow").attr("data-kuponUsed"));
   }
   $("#kuponUsedShow").html(`${kuponUsed} kupon`);
-}
+};
 
 function changeKuponStatus() {
   isUseKupon = !isUseKupon;
 }
 
 // ================ order summary ==================
-var sub_total
-var total
-var ongkir
+var sub_total;
+var total;
+var ongkir;
 // ===============================================
-
 
 // counter order summary [buat ]
 function myCounter() {
@@ -29,7 +30,7 @@ function myCounter() {
   ongkir = parseInt(document.getElementById("ongkir").getAttribute("data-valueOngkir"));
 
   if (jumlah_produk != null && id_produk != null && destinasi != null) {
-    setOngkir({ destination: destinasi, qty: num, idProd: id_produk })
+    setOngkir({ destination: destinasi, qty: num, idProd: id_produk });
   }
 
   if (isUseKupon && totalKupon > 0 && currentNum < num) {
@@ -51,7 +52,7 @@ function myCounter() {
   $("#kuponUsed").val(kuponUsed);
   $("#kuponUsedShow").html(`${kuponUsed} kupon`);
 
-  refresh_data({ sub_total: sub_total, total: total })
+  refresh_data({ sub_total: sub_total, total: total });
   currentNum = num;
 }
 
@@ -71,6 +72,8 @@ function refresh_data({ sub_total = 0, ongkir = 0, total = 0 }) {
 
 // modal detail data pemesanan
 $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
+  setVisible("#loading", true);
+
   $.ajax({
     url: "/Minrose/pemesanan/getDataPemesanan",
     data: { id: $(this).attr("data-id"), data_dipesan: $(this).attr("data-dipesan") },
@@ -167,6 +170,9 @@ $("a.detail_data_pemesanan[title='detail pemesanan']").click(function (event) {
         $("#link_batalkan").css("display", "unset");
         $("#message").css("display", "none");
       }
+
+      $("#ModalDetailDataPemesanan").modal("show");
+      setVisible("#loading", false);
     },
   });
 });
@@ -272,7 +278,6 @@ $("#link_bukti_transfer").click(function (event) {
   });
 });
 
-
 $("#submit_simpan_perubahan").click(function (e) {
   e.preventDefault();
   var form = document.getElementById("form_ubah_pemesanan");
@@ -310,30 +315,27 @@ $("#hapus_bukti_transfer").click(function (e) {
     timer: 10000,
   }).then((result) => {
     if (result.isConfirmed) {
-      Swal.fire("Aksi anda sedang diproses", "", "success").then((_) => document.location.href = href);
+      Swal.fire("Aksi anda sedang diproses", "", "success").then((_) => (document.location.href = href));
     } else {
       Swal.fire("Gagal menghapus bukti transfer", "", "info");
     }
   });
 });
 
-
-
 // ===================================  Ongkir  =======================================
 // ==== DATA ====
 var id_produk;
 var destinasi;
-var jumlah_produk
+var jumlah_produk;
 
 // ==============
-
 
 function getLokasi() {
   $op = $("#select_provinsi");
 
   $.getJSON("/Minrose/ongkir/provinsi", function (data) {
     $.each(data, function (i, field) {
-      $op.append('<option value="' + field.province_id + '">' + field.province + '</option>');
+      $op.append('<option value="' + field.province_id + '">' + field.province + "</option>");
     });
   });
 }
@@ -342,12 +344,12 @@ getLokasi();
 
 $("#select_provinsi").on("change", function (e) {
   e.preventDefault();
-  var option = $('option:selected', this).val();
-  $('#select_kota option:gt(0)').remove();
-  $('#kurir').val('');
+  var option = $("option:selected", this).val();
+  $("#select_kota option:gt(0)").remove();
+  $("#kurir").val("");
 
-  if (option === '') {
-    alert('null');
+  if (option === "") {
+    alert("null");
     $("#select_kota").prop("disabled", true);
     $("#kurir").prop("disabled", true);
   } else {
@@ -371,15 +373,26 @@ function getKota(idpro) {
 
   $.getJSON("/Minrose/ongkir/kota/" + idpro, function (data) {
     $.each(data, function (i, field) {
-      $op.append('<option value="' + field.city_id + '">' + field.type + ' ' + field.city_name + '</option>');
+      $op.append('<option value="' + field.city_id + '">' + field.type + " " + field.city_name + "</option>");
     });
   });
 }
 
 function setOngkir({ origin = "86", destination, qty, courier = "jne", idProd }) {
-  $.getJSON("/Minrose/ongkir/tarif/" + origin + "/" + destination + "/" + qty + "/" + courier + "/" + idProd, function (data) {
-    ongkir = data[0]['costs'][0]["cost"][0]["value"];
-    total = sub_total + ongkir;
-    refresh_data({ ongkir: ongkir, sub_total: sub_total, total: total })
+  setVisible("#loading_transaksi", true);
+  setVisible("#transaksi", false);
+
+  $.ajax({
+    url: `/Minrose/ongkir/tarif/${origin}/${destination}/${qty}/${courier}/${idProd}`,
+    method: "get",
+    dataType: "json",
+    success: function (data) {
+      ongkir = data[0]["costs"][0]["cost"][0]["value"];
+      total = sub_total + ongkir;
+      refresh_data({ ongkir: ongkir, sub_total: sub_total, total: total });
+
+      setVisible("#transaksi", true);
+      setVisible("#loading_transaksi", false);
+    },
   });
 }

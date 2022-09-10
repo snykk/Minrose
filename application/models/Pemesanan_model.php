@@ -235,7 +235,7 @@ class Pemesanan_model extends CI_model
                 "id_catatan" => ($pemesanan["id_metode"] == 1) ? 4 : 1,
             ];
 
-            // ubah tabel produk
+            // ubah tabel pemesanan
             $this->db->set($data);
             $this->db->where("id", $id);
             $this->db->update('pemesanan');

@@ -437,6 +437,15 @@ class Pemesanan extends CI_Controller
 
         $id_pemesanan = $_GET["id_pemesanan"];
 
+        $data_pemesanan =  $this->db->get_where('pemesanan', ['id' => $id_pemesanan])->row();
+
+        if ($data_pemesanan->id_status != "1") {
+            $message = "<div>Pemesanan harus <strong>disetujui</strong> terlebih dahulu oleh admin</div>";
+            $this->Global_model->flasher($message, gagal: true);
+
+            redirect("pemesanan/data_pemesanan");
+        }
+
         if ($this->Pemesanan_model->setPemesananSelesai($id_pemesanan) && $this->Pemesanan_model->addPemesananToTransaksi($id_pemesanan)) {
             $message = "<div>Pemesanan <strong>berhasil</strong> diakhiri dan data pemesanan <strong>berhasil</strong> ditambahkan di transaksi </div>";
             $this->Global_model->flasher($message, berhasil: true);

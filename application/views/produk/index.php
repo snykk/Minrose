@@ -39,7 +39,7 @@
                                         <p class="card-text">Upsss cieee pasti penasaran yaaa? 😄 klik "detail Produk" di bawah</p>
 
                                         <!-- detail -->
-                                        <button data-id="<?= $row->id; ?>" class="btn btn-primary btn-sm detail" data-bs-toggle="modal" data-bs-target="#ModalDetail">Detail</button>
+                                        <button data-id="<?= $row->id; ?>" class="btn btn-primary btn-sm detail">Detail</button>
 
                                         <!-- ulasan -->
                                         <a href="<?= base_url("ulasan?id_produk=" . $row->id) ?>"><button class="btn btn-primary btn-sm ubah">Ulasan</button></a>
